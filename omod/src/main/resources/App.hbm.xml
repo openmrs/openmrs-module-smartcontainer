@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+<hibernate-mapping package="org.openmrs.module.smartcontainer.app">
+	<class name="App" table="smartcontainer_app">
+		<id name="appId" type="java.lang.Integer" column="smartcontainer_app_id"
+			unsaved-value="0">
+			<generator class="native" />
+		</id>
+		<property name="name" type="java.lang.String" column="name" />
+		<property name="description" type="java.lang.String" column="description" />
+		<property name="author" type="java.lang.String" column="author"/>
+		<property name="mode" type="java.lang.String" column="mode"/>
+		<property name="version" type="java.lang.String" column="version"/>
+		<property name="baseURL" type="java.lang.String" column="base_url"/>
+		<property name="icon" type="java.lang.String" column="icon"/>
+		<property name="sMARTAppId" type="java.lang.String" column="smart_id"/>
+		<property name="defaultApp" type="java.lang.Boolean" column="default"/>
+		<many-to-one name="activity" class="org.openmrs.module.smartcontainer.app.Activity">
+			<column name="activity_id" />
+		</many-to-one>
+		<many-to-one name="webHook" class="WebHook">
+			<column name="webhook_id" />
+		</many-to-one>
+	</class>
+</hibernate-mapping>
