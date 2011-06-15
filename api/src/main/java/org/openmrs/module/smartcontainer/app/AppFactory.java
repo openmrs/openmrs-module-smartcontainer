@@ -13,13 +13,16 @@
  */
 package org.openmrs.module.smartcontainer.app;
 
-import java.io.File;
 import java.util.Map;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * Used to construct a SMART App from its manifest file
  */
 public class AppFactory {
+	public static  Log log=LogFactory.getLog(AppFactory.class);
 	
 	public static final String NAME = "name";
 	
@@ -43,13 +46,13 @@ public class AppFactory {
 	
 	public static final String DEFAULTAPP = "enabled_by_default";
 	
-	private Activity activity;
+	private static Activity activity;
 	
-	private WebHook webHook;
+	private static WebHook webHook;
 	
-	private ManifestParser pa;
+	private static ManifestParser pa;
 	
-	String temp = null;
+	static String temp = null;
 	
 	/**
 	 * Method to construct the App
@@ -57,7 +60,7 @@ public class AppFactory {
 	 * @param maniFile
 	 * @return
 	 */
-	public App getApp(File maniFile) {
+	public static App getApp(String maniFile) {
 		
 		App app = new App();
 		pa = new ManifestParser();
@@ -73,7 +76,7 @@ public class AppFactory {
 	 * @param pa
 	 * @return
 	 */
-	private App getApp(App app, ManifestParser pa) {
+	private static App getApp(App app, ManifestParser pa) {
 		
 		app.setName((String) pa.get(NAME));
 		
@@ -82,7 +85,7 @@ public class AppFactory {
 		app.setDefaultApp(Boolean.valueOf((String) pa.get(DEFAULTAPP)));
 		app.setDescription((String) pa.get(DESCRIPTION));
 		temp = (String) pa.get(ICON);
-		removeBaseURL(temp, app.getBaseURL());
+		temp=removeBaseURL(temp, app.getBaseURL());
 		app.setIcon(temp);
 		app.setMode((String) pa.get(MODE));
 		app.setsMARTAppId((String) pa.get(SMARTAPPID));
@@ -100,17 +103,20 @@ public class AppFactory {
 	 * @param app2
 	 * @param string
 	 */
-	private void setWebhook(App app, Map map) {
+	private static void setWebhook(App app, Map map) {
+		webHook = new WebHook();
 		if (!map.isEmpty()) {
 			//pa.parse(webhookString);
-			webHook = new WebHook();
+			
 			webHook.setName((String) map.keySet().toArray()[0]);
 			map = (Map) (map.get(webHook.getName()));
 			webHook.setDescription((String) map.get("description"));
 			temp = (String) map.get("url");
-			removeBaseURL(temp, app.getBaseURL());
+			temp=removeBaseURL(temp, app.getBaseURL());
 			webHook.setURL(temp);
 			app.setWebHook(webHook);
+		}else{
+		app.setWebHook(webHook);
 		}
 		
 	}
@@ -121,15 +127,15 @@ public class AppFactory {
 	 * @param app2
 	 * @param string
 	 */
-	private void setActivity(App app, Map map) {
+	private static void setActivity(App app, Map map) {
 		if (!map.isEmpty()) {
 			
 			activity = new Activity();
 			activity.setActivityName((String) map.keySet().toArray()[0]);
 			temp = (String) map.get(activity.getActivityName());
-			removeBaseURL(temp, app.getBaseURL());
+			temp=removeBaseURL(temp, app.getBaseURL());
 			activity.setActivityURL(temp);
-			app.setActivity(activity);
+		app.setActivity(activity);
 		}
 	}
 	
@@ -140,8 +146,11 @@ public class AppFactory {
 	 * @param base
 	 * @return
 	 */
-	private String removeBaseURL(String url, String base) {
+	private static String removeBaseURL(String url, String base) {
 		
-		return url.replace("{base_url}", base);
+		
+		url=url.replaceAll("\\{base_url\\}", base);
+	    log.info(url);
+		return  url;
 	}
 }

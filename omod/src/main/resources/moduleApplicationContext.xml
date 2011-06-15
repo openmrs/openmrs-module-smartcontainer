@@ -24,6 +24,15 @@
   		    http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
 	<bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping"/>
+	<bean id="smartcontainerUrlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+    	<property name="order"><value>1</value></property>
+    	<property name="mappings">
+            <props>
+                <prop key="**/smartAppForm.portlet">smartAppPortletController</prop>
+                </props>
+                </property>
+                </bean>
+    <bean id="smartAppPortletController" class="@MODULE_PACKAGE@.web.controller.smartcontainerPortletController"></bean>
 
 	<context:component-scan base-package="@MODULE_PACKAGE@.web.controller" />
 	 <bean parent="serviceContext">

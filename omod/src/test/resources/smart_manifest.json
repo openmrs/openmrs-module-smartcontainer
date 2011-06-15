@@ -8,7 +8,7 @@
   "base_url" : "http://localhost:8001",
   "mode" : "ui",
   "activities" : {
-    "main" :  "{base_url}/framework/api_playground/bootstrap.html"
+    "main" :  "http://sample-apps.smartplatforms.org/framework/got_statins/bootstrap.html"
   },
 	
   "web_hooks" : { },

@@ -71,8 +71,45 @@ public class HibernateAppDAO implements AppDAO {
 	/**
 	 * @see org.openmrs.module.smartcontainer.db.AppDAO#getAllApps()
 	 */
-	public Collection<App> getAllApps() throws DAOException {
+	public List<App> getAllApps() throws DAOException {
 		
 		return sessionFactory.getCurrentSession().createQuery("from App u order by u.appId").list();
 	}
+
+	/**
+     * @see org.openmrs.module.smartcontainer.db.AppDAO#deleteApp()
+     */
+    public void deleteApp(App app) {
+	   // sessionFactory.getCurrentSession().delete(app.getWebHook());
+	   // sessionFactory.getCurrentSession().delete(app.getActivity());
+	    sessionFactory.getCurrentSession().delete(app);
+	    
+    }
+
+	/**
+     * @see org.openmrs.module.smartcontainer.db.AppDAO#getAppById(java.lang.Integer)
+     */
+    public App getAppById(Integer id) {
+    	Query query = sessionFactory.getCurrentSession().createQuery("from App a where  a.appId = ?");
+		query.setInteger(0, id);
+		// query.setString(1, name);
+		List apps = (List) query.list();
+		
+		if (apps == null || ((List) apps).size() == 0) {
+			log.warn("request for username '" + id + "' not found");
+			return null;
+		}
+		
+		return (App) apps.get(0);
+    }
+
+	/**
+     * @see org.openmrs.module.smartcontainer.db.AppDAO#save(org.openmrs.module.smartcontainer.app.App)
+     */
+    public void save(App newApp) {
+	    sessionFactory.getCurrentSession().saveOrUpdate(newApp);
+	    
+    }
+
+	
 }

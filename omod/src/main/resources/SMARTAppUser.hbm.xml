@@ -8,13 +8,12 @@
 	<generator class="native"/>
 	
 	</id>
-		  <set name="apps" table="smartcontainer_user_app" 
-        	inverse="false" lazy="true" fetch="select" cascade="all" >
+		  <set name="apps" table="smartcontainer_user_app" lazy="false" cascade="save-update,merge,evict">
             <key>
-                <column name="smartcontainer_user_id" not-null="true" />
+                <column name="smartcontainer_user_id"/>
             </key>
-            <many-to-many entity-name="org.openmrs.module.smartcontainer.SMARTAppUser">
-                <column name="smartcontainer_app_id" not-null="true" />
+            <many-to-many class="org.openmrs.module.smartcontainer.app.App">
+                <column name="smartcontainer_app_id"/>
             </many-to-many>
         </set>
 		<many-to-one name="openMRSUser" class="org.openmrs.User" column="user_id" not-null="true" cascade="all" unique="true" />

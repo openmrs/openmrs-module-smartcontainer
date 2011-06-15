@@ -56,5 +56,13 @@ public class UserServiceImpl implements UserService {
 		
 		return userDAO.getAllUsers();
 	}
+
+	/**
+     * @see org.openmrs.module.smartcontainer.UserService#saveUser(org.openmrs.module.smartcontainer.SMARTAppUser)
+     */
+    public void saveUser(SMARTAppUser user) throws APIException {
+	    userDAO.saveUser(user);
+	    
+    }
 	
 }

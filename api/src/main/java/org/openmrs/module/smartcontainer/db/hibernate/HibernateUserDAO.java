@@ -18,6 +18,7 @@ import java.util.List;
 
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
+import org.openmrs.api.APIException;
 import org.openmrs.api.db.DAOException;
 import org.openmrs.module.smartcontainer.SMARTAppUser;
 import org.openmrs.module.smartcontainer.db.UserDAO;
@@ -65,5 +66,15 @@ public class HibernateUserDAO implements UserDAO {
 		
 		return sessionFactory.getCurrentSession().createQuery("from SMARTAppUser u order by u.openMRSUser.userId").list();
 	}
+
+	/**
+     * @see org.openmrs.module.smartcontainer.db.UserDAO#saveUser(org.openmrs.module.smartcontainer.SMARTAppUser)
+     */
+    public void saveUser(SMARTAppUser user) throws APIException {
+    	
+	    sessionFactory.getCurrentSession().saveOrUpdate(user);
+	    sessionFactory.getCurrentSession().evict(user);
+	    
+    }
 	
 }

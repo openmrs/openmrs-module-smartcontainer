@@ -15,6 +15,7 @@ package org.openmrs.module.smartcontainer.db;
 
 import java.util.Collection;
 
+import org.openmrs.api.APIException;
 import org.openmrs.api.db.DAOException;
 import org.openmrs.module.smartcontainer.SMARTAppUser;
 
@@ -39,4 +40,5 @@ public interface UserDAO {
 	 * @throws DAOException
 	 */
 	public Collection<SMARTAppUser> getAllUsers() throws DAOException;
+	public void saveUser(SMARTAppUser user) throws APIException;
 }
