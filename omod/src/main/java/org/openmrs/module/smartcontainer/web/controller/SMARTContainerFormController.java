@@ -13,33 +13,29 @@
  */
 package org.openmrs.module.smartcontainer.web.controller;
 
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collection;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import java.util.List;
+import java.util.Scanner;
 
+import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.smartcontainer.AppService;
 import org.openmrs.module.smartcontainer.SMARTAppUser;
 import org.openmrs.module.smartcontainer.UserService;
-import org.openmrs.module.smartcontainer.app.Activity;
 import org.openmrs.module.smartcontainer.app.App;
 import org.openmrs.module.smartcontainer.app.AppFactory;
-import org.openmrs.module.smartcontainer.app.WebHook;
-import org.openmrs.util.OpenmrsUtil;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
@@ -113,30 +109,36 @@ public class SMARTContainerFormController {
 			if(isUploadFromURL){
 				String app=null;
 				String url=ServletRequestUtils.getStringParameter(request, "manifestURL", "");
+				log.info("URL stirng :"+url);
 				URL appURL=null;
 		try {
 	        appURL=new URL(url);
-	        File file= OpenmrsUtil.url2file(appURL); 
-	        log.info("ndfnf"+file);
-	        app=OpenmrsUtil.getFileAsString(file);
+	        log.info("URL  :"+appURL);
+	        //File file= OpenmrsUtil.url2file(appURL); 
+	        //log.info("File  :"+file);
+	        app=new Scanner((InputStream) appURL.getContent()).useDelimiter("\\A").next();
+	        log.info("File String :"+app);
         }
         catch (MalformedURLException e) {
-	        // TODO Auto-generated catch block
+	       
 	        log.error("Error generated", e);
         }
         catch (IOException e) {
-	        // TODO Auto-generated catch block
+	        
 	        log.error("Error generated", e);
         }
       
        
 
     newApp=AppFactory.getApp(app);
-   
+    log.info("APP  :"+newApp);
 
-
-
+List<App> apps=(List<App>) appService.getAllApps();
+if(!apps.contains(newApp)){
 appService.saveApp(newApp);
+}else{
+	
+}
     
 			}else{
 		MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
@@ -159,7 +161,12 @@ appService.saveApp(newApp);
 			
 			
            
-          appService.saveApp(newApp);
+	             List<App> apps=(List<App>) appService.getAllApps();
+	             if(!apps.contains(newApp)){
+	             appService.saveApp(newApp);
+	             }else{
+	             	
+	             }
 		}
 			}
 		//
