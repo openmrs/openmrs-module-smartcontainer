@@ -21,7 +21,7 @@ import org.junit.Assert;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.smartcontainer.impl.RDFConvertor;
 import org.openmrs.util.OpenmrsUtil;
-import org.openrdf.rio.RDFHandlerException;
+
 
 
 /**

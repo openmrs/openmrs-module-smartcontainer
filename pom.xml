@@ -115,11 +115,7 @@
 		</repository>
 	
 	
-		<repository>
-			<id>openrdf-repo</id>
-			<name>OpenRDF Nexus Repository</name>
-			<url>http://repo.aduna-software.org/maven2/releases/</url>
-		</repository>
+		
 	</repositories>
 
 	<pluginRepositories>

@@ -1,82 +1,90 @@
 package org.openmrs.module.smartcontainer.impl;
 
+import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 
 import org.openrdf.model.BNode;
 import org.openrdf.model.Graph;
 import org.openrdf.model.Literal;
+import org.openrdf.model.Resource;
 import org.openrdf.model.Statement;
 import org.openrdf.model.URI;
+import org.openrdf.model.Value;
 import org.openrdf.model.ValueFactory;
 
 
-import org.openrdf.rio.RDFHandlerException;
-import org.openrdf.rio.rdfxml.util.RDFXMLPrettyWriter;
+
+import org.openrdf.rio.rdfxml.RdfXmlWriter;
+
 
 
 public class RDFConvertor {
-	public static String RDF() throws RDFHandlerException {
+	static String sp= "http://smartplatforms.org/terms#";
+	static String dcterms= "http://purl.org/dc/terms/";
+	static Graph myGraph = new org.openrdf.model.impl.GraphImpl();
+	static ValueFactory myFactory = myGraph.getValueFactory();
+	public static String RDF() throws IOException  {
 		
 		Writer sWriter=new StringWriter();
-		RDFXMLPrettyWriter graph=new RDFXMLPrettyWriter(sWriter);
-		String sp= "http://smartplatforms.org/terms#";
-		String dcterms= "http://purl.org/dc/terms/";
-		graph.handleNamespace("sp", "http://smartplatforms.org/terms#");
-		graph.handleNamespace("rdf", "http://www.w3.org/1999/02/22-rdf-syntax-ns#");
-		graph.handleNamespace("dcterms", "http://purl.org/dc/terms/");
-		graph.startRDF();
-		Graph myGraph = new org.openrdf.model.impl.GraphImpl();
-		ValueFactory myFactory = myGraph.getValueFactory();
+		RdfXmlWriter graph=new RdfXmlWriter(sWriter);
+		
+		graph.setNamespace("sp", "http://smartplatforms.org/terms#");
+		graph.setNamespace("rdf", "http://www.w3.org/1999/02/22-rdf-syntax-ns#");
+		graph.setNamespace("dcterms", "http://purl.org/dc/terms/");
+		graph.startDocument();
+		
 		//
-		BNode mySubject = myFactory.createBNode();
-		URI myPredicate = myFactory.createURI(org.openrdf.model.vocabulary.RDF.TYPE.toString());
-		Literal myObject = myFactory.createLiteral(sp+ "Problem");
-		Statement stmt=myFactory.createStatement(mySubject, myPredicate, myObject);
-		 graph.handleStatement(stmt);
+		BNode problemNode = myFactory.createBNode();
+		
+		URI problem=myFactory.createURI(sp,"Problem");
+		URI type=myFactory.createURI(org.openrdf.vocabulary.RDF.TYPE);
+		graph.writeStatement(problemNode,type,problem);
 		//
-		 myPredicate = myFactory.createURI(sp,"onset");
-		 myObject = myFactory.createLiteral("23-04-2011");
-		 graph.handleStatement(myFactory.createStatement(mySubject, myPredicate, myObject));
-		 //
-		 BNode mySubject1 = myFactory.createBNode();
-		 myPredicate = myFactory.createURI(org.openrdf.model.vocabulary.RDF.TYPE.toString());
-		 myObject = myFactory.createLiteral(sp,"CodedValue");
-		 graph.handleStatement(myFactory.createStatement(mySubject1, myPredicate, myObject ));
-		 //
-		 myPredicate = myFactory.createURI(sp,"code");
-		 URI uri=myFactory.createURI("http://www.ihtsdo.org/snomed-ct/concepts/161891005");
-		 graph.handleStatement(myFactory.createStatement(mySubject1, myPredicate, uri ));
-		 //
-		 myPredicate = myFactory.createURI(dcterms,"title");
-		 myObject = myFactory.createLiteral("Backache (finding)");
-		 graph.handleStatement(myFactory.createStatement(mySubject1, myPredicate, myObject ));
-		 //
-		 myPredicate = myFactory.createURI(sp,"ProblemName");
-		 graph.handleStatement(myFactory.createStatement(mySubject, myPredicate, mySubject1 ));
+		URI onset=myFactory.createURI(sp,"onset");
+		Literal onsetVal=myFactory.createLiteral("24-04-2011");
+		graph.writeStatement(problemNode, onset, onsetVal);
+		//
+		URI resolution=myFactory.createURI(sp,"resolution");
+		Literal resolutionVal=myFactory.createLiteral("24-04-2011");
+		graph.writeStatement(problemNode, resolution, resolutionVal);
+		//
+		URI problemName = myFactory.createURI(sp,"ProblemName");
+		graph.writeStatement(problemNode, problemName, codedValue(graph));
+		//
+		
 		 
 		 
-		 //
-		 uri=myFactory.createURI("http://www.ihtsdo.org/snomed-ct/concepts/161891005");
-		 myPredicate = myFactory.createURI(org.openrdf.model.vocabulary.RDF.TYPE.toString());
-		 myObject = myFactory.createLiteral(sp,"code");
-		 graph.handleStatement(myFactory.createStatement(uri, myPredicate, myObject ));
-		 myPredicate = myFactory.createURI(sp,"system");
-		 URI uri1=myFactory.createURI("http://www.ihtsdo.org/snomed-ct/concepts/");
-		 graph.handleStatement(myFactory.createStatement(uri, myPredicate, uri1 ));
-		 
-		 myPredicate = myFactory.createURI(dcterms,"identifier");
-		 myObject = myFactory.createLiteral("161891005");
-		 graph.handleStatement(myFactory.createStatement(uri, myPredicate, myObject ));
-		 
-		 
-		 
-		 
-		 
-		graph.endRDF();
+		graph.endDocument();
 		
 
 		return sWriter.toString();
+	}
+	private static Value codedValue(RdfXmlWriter graph) throws IOException {
+		BNode codedValueNode=myFactory.createBNode();
+		URI type=myFactory.createURI(org.openrdf.vocabulary.RDF.TYPE);
+		URI codedValue = myFactory.createURI(sp,"CodedValue");
+		graph.writeStatement(codedValueNode, type, codedValue);
+		//
+		URI code = myFactory.createURI(sp,"Code");
+		URI uri=myFactory.createURI("http://www.ihtsdo.org/snomed-ct/concepts/161891005");
+		graph.writeStatement(codedValueNode, code, uri);
+		//
+		URI title=myFactory.createURI(dcterms,"title");
+		Literal titleVal=myFactory.createLiteral("Backache (finding)");
+		graph.writeStatement(codedValueNode, title, titleVal);
+		//
+		graph.writeStatement(uri, type, code);
+		//
+		URI system=myFactory.createURI(sp, "system");
+		URI systemVal=myFactory.createURI("http://www.ihtsdo.org/snomed-ct/concepts/");
+		graph.writeStatement(uri, system, systemVal);
+		//
+		URI identifier=myFactory.createURI(dcterms, "identifier");
+		Literal identifierVal=myFactory.createLiteral("161891005");
+		graph.writeStatement(uri, identifier, identifierVal);
+		 
+		return codedValueNode;
 	}
    
 
