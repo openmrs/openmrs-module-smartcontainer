@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.openmrs.User;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.smartcontainer.AppService;
 import org.openmrs.module.smartcontainer.app.App;
@@ -40,8 +41,9 @@ public class smartcontainerPortletController extends PortletController {
     protected void populateModel(HttpServletRequest request, Map<String, Object> model) {
     	@SuppressWarnings("unchecked")
 		List<App> apps = (List<App>) Context.getService(AppService.class).getAllApps();
-    	model.put("appList",apps);
-    	request.setAttribute("list", apps);
+    	model.put("list",apps);
+    	User user=Context.getAuthenticatedUser();
+    	model.put("currentUser", user);
     	log.info("XXXXXXXXXXXXXXXXXXXX inside portlet");
 	    //super.populateModel(request, model);
     }

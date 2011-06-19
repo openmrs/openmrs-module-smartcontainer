@@ -35,10 +35,6 @@ public class ManifestParserTest {
 	 */
 	@Test
 	public void testparser() {
-	URL url=this.getClass().getClassLoader().getResource("smart_manifest.json");
-		File file = new File(url.getPath());
-	ManifestParser pa=new ManifestParser();
-	pa.parse(file);
-	Assert.assertNotNull("API Playground", (String)pa.get(AppFactory.NAME));
+	
 }
 }

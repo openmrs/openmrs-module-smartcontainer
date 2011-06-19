@@ -19,7 +19,9 @@ import java.net.URL;
 import org.junit.Test;
 import org.junit.Assert;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.smartcontainer.impl.RDFConvertor;
 import org.openmrs.util.OpenmrsUtil;
+import org.openrdf.rio.RDFHandlerException;
 
 
 /**
@@ -32,13 +34,12 @@ public class AppFactoryTest {
 	 */
 	@Test
 	public void testingAppFactory(){
-		URL url=this.getClass().getClassLoader().getResource("smart_manifest.json");
-		File file = new File(url.getPath());
-		AppFactory factory=new AppFactory();
-		App app=factory.getApp(file);
-		Assert.assertNotNull(app);
-		Assert.assertEquals("name", "API Playground",app.getName());
-		Assert.assertEquals("activity","main" ,app.getActivity().getActivityName());
-		Assert.assertEquals("webhook", null,app.getWebHook());
+		 
+		try {
+			Assert.fail(RDFConvertor.RDF());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

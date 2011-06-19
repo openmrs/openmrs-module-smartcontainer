@@ -72,23 +72,24 @@
 	var SMART_HELPER = {};
 
 	SMART_HELPER.handle_record_info = function(app, callback) {
-		callback({
-			'record' : {
-				'full_name' : 'Anonymous',
-				'id' : '1000000012'
-			},
-			'user' : {
-				'full_name' : 'Logged.In.User',
-				'id' : 'some_user_id'
-			}
-		});
-	};
+		 callback( {
+		    	'user' : {
+		    		'id': '${model.currentUser.userId}',
+		    		'full_name': '${model.currentUser.personName}'
+		    	},
+		     	'record' : {
+		    		'full_name' : '${model.patient.personName}',
+		    		'id' : '${model.patient.patientId}'
+			    },
+			    'credentials': {
+			    	'token': '',
+			    	'secret': '',
+			    	'oauth_cookie':  ''
+			    }
+			});
+		};
 
-	app_lookup = {
-		'medlist@apps.smart.org' : 'http://sample-apps.smartplatforms.org/framework/med_list/bootstrap.html',
-		'smart-problems@apps.smart.org' : 'http://sample-apps.smartplatforms.org/framework/problem_list/bootstrap.html',
-		'got-statins@apps.smart.org' : 'http://sample-apps.smartplatforms.org/framework/got_statins/bootstrap.html'
-	};
+	
 	var appURL
 
 	SMART_HELPER.handle_start_activity = function(activity, callback) {
@@ -114,20 +115,40 @@
 	});
 
 	SMART_HELPER.handle_api = function(activity, api_call, callback) {
-		if (api_call.method == "GET"
-				&& api_call.func.match(/^\/capabilities\/$/)) {
-			callback("<?xml version='1.0'?>\
-                   <rdf:RDF xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#' >\
-                  </rdf:RDF>");
-		}
+		if (api_call.method=="GET" && api_call.func.match(/^\/capabilities\/$/))
+	      {
+	        callback("<?xml version='1.0'?>\
+	                   <rdf:RDF xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#' >\
+	                  </rdf:RDF>");
+	      }
 
-		// Return a fake medication list containing just simvastatin...
-		else if (api_call.method == "GET"
-				&& api_call.func.match(/^.*\/medications\/$/)) {
-			//		  $.get('http://174.129.42.191'+api_call.func, callback);
-			$.get('sample_data.xml', callback, 'text');
-		} else
-			alert("Function " + api_call.func + " not implemented yet.");
+
+	      // Return a fake medication list containing just simvastatin...
+	     // else if (api_call.method=="GET" && api_call.func.match(/^.*\/medications\/$/))
+	    //  {
+//			  $.get('http://174.129.42.191'+api_call.func, callback);
+			//  $.get('sample_data.xml', callback, 'text');
+	      //}
+	      else {
+	    	var array=api_call.func.split("/");
+	    	var pid=array[2].valueOf();
+	    	var type=array[3];
+	    	  $.ajax({
+	    			beforeSend: function(xhr) {
+	    					xhr.setRequestHeader("Authorization", " ");
+	    				},
+	    			    dataType: "text",
+	    			    url: "http://localhost:8080/openmrs/module/smartcontainer/"+type+".form"+"?pid="+pid,
+	    			    contentType: activity.contentType,
+	    			    data: activity.params,
+	    			    type: activity.method,
+	    				success: callback,
+	    				error: function(data) {
+	    				    	  alert("error");
+	    				      }
+	    		});  
+	      }
+	     
 
 	};
 
@@ -144,7 +165,7 @@
 <div id="app_selector" style="float: left">
 <table>
 	<tbody>
-		<c:forEach items="${list}" var="app" varStatus="status">
+		<c:forEach items="${model.list}" var="app" varStatus="status">
 			<tr
 				onclick="appSelected('${app.sMARTAppId}','${app.activity.activityURL}')">
 				<td><input type="image" src="${app.icon}" /></td>
