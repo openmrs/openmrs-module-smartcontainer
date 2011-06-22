@@ -19,6 +19,7 @@ import java.net.URL;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 
@@ -26,7 +27,7 @@ import org.junit.Test;
 /**
  *This test validates the functionality of the Manifest parser
  */
-
+@Ignore
 public class ManifestParserTest {
 	private Log log=LogFactory.getLog(this.getClass());
 	/**

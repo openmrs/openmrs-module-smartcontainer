@@ -46,9 +46,9 @@
 	padding: 10px;
 	padding-left: 205px;
 	padding-bottom: 11px;
-	width: 100%;
-	//height: 100%;
-	border: 0px ;
+	width: 100%; //
+	height: 100%;
+	border: 0px;
 	box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	-webkit-box-sizing: border-box;
@@ -57,39 +57,38 @@
 }
 
 #iframe_holder iframe {
-	width: 100%;
-	//height: 100%;
+	width: 100%; //
+	height: 100%;
 	border: 2px dotted #ddd;
 }
 
 .activity_iframe {
-    width: 100%;
-	//height: 100%;
-	border: 0px ;
+	width: 100%; //
+	height: 100%;
+	border: 0px;
 }
 </style>
 <script>
 	var SMART_HELPER = {};
 
 	SMART_HELPER.handle_record_info = function(app, callback) {
-		 callback( {
-		    	'user' : {
-		    		'id': '${model.currentUser.userId}',
-		    		'full_name': '${model.currentUser.personName}'
-		    	},
-		     	'record' : {
-		    		'full_name' : '${model.patient.personName}',
-		    		'id' : '${model.patient.patientId}'
-			    },
-			    'credentials': {
-			    	'token': '',
-			    	'secret': '',
-			    	'oauth_cookie':  ''
-			    }
-			});
-		};
+		callback({
+			'user' : {
+				'id' : '${model.currentUser.userId}',
+				'full_name' : '${model.currentUser.personName}'
+			},
+			'record' : {
+				'full_name' : '${model.patient.personName}',
+				'id' : '${model.patient.patientId}'
+			},
+			'credentials' : {
+				'token' : '',
+				'secret' : '',
+				'oauth_cookie' : ''
+			}
+		});
+	};
 
-	
 	var appURL
 
 	SMART_HELPER.handle_start_activity = function(activity, callback) {
@@ -115,40 +114,32 @@
 	});
 
 	SMART_HELPER.handle_api = function(activity, api_call, callback) {
-		if (api_call.method=="GET" && api_call.func.match(/^\/capabilities\/$/))
-	      {
-	        callback("<?xml version='1.0'?>\
+		if (api_call.method == "GET"
+				&& api_call.func.match(/^\/capabilities\/$/)) {
+			callback("<?xml version='1.0'?>\
 	                   <rdf:RDF xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#' >\
 	                  </rdf:RDF>");
-	      }
+		}
 
-
-	      // Return a fake medication list containing just simvastatin...
-	     // else if (api_call.method=="GET" && api_call.func.match(/^.*\/medications\/$/))
-	    //  {
-//			  $.get('http://174.129.42.191'+api_call.func, callback);
-			//  $.get('sample_data.xml', callback, 'text');
-	      //}
-	      else {
-	    	var array=api_call.func.split("/");
-	    	var pid=array[2].valueOf();
-	    	var type=array[3];
-	    	  $.ajax({
-	    			beforeSend: function(xhr) {
-	    					xhr.setRequestHeader("Authorization", " ");
-	    				},
-	    			    dataType: "text",
-	    			    url: "http://localhost:8080/openmrs/module/smartcontainer/"+type+".form"+"?pid="+pid,
-	    			    contentType: activity.contentType,
-	    			    data: activity.params,
-	    			    type: activity.method,
-	    				success: callback,
-	    				error: function(data) {
-	    				    	  alert("error");
-	    				      }
-	    		});  
-	      }
-	     
+		else {
+			var array = api_call.func.split("/");
+			var pid = array[2].valueOf();
+			var type = array[3];
+			$.ajax({
+				beforeSend : function(xhr) {
+					xhr.setRequestHeader("Authorization", " ");
+				},
+				dataType : "text",
+				url : "${model.RESTAPI}" + type + ".form" + "?pid=" + pid,
+				contentType : activity.contentType,
+				data : activity.params,
+				type : activity.method,
+				success : callback,
+				error : function(data) {
+					alert("error");
+				}
+			});
+		}
 
 	};
 
@@ -160,7 +151,6 @@
 	};
 </script>
 </head>
-
 <div id="main">
 <div id="app_selector" style="float: left">
 <table>

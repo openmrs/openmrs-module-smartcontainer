@@ -13,7 +13,6 @@
  */
 package org.openmrs.module.smartcontainer.web.controller;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -27,25 +26,27 @@ import org.openmrs.module.smartcontainer.AppService;
 import org.openmrs.module.smartcontainer.app.App;
 import org.openmrs.web.controller.PortletController;
 
-
 /**
  *
  */
 public class smartcontainerPortletController extends PortletController {
-	public Log log=LogFactory.getLog(getClass());
+	public Log log = LogFactory.getLog(getClass());
 
 	/**
-     * @see org.openmrs.web.controller.PortletController#populateModel(javax.servlet.http.HttpServletRequest, java.util.Map)
-     */
-    @Override
-    protected void populateModel(HttpServletRequest request, Map<String, Object> model) {
-    	@SuppressWarnings("unchecked")
-		List<App> apps = (List<App>) Context.getService(AppService.class).getAllApps();
-    	model.put("list",apps);
-    	User user=Context.getAuthenticatedUser();
-    	model.put("currentUser", user);
-    	log.info("XXXXXXXXXXXXXXXXXXXX inside portlet");
-	    //super.populateModel(request, model);
-    }
+	 * @see org.openmrs.web.controller.PortletController#populateModel(javax.servlet.http.HttpServletRequest,
+	 *      java.util.Map)
+	 */
+	@Override
+	protected void populateModel(HttpServletRequest request,
+			Map<String, Object> model) {
+		List<App> apps = (List<App>) Context.getService(AppService.class)
+				.getAllApps();
+		model.put("list", apps);
+		model.put("RESTAPI",
+				"http://localhost:9999/openmrs/module/smartcontainer/");
+		User user = Context.getAuthenticatedUser();
+		model.put("currentUser", user);
+		// super.populateModel(request, model);
+	}
 
 }

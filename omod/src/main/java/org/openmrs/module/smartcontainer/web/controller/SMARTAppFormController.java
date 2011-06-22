@@ -13,33 +13,21 @@
  */
 package org.openmrs.module.smartcontainer.web.controller;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Collection;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.openmrs.Concept;
+import org.openmrs.api.ConceptService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.smartcontainer.AppService;
-import org.openmrs.module.smartcontainer.SMARTAppUser;
-import org.openmrs.module.smartcontainer.UserService;
 import org.openmrs.module.smartcontainer.app.App;
-import org.openmrs.module.smartcontainer.app.AppFactory;
-import org.openmrs.util.OpenmrsUtil;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.ServletRequestBindingException;
-import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springframework.web.servlet.ModelAndView;
-
 
 /**
  *
@@ -47,15 +35,16 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @RequestMapping(value = "module/smartcontainer/portlets/smartApprLink.form")
 public class SMARTAppFormController {
-	
+
 	/** Logger for this class and subclasses */
 	protected final Log log = LogFactory.getLog(getClass());
-	
+
 	/** Success form view name */
 	private final String SUCCESS_FORM_VIEW = "/module/smartcontainer/portlets/smartAppForm";
-	
+
 	/**
-	 * Initially called after the formBackingObject method to get the landing form name
+	 * Initially called after the formBackingObject method to get the landing
+	 * form name
 	 * 
 	 * @return String form view name
 	 */
@@ -63,7 +52,7 @@ public class SMARTAppFormController {
 	public String showForm() {
 		return SUCCESS_FORM_VIEW;
 	}
-	
+
 	/**
 	 * All the parameters are optional based on the necessity
 	 * 
@@ -72,24 +61,30 @@ public class SMARTAppFormController {
 	 * @param errors
 	 * @return
 	 */
-	/*@RequestMapping(method = RequestMethod.POST)
-	public ModelAndView deleteApp(HttpServletRequest request) {
-		return null;
+	/*
+	 * @RequestMapping(method = RequestMethod.POST) public ModelAndView
+	 * deleteApp(HttpServletRequest request) { return null;
+	 * 
+	 * }
+	 */
 
-	}*/
-	
 	/**
-	 * This class returns the form backing object. This can be a string, a boolean, or a normal java
-	 * pojo. The bean name defined in the ModelAttribute annotation and the type can be just defined
-	 * by the return type of this method
+	 * This class returns the form backing object. This can be a string, a
+	 * boolean, or a normal java pojo. The bean name defined in the
+	 * ModelAttribute annotation and the type can be just defined by the return
+	 * type of this method
 	 */
 	@ModelAttribute("appList")
-	protected Collection<App> formBackingObject(HttpServletRequest request) throws Exception {
-		
-		@SuppressWarnings("unchecked")
-		Collection<App> apps = Context.getService(AppService.class).getAllApps();
-		//Context.getService(UserService.class).saveUser(new SMARTAppUser());
+	protected Collection<App> formBackingObject(HttpServletRequest request)
+			throws Exception {
+
+		Collection<App> apps = Context.getService(AppService.class)
+				.getAllApps();
+		// Context.getService(UserService.class).saveUser(new SMARTAppUser());
+		ConceptService service = Context.getConceptService();
+		Concept c = service.getConceptByMapping("29857009", "SnoMed Source");
+		log.info(c);
 		return apps;
 	}
-	
+
 }

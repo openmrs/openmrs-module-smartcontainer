@@ -46,15 +46,16 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @RequestMapping(value = "module/smartcontainer/smartcontainerLink.form")
 public class SMARTContainerFormController {
-	
+
 	/** Logger for this class and subclasses */
 	protected final Log log = LogFactory.getLog(getClass());
-	
+
 	/** Success form view name */
 	private final String SUCCESS_FORM_VIEW = "/module/smartcontainer/smartcontainerForm";
-	
+
 	/**
-	 * Initially called after the formBackingObject method to get the landing form name
+	 * Initially called after the formBackingObject method to get the landing
+	 * form name
 	 * 
 	 * @return String form view name
 	 */
@@ -62,7 +63,7 @@ public class SMARTContainerFormController {
 	public String showForm() {
 		return SUCCESS_FORM_VIEW;
 	}
-	
+
 	/**
 	 * All the parameters are optional based on the necessity
 	 * 
@@ -73,121 +74,117 @@ public class SMARTContainerFormController {
 	 */
 	@RequestMapping(method = RequestMethod.POST)
 	public ModelAndView deleteApp(HttpServletRequest request) {
-		ModelAndView modelAndView=new ModelAndView();
+		ModelAndView modelAndView = new ModelAndView();
 		AppService appService = Context.getService(AppService.class);
-		UserService userService=Context.getService(UserService.class);
-		String action = ServletRequestUtils.getStringParameter(request, "action", "");
-		Boolean isUploadFromURL=ServletRequestUtils.getBooleanParameter(request, "updateFromURL",false);
+		UserService userService = Context.getService(UserService.class);
+		String action = ServletRequestUtils.getStringParameter(request,
+				"action", "");
+		Boolean isUploadFromURL = ServletRequestUtils.getBooleanParameter(
+				request, "updateFromURL", false);
 		//
-		if("removeApp".equals(action)){
-			Integer appId=null;
-            try {
-	            appId = ServletRequestUtils.getIntParameter(request, "appId");
-            }
-            catch (ServletRequestBindingException e) {
-	            // TODO Auto-generated catch block
-	            log.error("Error generated", e);
-            }
-		
-		log.info(appId);
-		App app=null;
-		
-		 app=appService.getAppById(appId);
-		
-		for(SMARTAppUser user:userService.getAllUsers()){
-		    user.getApps().remove(app);
-			userService.saveUser(user);
-			
-		}
-		appService.DeleteApp(app);
-		Collection<App> apps = Context.getService(AppService.class).getAllApps();
-		modelAndView.setViewName(SUCCESS_FORM_VIEW);
-		modelAndView.addObject("appList", apps);
-		}
-		else if("upload".equals(action)){
-			App newApp=null;
-			if(isUploadFromURL){
-				String app=null;
-				String url=ServletRequestUtils.getStringParameter(request, "manifestURL", "");
-				log.info("URL stirng :"+url);
-				URL appURL=null;
-		try {
-	        appURL=new URL(url);
-	        log.info("URL  :"+appURL);
-	        //File file= OpenmrsUtil.url2file(appURL); 
-	        //log.info("File  :"+file);
-	        app=new Scanner((InputStream) appURL.getContent()).useDelimiter("\\A").next();
-	        log.info("File String :"+app);
-        }
-        catch (MalformedURLException e) {
-	       
-	        log.error("Error generated", e);
-        }
-        catch (IOException e) {
-	        
-	        log.error("Error generated", e);
-        }
-      
-       
+		if ("removeApp".equals(action)) {
+			Integer appId = null;
+			try {
+				appId = ServletRequestUtils.getIntParameter(request, "appId");
+			} catch (ServletRequestBindingException e) {
 
-    newApp=AppFactory.getApp(app);
-    log.info("APP  :"+newApp);
-
-List<App> apps=(List<App>) appService.getAllApps();
-if(!apps.contains(newApp)){
-appService.saveApp(newApp);
-}else{
-	
-}
-    
-			}else{
-		MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
-			MultipartFile multipartModuleFile = multipartRequest.getFile("moduleFile");
-			
-			
-			String text=null;
-            try {
-	            text= new String(multipartModuleFile.getBytes());
-            }
-            catch (IOException e1) {
-	           
-	            log.error("Error generated", e1);
-            }
-			
-			
-			
-	             newApp=AppFactory.getApp(text);
-	            
-			
-			
-           
-	             List<App> apps=(List<App>) appService.getAllApps();
-	             if(!apps.contains(newApp)){
-	             appService.saveApp(newApp);
-	             }else{
-	             	
-	             }
-		}
+				log.error("Error generated", e);
 			}
+
+			log.info(appId);
+			App app = null;
+
+			app = appService.getAppById(appId);
+
+			for (SMARTAppUser user : userService.getAllUsers()) {
+				user.getApps().remove(app);
+				userService.saveUser(user);
+
+			}
+			appService.DeleteApp(app);
+			Collection<App> apps = Context.getService(AppService.class)
+					.getAllApps();
+			modelAndView.setViewName(SUCCESS_FORM_VIEW);
+			modelAndView.addObject("appList", apps);
+		} else if ("upload".equals(action)) {
+			App newApp = null;
+			if (isUploadFromURL) {
+				String app = null;
+				String url = ServletRequestUtils.getStringParameter(request,
+						"manifestURL", "");
+				log.info("URL stirng :" + url);
+				URL appURL = null;
+				try {
+					appURL = new URL(url);
+					log.info("URL  :" + appURL);
+					// File file= OpenmrsUtil.url2file(appURL);
+					// log.info("File  :"+file);
+					app = new Scanner((InputStream) appURL.getContent())
+							.useDelimiter("\\A").next();
+					log.info("File String :" + app);
+				} catch (MalformedURLException e) {
+
+					log.error("Error generated", e);
+				} catch (IOException e) {
+
+					log.error("Error generated", e);
+				}
+
+				newApp = AppFactory.getApp(app);
+				log.info("APP  :" + newApp);
+
+				List<App> apps = (List<App>) appService.getAllApps();
+				if (!apps.contains(newApp)) {
+					appService.saveApp(newApp);
+				} else {
+
+				}
+
+			} else {
+				MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+				MultipartFile multipartModuleFile = multipartRequest
+						.getFile("moduleFile");
+
+				String text = null;
+				try {
+					text = new String(multipartModuleFile.getBytes());
+				} catch (IOException e1) {
+
+					log.error("Error generated", e1);
+				}
+
+				newApp = AppFactory.getApp(text);
+
+				List<App> apps = (List<App>) appService.getAllApps();
+				if (!apps.contains(newApp)) {
+					appService.saveApp(newApp);
+				} else {
+
+				}
+			}
+		}
 		//
-		Collection<App> apps = Context.getService(AppService.class).getAllApps();
+		Collection<App> apps = Context.getService(AppService.class)
+				.getAllApps();
 		modelAndView.setViewName(SUCCESS_FORM_VIEW);
 		modelAndView.addObject("appList", apps);
 		return modelAndView;
 	}
-	
+
 	/**
-	 * This class returns the form backing object. This can be a string, a boolean, or a normal java
-	 * pojo. The bean name defined in the ModelAttribute annotation and the type can be just defined
-	 * by the return type of this method
+	 * This class returns the form backing object. This can be a string, a
+	 * boolean, or a normal java pojo. The bean name defined in the
+	 * ModelAttribute annotation and the type can be just defined by the return
+	 * type of this method
 	 */
 	@ModelAttribute("appList")
-	protected Collection<App> formBackingObject(HttpServletRequest request) throws Exception {
-		
-		@SuppressWarnings("unchecked")
-		Collection<App> apps = Context.getService(AppService.class).getAllApps();
-		//Context.getService(UserService.class).saveUser(new SMARTAppUser());
+	protected Collection<App> formBackingObject(HttpServletRequest request)
+			throws Exception {
+
+		Collection<App> apps = Context.getService(AppService.class)
+				.getAllApps();
+		// Context.getService(UserService.class).saveUser(new SMARTAppUser());
 		return apps;
 	}
-	
+
 }
