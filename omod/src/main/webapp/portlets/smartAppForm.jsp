@@ -6,8 +6,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>SMART Apps in OpenMRS</title>
-<script
-	src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
+<!--<script-->
+<!--	src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>-->
 <script
 	src="http://sandbox.smartplatforms.org/static/smart_ui_server/resources/class.js"></script>
 <script
@@ -68,7 +68,9 @@
 	border: 0px;
 }
 </style>
-<script>
+<script  type="text/javascript">
+    
+
 	var SMART_HELPER = {};
 
 	SMART_HELPER.handle_record_info = function(app, callback) {
@@ -95,22 +97,22 @@
 
 		var url = appURL;
 		var frame_id = "app_content_iframe_" + randomUUID();
-		var h = $('#iframe_holder');
-		$("iframe", h).hide();
+		var h = $j('#iframe_holder');
+		$j("iframe", h).hide();
 
-		var frame = $('<iframe SEAMLESS class="activity_iframe" src="'+url+'" id="'+frame_id+'">  </iframe>')
+		var frame = $j('<iframe SEAMLESS class="activity_iframe" src="'+url+'" id="'+frame_id+'">  </iframe>')
 		h.append(frame);
 		callback(frame[0]);
 
-		$(window).resize();
+		$j(window).resize();
 
 	};
-	$(window).resize(function() {
-		var h = $('#iframe_holder');
-		var o = $("#app_selector").offset();
+	$j(window).resize(function() {
+		var h = $j('#iframe_holder');
+		var o = $j("#app_selector").offset();
 		var available_h = window.innerHeight - o.top - 20;
 		h.height(available_h);
-		$('.activity_iframe').height(available_h);
+		$j('.activity_iframe').height(available_h);
 	});
 
 	SMART_HELPER.handle_api = function(activity, api_call, callback) {
@@ -125,7 +127,7 @@
 			var array = api_call.func.split("/");
 			var pid = array[2].valueOf();
 			var type = array[3];
-			$.ajax({
+			$j.ajax({
 				beforeSend : function(xhr) {
 					xhr.setRequestHeader("Authorization", " ");
 				},

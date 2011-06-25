@@ -101,7 +101,7 @@ public class MedicationRDFSource extends RDFSource {
 		Concept concept = drug.getConcept();
 		ConceptMap map = null;
 		for (ConceptMap cm : concept.getConceptMappings()) {
-			if (cm.getSource().getName().equals("RxNorm")) {
+			if (cm.getSource().getName().equals("RxNORM")) {
 				map = cm;
 			}
 		}

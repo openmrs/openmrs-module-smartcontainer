@@ -66,7 +66,7 @@ public class ProblemRDFSource extends RDFSource {
 		Concept concept = p.getProblem();
 		ConceptMap map = null;
 		for (ConceptMap cm : concept.getConceptMappings()) {
-			if (cm.getSource().getName().equals("SnoMed Source")) {
+			if (cm.getSource().getName().equals("SNOMED CT")) {
 				map = cm;
 			}
 		}
