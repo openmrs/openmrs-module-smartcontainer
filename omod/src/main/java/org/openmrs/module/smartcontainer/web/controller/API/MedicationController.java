@@ -20,7 +20,13 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping(value = "module/smartcontainer/medications.form")
 public class MedicationController {
 	Log log = LogFactory.getLog(getClass());
-
+private RDFSource resource ;
+	public RDFSource getResource() {
+	return resource;
+}
+public void setResource(RDFSource resource) {
+	this.resource = resource;
+}
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView handle(@RequestParam("pid") Integer patientId,
 			HttpServletResponse resp) {
@@ -30,7 +36,7 @@ public class MedicationController {
 		try {
 			writer = resp.getWriter();
 			Patient patient = Context.getPatientService().getPatient(patientId);
-			RDFSource resource = new MedicationRDFSource();
+			
 			writer.write(resource.getRDF(patient)); // get the object
 			writer.close();
 		} catch (IOException e) {

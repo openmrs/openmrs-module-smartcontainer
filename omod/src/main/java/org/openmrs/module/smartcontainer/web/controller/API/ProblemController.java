@@ -9,8 +9,6 @@ import org.apache.commons.logging.LogFactory;
 import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.smartcontainer.RDFSource;
-import org.openmrs.module.smartcontainer.rdfsource.ProblemRDFSource;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -21,7 +19,13 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping(value = "module/smartcontainer/problems.form")
 public class ProblemController {
 	Log log = LogFactory.getLog(getClass());
-
+	private RDFSource resource ;
+	public RDFSource getResource() {
+		return resource;
+	}
+	public void setResource(RDFSource resource) {
+		this.resource = resource;
+	}
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView handle(@RequestParam("pid") Integer patientId,
 			HttpServletResponse resp) {
@@ -31,7 +35,7 @@ public class ProblemController {
 		try {
 			writer = resp.getWriter();
 			Patient patient = Context.getPatientService().getPatient(patientId);
-			RDFSource resource = new ProblemRDFSource();
+			
 			writer.write(resource.getRDF(patient)); // get the object
 
 			writer.close();

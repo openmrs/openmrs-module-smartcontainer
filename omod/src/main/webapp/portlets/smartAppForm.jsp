@@ -72,6 +72,7 @@
     
 
 	var SMART_HELPER = {};
+	var already_running = {};
 
 	SMART_HELPER.handle_record_info = function(app, callback) {
 		callback({
@@ -105,7 +106,7 @@
 		callback(frame[0]);
 
 		$j(window).resize();
-
+		already_running[activity.app]=frame_id;
 	};
 	$j(window).resize(function() {
 		var h = $j('#iframe_holder');
@@ -114,6 +115,9 @@
 		h.height(available_h);
 		$j('.activity_iframe').height(available_h);
 	});
+	SMART_HELPER.handle_resume_activity = function(activity, callback) {
+		console.log("resume activity");
+	};
 
 	SMART_HELPER.handle_api = function(activity, api_call, callback) {
 		if (api_call.method == "GET"
@@ -132,7 +136,7 @@
 					xhr.setRequestHeader("Authorization", " ");
 				},
 				dataType : "text",
-				url : "${model.RESTAPI}" + type + ".form" + "?pid=" + pid,
+				url : "${pageContext.request.contextPath}"+"/module/smartcontainer/" + type + ".form" + "?pid=" + pid,
 				contentType : activity.contentType,
 				data : activity.params,
 				type : activity.method,
@@ -148,8 +152,17 @@
 	SMART = new SMART_CONTAINER(SMART_HELPER);
 
 	var appSelected = function(app_id, url) {
+		
+		if(already_running[app_id]==null){
+			
 		appURL = url
 		SMART.start_activity("main", app_id);
+		}else{
+			
+			var h = $j('#iframe_holder');
+			$j("iframe", h).hide();
+			$j("#"+already_running[app_id]).show();
+		}
 	};
 </script>
 </head>

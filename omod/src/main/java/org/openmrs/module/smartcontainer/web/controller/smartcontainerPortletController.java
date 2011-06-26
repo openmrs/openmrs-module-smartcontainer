@@ -42,11 +42,9 @@ public class smartcontainerPortletController extends PortletController {
 		List<App> apps = (List<App>) Context.getService(AppService.class)
 				.getAllApps();
 		model.put("list", apps);
-		model.put("RESTAPI",
-				"http://localhost:9999/openmrs/module/smartcontainer/");
 		User user = Context.getAuthenticatedUser();
 		model.put("currentUser", user);
-		// super.populateModel(request, model);
+		
 	}
 
 }

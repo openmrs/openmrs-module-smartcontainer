@@ -10,7 +10,9 @@ import org.openmrs.ConceptMap;
 import org.openmrs.Patient;
 import org.openmrs.activelist.Problem;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.smartcontainer.ConceptMappingNotFoundException;
 import org.openmrs.module.smartcontainer.RDFSource;
+import org.openmrs.module.smartcontainer.SMARTConceptMap;
 import org.openrdf.model.BNode;
 import org.openrdf.model.Literal;
 import org.openrdf.model.URI;
@@ -18,6 +20,14 @@ import org.openrdf.model.Value;
 import org.openrdf.rio.rdfxml.RdfXmlWriter;
 
 public class ProblemRDFSource extends RDFSource {
+private SMARTConceptMap map;
+	public SMARTConceptMap getMap() {
+	return map;
+}
+
+public void setMap(SMARTConceptMap map) {
+	this.map = map;
+}
 
 	public String getRDF(List<Problem> problems) throws IOException {
 
@@ -64,15 +74,20 @@ public class ProblemRDFSource extends RDFSource {
 		graph.writeStatement(codedValueNode, type, codedValue);
 		//
 		Concept concept = p.getProblem();
-		ConceptMap map = null;
-		for (ConceptMap cm : concept.getConceptMappings()) {
-			if (cm.getSource().getName().equals("SNOMED CT")) {
-				map = cm;
-			}
+		String ConceptCode=null;
+		try {
+			ConceptCode = map.lookUp(concept);
+		} catch (ConceptMappingNotFoundException e) {
+			
+			e.printStackTrace();
 		}
 		URI code = factory.createURI(sp, "code");
-		URI uri = factory.createURI("http://www.ihtsdo.org/snomed-ct/concepts/"
-				+ map.getSourceCode());
+		URI uri;
+		
+			uri = factory.createURI("http://www.ihtsdo.org/snomed-ct/concepts/"
+					+ConceptCode );
+		
+			
 		graph.writeStatement(codedValueNode, code, uri);
 		//
 		URI title = factory.createURI(dcterms, "title");
@@ -87,8 +102,7 @@ public class ProblemRDFSource extends RDFSource {
 		graph.writeStatement(uri, system, systemVal);
 		//
 		URI identifier = factory.createURI(dcterms, "identifier");
-		Literal identifierVal = factory.createLiteral(map.getSourceCode()
-				.toString());
+		Literal identifierVal = factory.createLiteral(ConceptCode);
 		graph.writeStatement(uri, identifier, identifierVal);
 
 		return codedValueNode;

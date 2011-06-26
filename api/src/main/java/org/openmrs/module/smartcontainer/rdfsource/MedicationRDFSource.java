@@ -11,7 +11,9 @@ import org.openmrs.Drug;
 import org.openmrs.DrugOrder;
 import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.smartcontainer.ConceptMappingNotFoundException;
 import org.openmrs.module.smartcontainer.RDFSource;
+import org.openmrs.module.smartcontainer.SMARTConceptMap;
 import org.openrdf.model.BNode;
 import org.openrdf.model.Literal;
 import org.openrdf.model.URI;
@@ -19,6 +21,14 @@ import org.openrdf.model.Value;
 import org.openrdf.rio.rdfxml.RdfXmlWriter;
 
 public class MedicationRDFSource extends RDFSource {
+   private SMARTConceptMap map;
+	public SMARTConceptMap getMap() {
+	return map;
+}
+
+public void setMap(SMARTConceptMap map) {
+	this.map = map;
+}
 
 	private String getRDF(List<DrugOrder> drugs) throws IOException {
 		Writer sWriter = new StringWriter();
@@ -99,15 +109,16 @@ public class MedicationRDFSource extends RDFSource {
 		graph.writeStatement(codedValueNode, type, codedValue);
 		//
 		Concept concept = drug.getConcept();
-		ConceptMap map = null;
-		for (ConceptMap cm : concept.getConceptMappings()) {
-			if (cm.getSource().getName().equals("RxNORM")) {
-				map = cm;
-			}
+		String conceptCode=null;
+		try {
+			conceptCode=map.lookUp(concept);
+		} catch (ConceptMappingNotFoundException e) {
+			
+			e.printStackTrace();
 		}
 		URI code = factory.createURI(sp, "code");
 		URI uri = factory.createURI("http://rxnav.nlm.nih.gov/REST/rxcui/"
-				+ map.getSourceCode());
+				+ conceptCode);
 		graph.writeStatement(codedValueNode, code, uri);
 		//
 		URI title = factory.createURI(dcterms, "title");
@@ -122,8 +133,8 @@ public class MedicationRDFSource extends RDFSource {
 		graph.writeStatement(uri, system, systemVal);
 		//
 		URI identifier = factory.createURI(dcterms, "identifier");
-		Literal identifierVal = factory.createLiteral(map.getSourceCode()
-				.toString());
+		Literal identifierVal = factory.createLiteral(conceptCode
+				);
 		graph.writeStatement(uri, identifier, identifierVal);
 
 		return codedValueNode;
