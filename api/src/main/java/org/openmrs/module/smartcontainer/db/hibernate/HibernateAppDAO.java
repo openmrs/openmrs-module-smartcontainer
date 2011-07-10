@@ -14,8 +14,6 @@
 package org.openmrs.module.smartcontainer.db.hibernate;
 
 import java.util.List;
-import java.util.Collection;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Query;
@@ -25,7 +23,7 @@ import org.openmrs.module.smartcontainer.app.App;
 import org.openmrs.module.smartcontainer.db.AppDAO;
 
 /**
- *Implimentation for App DAO
+ * Implimentation for App DAO
  */
 public class HibernateAppDAO implements AppDAO {
 	
@@ -75,22 +73,22 @@ public class HibernateAppDAO implements AppDAO {
 		
 		return sessionFactory.getCurrentSession().createQuery("from App u order by u.appId").list();
 	}
-
+	
 	/**
-     * @see org.openmrs.module.smartcontainer.db.AppDAO#deleteApp()
-     */
-    public void deleteApp(App app) {
-	   // sessionFactory.getCurrentSession().delete(app.getWebHook());
-	   // sessionFactory.getCurrentSession().delete(app.getActivity());
-	    sessionFactory.getCurrentSession().delete(app);
-	    
-    }
-
+	 * @see org.openmrs.module.smartcontainer.db.AppDAO#deleteApp()
+	 */
+	public void deleteApp(App app) {
+		// sessionFactory.getCurrentSession().delete(app.getWebHook());
+		// sessionFactory.getCurrentSession().delete(app.getActivity());
+		sessionFactory.getCurrentSession().delete(app);
+		
+	}
+	
 	/**
-     * @see org.openmrs.module.smartcontainer.db.AppDAO#getAppById(java.lang.Integer)
-     */
-    public App getAppById(Integer id) {
-    	Query query = sessionFactory.getCurrentSession().createQuery("from App a where  a.appId = ?");
+	 * @see org.openmrs.module.smartcontainer.db.AppDAO#getAppById(java.lang.Integer)
+	 */
+	public App getAppById(Integer id) {
+		Query query = sessionFactory.getCurrentSession().createQuery("from App a where  a.appId = ?");
 		query.setInteger(0, id);
 		// query.setString(1, name);
 		List apps = (List) query.list();
@@ -101,15 +99,14 @@ public class HibernateAppDAO implements AppDAO {
 		}
 		
 		return (App) apps.get(0);
-    }
-
+	}
+	
 	/**
-     * @see org.openmrs.module.smartcontainer.db.AppDAO#save(org.openmrs.module.smartcontainer.app.App)
-     */
-    public void save(App newApp) {
-	    sessionFactory.getCurrentSession().saveOrUpdate(newApp);
-	    
-    }
-
+	 * @see org.openmrs.module.smartcontainer.db.AppDAO#save(org.openmrs.module.smartcontainer.app.App)
+	 */
+	public void save(App newApp) {
+		sessionFactory.getCurrentSession().saveOrUpdate(newApp);
+		
+	}
 	
 }

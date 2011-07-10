@@ -30,21 +30,20 @@ import org.openmrs.web.controller.PortletController;
  *
  */
 public class smartcontainerPortletController extends PortletController {
+	
 	public Log log = LogFactory.getLog(getClass());
-
+	
 	/**
 	 * @see org.openmrs.web.controller.PortletController#populateModel(javax.servlet.http.HttpServletRequest,
 	 *      java.util.Map)
 	 */
 	@Override
-	protected void populateModel(HttpServletRequest request,
-			Map<String, Object> model) {
-		List<App> apps = (List<App>) Context.getService(AppService.class)
-				.getAllApps();
+	protected void populateModel(HttpServletRequest request, Map<String, Object> model) {
+		List<App> apps = (List<App>) Context.getService(AppService.class).getAllApps();
 		model.put("list", apps);
 		User user = Context.getAuthenticatedUser();
 		model.put("currentUser", user);
 		
 	}
-
+	
 }

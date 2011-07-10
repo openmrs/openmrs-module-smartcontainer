@@ -20,16 +20,16 @@ import org.junit.Test;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.smartcontainer.UserService;
 
-
 /**
- *This test validates the functionality of the User Service
+ * This test validates the functionality of the User Service
  */
 public class SMARTAppUserServiceTest {
-@Test
-@Ignore
-public void verifySMARTAppUserService(){
-	UserService us=Context.getService(UserService.class);
-	Assert.assertNotNull(us.getAllUsers());
-	Assert.assertEquals("admin",us.getUserByName("admin").getOpenMRSUser().getName() );
-}
+	
+	@Test
+	@Ignore
+	public void verifySMARTAppUserService() {
+		UserService us = Context.getService(UserService.class);
+		Assert.assertNotNull(us.getAllUsers());
+		Assert.assertEquals("admin", us.getUserByName("admin").getOpenMRSUser().getName());
+	}
 }

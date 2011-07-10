@@ -22,7 +22,8 @@ import org.apache.commons.logging.LogFactory;
  * Used to construct a SMART App from its manifest file
  */
 public class AppFactory {
-	public static  Log log=LogFactory.getLog(AppFactory.class);
+	
+	public static Log log = LogFactory.getLog(AppFactory.class);
 	
 	public static final String NAME = "name";
 	
@@ -85,7 +86,7 @@ public class AppFactory {
 		app.setDefaultApp(Boolean.valueOf((String) pa.get(DEFAULTAPP)));
 		app.setDescription((String) pa.get(DESCRIPTION));
 		temp = (String) pa.get(ICON);
-		temp=removeBaseURL(temp, app.getBaseURL());
+		temp = removeBaseURL(temp, app.getBaseURL());
 		app.setIcon(temp);
 		app.setMode((String) pa.get(MODE));
 		app.setsMARTAppId((String) pa.get(SMARTAPPID));
@@ -106,17 +107,17 @@ public class AppFactory {
 	private static void setWebhook(App app, Map map) {
 		webHook = new WebHook();
 		if (!map.isEmpty()) {
-			//pa.parse(webhookString);
+			// pa.parse(webhookString);
 			
 			webHook.setName((String) map.keySet().toArray()[0]);
 			map = (Map) (map.get(webHook.getName()));
 			webHook.setDescription((String) map.get("description"));
 			temp = (String) map.get("url");
-			temp=removeBaseURL(temp, app.getBaseURL());
+			temp = removeBaseURL(temp, app.getBaseURL());
 			webHook.setURL(temp);
 			app.setWebHook(webHook);
-		}else{
-		app.setWebHook(webHook);
+		} else {
+			app.setWebHook(webHook);
 		}
 		
 	}
@@ -133,9 +134,9 @@ public class AppFactory {
 			activity = new Activity();
 			activity.setActivityName((String) map.keySet().toArray()[0]);
 			temp = (String) map.get(activity.getActivityName());
-			temp=removeBaseURL(temp, app.getBaseURL());
+			temp = removeBaseURL(temp, app.getBaseURL());
 			activity.setActivityURL(temp);
-		app.setActivity(activity);
+			app.setActivity(activity);
 		}
 	}
 	
@@ -148,9 +149,8 @@ public class AppFactory {
 	 */
 	private static String removeBaseURL(String url, String base) {
 		
-		
-		url=url.replaceAll("\\{base_url\\}", base);
-	    log.info(url);
-		return  url;
+		url = url.replaceAll("\\{base_url\\}", base);
+		log.info(url);
+		return url;
 	}
 }

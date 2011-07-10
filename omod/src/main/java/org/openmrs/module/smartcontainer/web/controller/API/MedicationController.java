@@ -9,7 +9,6 @@ import org.apache.commons.logging.LogFactory;
 import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.smartcontainer.RDFSource;
-import org.openmrs.module.smartcontainer.rdfsource.MedicationRDFSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,17 +18,21 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @RequestMapping(value = "module/smartcontainer/medications.form")
 public class MedicationController {
+	
 	Log log = LogFactory.getLog(getClass());
-private RDFSource resource ;
+	
+	private RDFSource resource;
+	
 	public RDFSource getResource() {
-	return resource;
-}
-public void setResource(RDFSource resource) {
-	this.resource = resource;
-}
+		return resource;
+	}
+	
+	public void setResource(RDFSource resource) {
+		this.resource = resource;
+	}
+	
 	@RequestMapping(method = RequestMethod.GET)
-	public ModelAndView handle(@RequestParam("pid") Integer patientId,
-			HttpServletResponse resp) {
+	public ModelAndView handle(@RequestParam("pid") Integer patientId, HttpServletResponse resp) {
 		log.info("In the Medication Controller");
 		resp.setContentType("text/xml"); // actually I use a constant
 		Writer writer;
@@ -39,14 +42,16 @@ public void setResource(RDFSource resource) {
 			
 			writer.write(resource.getRDF(patient)); // get the object
 			writer.close();
-		} catch (IOException e) {
-
+		}
+		catch (IOException e) {
+			
 			e.printStackTrace();
-		} catch (Exception e) {
-
+		}
+		catch (Exception e) {
+			
 			e.printStackTrace();
 		}
 		return null; // indicates this controller did all necessary processing
-
+		
 	}
 }

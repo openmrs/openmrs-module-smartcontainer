@@ -13,7 +13,6 @@
  */
 package org.openmrs.module.smartcontainer.impl;
 
-import java.util.Collection;
 import java.util.List;
 
 import org.openmrs.api.APIException;
@@ -49,28 +48,28 @@ public class AppServiceImpl implements AppService {
 	public List<App> getAllApps() throws APIException {
 		return dao.getAllApps();
 	}
-
+	
 	/**
-     * @see org.openmrs.module.smartcontainer.AppService#DeleteApp(org.openmrs.module.smartcontainer.app.App)
-     */
-    public void DeleteApp(App app) throws APIException {
-	    dao.deleteApp(app);
-	    
-    }
-
+	 * @see org.openmrs.module.smartcontainer.AppService#DeleteApp(org.openmrs.module.smartcontainer.app.App)
+	 */
+	public void DeleteApp(App app) throws APIException {
+		dao.deleteApp(app);
+		
+	}
+	
 	/**
-     * @see org.openmrs.module.smartcontainer.AppService#getAppById(java.lang.Integer)
-     */
-    public App getAppById(Integer id) {
-	    return dao.getAppById(id);
-    }
-
+	 * @see org.openmrs.module.smartcontainer.AppService#getAppById(java.lang.Integer)
+	 */
+	public App getAppById(Integer id) {
+		return dao.getAppById(id);
+	}
+	
 	/**
-     * @see org.openmrs.module.smartcontainer.AppService#saveApp(org.openmrs.module.smartcontainer.app.App)
-     */
-    public void saveApp(App newApp) {
-	    dao.save(newApp);
-	    
-    }
+	 * @see org.openmrs.module.smartcontainer.AppService#saveApp(org.openmrs.module.smartcontainer.app.App)
+	 */
+	public void saveApp(App newApp) {
+		dao.save(newApp);
+		
+	}
 	
 }

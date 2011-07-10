@@ -40,5 +40,6 @@ public interface UserDAO {
 	 * @throws DAOException
 	 */
 	public Collection<SMARTAppUser> getAllUsers() throws DAOException;
+	
 	public void saveUser(SMARTAppUser user) throws APIException;
 }

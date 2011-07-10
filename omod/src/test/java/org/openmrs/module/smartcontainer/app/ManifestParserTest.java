@@ -13,29 +13,24 @@
  */
 package org.openmrs.module.smartcontainer.app;
 
-import java.io.File;
-import java.net.URL;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
-
-
 /**
- *This test validates the functionality of the Manifest parser
+ * This test validates the functionality of the Manifest parser
  */
 @Ignore
 public class ManifestParserTest {
-	private Log log=LogFactory.getLog(this.getClass());
+	
+	private Log log = LogFactory.getLog(this.getClass());
+	
 	/**
 	 * verify the parsing
-	 * 
 	 */
 	@Test
 	public void testparser() {
-	
-}
+		
+	}
 }

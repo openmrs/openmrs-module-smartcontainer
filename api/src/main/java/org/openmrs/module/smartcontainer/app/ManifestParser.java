@@ -13,9 +13,6 @@
  */
 package org.openmrs.module.smartcontainer.app;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -28,9 +25,6 @@ import org.apache.commons.logging.LogFactory;
 import org.json.simple.parser.ContainerFactory;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import org.openmrs.util.OpenmrsUtil;
-
-import com.sdicons.json.model.JSONValue;
 
 /**
  * Contains methods to parse the manifest file of the SMART App
@@ -64,9 +58,7 @@ public class ManifestParser {
 	public Boolean parseFile(String file) {
 		String jsonText = null;
 		
-			
-	            jsonText = (file);
-            
+		jsonText = (file);
 		
 		return parse(jsonText);
 	}
@@ -105,12 +97,12 @@ public class ManifestParser {
 		catch (Exception e) {
 			log.info(e.getCause());
 		}
-		 Iterator iter = json.entrySet().iterator();
-		    log.info("==iterate result==");
-		    while(iter.hasNext()){
-		      Map.Entry entry = (Map.Entry)iter.next();
-		     log.info(entry.getKey() + "=>" + entry.getValue());
-		    }
+		Iterator iter = json.entrySet().iterator();
+		log.info("==iterate result==");
+		while (iter.hasNext()) {
+			Map.Entry entry = (Map.Entry) iter.next();
+			log.info(entry.getKey() + "=>" + entry.getValue());
+		}
 		return !json.isEmpty();
 	}
 	

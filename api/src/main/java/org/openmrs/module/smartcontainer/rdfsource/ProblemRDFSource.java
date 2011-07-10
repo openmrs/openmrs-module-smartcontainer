@@ -6,7 +6,6 @@ import java.io.Writer;
 import java.util.List;
 
 import org.openmrs.Concept;
-import org.openmrs.ConceptMap;
 import org.openmrs.Patient;
 import org.openmrs.activelist.Problem;
 import org.openmrs.api.context.Context;
@@ -20,20 +19,22 @@ import org.openrdf.model.Value;
 import org.openrdf.rio.rdfxml.RdfXmlWriter;
 
 public class ProblemRDFSource extends RDFSource {
-private SMARTConceptMap map;
+	
+	private SMARTConceptMap map;
+	
 	public SMARTConceptMap getMap() {
-	return map;
-}
-
-public void setMap(SMARTConceptMap map) {
-	this.map = map;
-}
-
+		return map;
+	}
+	
+	public void setMap(SMARTConceptMap map) {
+		this.map = map;
+	}
+	
 	public String getRDF(List<Problem> problems) throws IOException {
-
+		
 		Writer sWriter = new StringWriter();
 		RdfXmlWriter graph = new RdfXmlWriter(sWriter);
-
+		
 		graph.setNamespace("sp", sp);
 		graph.setNamespace("rdf", rdf);
 		graph.setNamespace("dcterms", dcterms);
@@ -41,7 +42,7 @@ public void setMap(SMARTConceptMap map) {
 		for (Problem p : problems) {
 			//
 			BNode problemNode = factory.createBNode();
-
+			
 			URI problem = factory.createURI(sp, "Problem");
 			URI type = factory.createURI(org.openrdf.vocabulary.RDF.TYPE);
 			graph.writeStatement(problemNode, type, problem);
@@ -52,8 +53,7 @@ public void setMap(SMARTConceptMap map) {
 			//
 			if (p.getEndDate() != null) {
 				URI resolution = factory.createURI(sp, "resolution");
-				Literal resolutionVal = factory.createLiteral(date(p
-						.getEndDate()));
+				Literal resolutionVal = factory.createLiteral(date(p.getEndDate()));
 				graph.writeStatement(problemNode, resolution, resolutionVal);
 			}
 			//
@@ -61,12 +61,12 @@ public void setMap(SMARTConceptMap map) {
 			graph.writeStatement(problemNode, problemName, codedValue(graph, p));
 		}
 		//
-
+		
 		graph.endDocument();
-
+		
 		return sWriter.toString();
 	}
-
+	
 	private Value codedValue(RdfXmlWriter graph, Problem p) throws IOException {
 		BNode codedValueNode = factory.createBNode();
 		URI type = factory.createURI(org.openrdf.vocabulary.RDF.TYPE);
@@ -74,20 +74,19 @@ public void setMap(SMARTConceptMap map) {
 		graph.writeStatement(codedValueNode, type, codedValue);
 		//
 		Concept concept = p.getProblem();
-		String ConceptCode=null;
+		String ConceptCode = null;
 		try {
 			ConceptCode = map.lookUp(concept);
-		} catch (ConceptMappingNotFoundException e) {
+		}
+		catch (ConceptMappingNotFoundException e) {
 			
 			e.printStackTrace();
 		}
 		URI code = factory.createURI(sp, "code");
 		URI uri;
 		
-			uri = factory.createURI("http://www.ihtsdo.org/snomed-ct/concepts/"
-					+ConceptCode );
+		uri = factory.createURI("http://www.ihtsdo.org/snomed-ct/concepts/" + ConceptCode);
 		
-			
 		graph.writeStatement(codedValueNode, code, uri);
 		//
 		URI title = factory.createURI(dcterms, "title");
@@ -97,22 +96,20 @@ public void setMap(SMARTConceptMap map) {
 		graph.writeStatement(uri, type, code);
 		//
 		URI system = factory.createURI(sp, "system");
-		URI systemVal = factory
-				.createURI("http://www.ihtsdo.org/snomed-ct/concepts/");
+		URI systemVal = factory.createURI("http://www.ihtsdo.org/snomed-ct/concepts/");
 		graph.writeStatement(uri, system, systemVal);
 		//
 		URI identifier = factory.createURI(dcterms, "identifier");
 		Literal identifierVal = factory.createLiteral(ConceptCode);
 		graph.writeStatement(uri, identifier, identifierVal);
-
+		
 		return codedValueNode;
 	}
-
+	
 	@Override
 	public String getRDF(Patient patient) throws IOException {
-		List<Problem> problems = Context.getPatientService().getProblems(
-				patient);
+		List<Problem> problems = Context.getPatientService().getProblems(patient);
 		return getRDF(problems);
 	}
-
+	
 }

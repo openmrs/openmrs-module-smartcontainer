@@ -12,12 +12,12 @@ import org.openrdf.model.Value;
 import org.openrdf.rio.rdfxml.RdfXmlWriter;
 
 public class DemographicsRDFSource extends RDFSource {
-
+	
 	public String getRDF(Patient patient) throws IOException {
-
+		
 		Writer sWriter = new StringWriter();
 		RdfXmlWriter graph = new RdfXmlWriter(sWriter);
-
+		
 		graph.setNamespace("sp", sp);
 		graph.setNamespace("rdf", rdf);
 		graph.setNamespace("dcterms", dcterms);
@@ -44,17 +44,16 @@ public class DemographicsRDFSource extends RDFSource {
 		//
 		if (!patient.getAddresses().isEmpty()) {
 			URI zipcode = factory.createURI(foaf, "zipcode");
-			Value zipcodeVal = factory.createLiteral(((PersonAddress) patient
-					.getAddresses().toArray()[0]).getPostalCode());
+			Value zipcodeVal = factory.createLiteral(((PersonAddress) patient.getAddresses().toArray()[0]).getPostalCode());
 			graph.writeStatement(demographicsNode, zipcode, zipcodeVal);
 		}
 		//
 		URI birthday = factory.createURI(foaf, "birthday");
 		Value birthdayVal = factory.createLiteral(date(patient.getBirthdate()));
 		graph.writeStatement(demographicsNode, birthday, birthdayVal);
-
+		
 		graph.endDocument();
 		return sWriter.toString();
 	}
-
+	
 }

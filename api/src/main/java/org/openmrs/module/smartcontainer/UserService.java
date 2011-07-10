@@ -40,6 +40,7 @@ public interface UserService {
 	 * @throws APIException
 	 */
 	public Collection<SMARTAppUser> getAllUsers() throws APIException;
+	
 	public void saveUser(SMARTAppUser user) throws APIException;
 	
 }

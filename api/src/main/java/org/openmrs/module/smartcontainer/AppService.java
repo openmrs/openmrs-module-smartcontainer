@@ -50,25 +50,27 @@ public interface AppService {
 	 * @throws APIException
 	 */
 	public Collection<App> getAllApps() throws APIException;
+	
 	/**
 	 * Delete app by id
 	 * 
 	 * @param id
 	 * @throws APIException
 	 */
-	public void DeleteApp(App app)throws APIException;
+	public void DeleteApp(App app) throws APIException;
+	
 	/**
-	 * Get App  by Id
+	 * Get App by Id
 	 * 
 	 * @param id
 	 * @return
 	 */
 	public App getAppById(Integer id);
-
+	
 	/**
-     * Auto generated method comment
-     * 
-     * @param newApp
-     */
-    public void saveApp(App newApp);
+	 * Auto generated method comment
+	 * 
+	 * @param newApp
+	 */
+	public void saveApp(App newApp);
 }

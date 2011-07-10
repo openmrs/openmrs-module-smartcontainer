@@ -15,7 +15,6 @@ package org.openmrs.module.smartcontainer.extension.html;
 
 import org.openmrs.module.web.extension.PatientDashboardTabExt;
 
-
 /**
  *
  */

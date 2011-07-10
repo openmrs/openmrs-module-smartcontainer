@@ -68,9 +68,7 @@
 	border: 0px;
 }
 </style>
-<script  type="text/javascript">
-    
-
+<script type="text/javascript">
 	var SMART_HELPER = {};
 	var already_running = {};
 
@@ -106,7 +104,7 @@
 		callback(frame[0]);
 
 		$j(window).resize();
-		already_running[activity.app]=frame_id;
+		already_running[activity.app] = frame_id;
 	};
 	$j(window).resize(function() {
 		var h = $j('#iframe_holder');
@@ -136,7 +134,9 @@
 					xhr.setRequestHeader("Authorization", " ");
 				},
 				dataType : "text",
-				url : "${pageContext.request.contextPath}"+"/module/smartcontainer/" + type + ".form" + "?pid=" + pid,
+				url : "${pageContext.request.contextPath}"
+						+ "/module/smartcontainer/" + type + ".form" + "?pid="
+						+ pid,
 				contentType : activity.contentType,
 				data : activity.params,
 				type : activity.method,
@@ -152,16 +152,16 @@
 	SMART = new SMART_CONTAINER(SMART_HELPER);
 
 	var appSelected = function(app_id, url) {
-		
-		if(already_running[app_id]==null){
-			
-		appURL = url
-		SMART.start_activity("main", app_id);
-		}else{
-			
+
+		if (already_running[app_id] == null) {
+
+			appURL = url
+			SMART.start_activity("main", app_id);
+		} else {
+
 			var h = $j('#iframe_holder');
 			$j("iframe", h).hide();
-			$j("#"+already_running[app_id]).show();
+			$j("#" + already_running[app_id]).show();
 		}
 	};
 </script>

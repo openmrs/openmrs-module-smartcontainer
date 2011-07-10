@@ -123,5 +123,5 @@
 		class="org.openmrs.module.smartcontainer.web.controller.API.MedicationController">
 		<property name="resource" ref="medicationRDF" />
 	</bean>
-	
+
 </beans>

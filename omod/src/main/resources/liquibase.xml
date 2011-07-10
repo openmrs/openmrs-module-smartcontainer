@@ -20,7 +20,7 @@
 			Creating the smartcontainer_app table
 		</comment>
 		<createTable tableName="smartcontainer_app">
-			<column name="smartcontainer_app_id" type="int"  autoIncrement="true">
+			<column name="smartcontainer_app_id" type="int" autoIncrement="true">
 				<constraints primaryKey="true" nullable="false" />
 			</column>
 			<column name="name" type="varchar(255)" />
@@ -32,11 +32,11 @@
 			<column name="icon" type="varchar(255)" />
 			<column name="smart_id" type="varchar(255)" />
 			<column name="default_app" type="int(1)" />
-			<column name="activity_id" type="int"  >
-			<constraints nullable="true"/>
+			<column name="activity_id" type="int">
+				<constraints nullable="true" />
 			</column>
-			<column name="webhook_id" type="int"   >
-			<constraints nullable="true"/>
+			<column name="webhook_id" type="int">
+				<constraints nullable="true" />
 			</column>
 		</createTable>
 	</changeSet>
@@ -50,7 +50,8 @@
 			Creating the smartcontainer_activity table
 		</comment>
 		<createTable tableName="smartcontainer_activity">
-			<column name="smartcontainer_activity_id" type="int" autoIncrement="true">
+			<column name="smartcontainer_activity_id" type="int"
+				autoIncrement="true">
 				<constraints primaryKey="true" nullable="false" />
 			</column>
 			<column name="activity_name" type="varchar(255)" />
@@ -75,7 +76,8 @@
 			Creating the smartcontainer_webhook table
 		</comment>
 		<createTable tableName="smartcontainer_webhook">
-			<column name="smartcontainer_webhook_id" type="int" autoIncrement="true">
+			<column name="smartcontainer_webhook_id" type="int"
+				autoIncrement="true">
 				<constraints primaryKey="true" nullable="false" />
 			</column>
 			<column name="webhook_name" type="varchar(255)" />
@@ -100,7 +102,8 @@
 			Creating the smartcontainer_user table
 		</comment>
 		<createTable tableName="smartcontainer_user">
-			<column name="smartcontainer_user_id" type="int" autoIncrement="true">
+			<column name="smartcontainer_user_id" type="int"
+				autoIncrement="true">
 				<constraints primaryKey="true" nullable="false" />
 			</column>
 

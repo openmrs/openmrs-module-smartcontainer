@@ -13,33 +13,25 @@
  */
 package org.openmrs.module.smartcontainer.app;
 
-import java.io.File;
-import java.net.URL;
-
 import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.Assert;
-import org.openmrs.api.context.Context;
-import org.openmrs.module.smartcontainer.rdfsource.ProblemRDFSource;
-import org.openmrs.util.OpenmrsUtil;
-
-
 
 /**
- *This test validates the functionality of the AppFactory
+ * This test validates the functionality of the AppFactory
  */
 public class AppFactoryTest {
+	
 	/**
 	 * Verify construction of the SMART App
-	 * 
 	 */
 	@Test
 	@Ignore
-	public void testingAppFactory(){
-		 
+	public void testingAppFactory() {
+		
 		try {
 			//Assert.fail(ProblemRDFConvertor.RDF());
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

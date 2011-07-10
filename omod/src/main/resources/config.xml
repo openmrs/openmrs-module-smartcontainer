@@ -25,8 +25,8 @@
 		<point>org.openmrs.patientDashboardTab</point>
 		<class>@MODULE_PACKAGE@.extension.html.SMARTAppTab</class>
 	</extension>
-
-
+	<!--<extension> <point>org.openmrs.optionForm</point> <class>@MODULE_PACKAGE@.extension.html.UserOptionTab</class> 
+		</extension> -->
 	<!-- AOP <advice> <point>org.openmrs.api.FormService</point> <class>@MODULE_PACKAGE@.advice.DuplicateFormAdvisor</class> 
 		</advice> /AOP -->
 

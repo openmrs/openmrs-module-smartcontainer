@@ -19,11 +19,11 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @RequestMapping(value = "module/smartcontainer/demographics.form")
 public class DemographicsController {
+	
 	Log log = LogFactory.getLog(getClass());
-
+	
 	@RequestMapping(method = RequestMethod.GET)
-	public ModelAndView handle(@RequestParam("pid") Integer patientId,
-			HttpServletResponse resp) {
+	public ModelAndView handle(@RequestParam("pid") Integer patientId, HttpServletResponse resp) {
 		log.info("In the Demographics Controller");
 		resp.setContentType("text/xml"); // actually I use a constant
 		Writer writer;
@@ -32,16 +32,18 @@ public class DemographicsController {
 			Patient patient = Context.getPatientService().getPatient(patientId);
 			RDFSource resource = new DemographicsRDFSource();
 			writer.write(resource.getRDF(patient)); // get the
-													// object
+			                                        // object
 			writer.close();
-		} catch (IOException e) {
-
+		}
+		catch (IOException e) {
+			
 			e.printStackTrace();
-		} catch (Exception e) {
-
+		}
+		catch (Exception e) {
+			
 			e.printStackTrace();
 		}
 		return null; // indicates this controller did all necessary processing
-
+		
 	}
 }
