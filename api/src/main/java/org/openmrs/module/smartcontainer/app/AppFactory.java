@@ -106,7 +106,7 @@ public class AppFactory {
 	 */
 	private static void setWebhook(App app, Map map) {
 		webHook = new WebHook();
-		if (!map.isEmpty()) {
+		if (map!=null &&  !map.isEmpty()) {
 			// pa.parse(webhookString);
 			
 			webHook.setName((String) map.keySet().toArray()[0]);
@@ -129,7 +129,7 @@ public class AppFactory {
 	 * @param string
 	 */
 	private static void setActivity(App app, Map map) {
-		if (!map.isEmpty()) {
+		if (map!=null && !map.isEmpty()) {
 			
 			activity = new Activity();
 			activity.setActivityName((String) map.keySet().toArray()[0]);

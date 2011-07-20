@@ -120,9 +120,14 @@
 	SMART_HELPER.handle_api = function(activity, api_call, callback) {
 		if (api_call.method == "GET"
 				&& api_call.func.match(/^\/capabilities\/$/)) {
-			callback("<?xml version='1.0'?>\
-	                   <rdf:RDF xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#' >\
-	                  </rdf:RDF>");
+			callback("<?xml version='1.0' encoding='utf-8'?>\
+					<rdf:RDF xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#'\
+				         xmlns:sp='http://smartplatforms.org/terms#'>\
+				  <rdf:Description rdf:about='"+"${pageContext.request.contextPath}"+"'>\
+				    <rdf:type rdf:resource='http://smartplatforms.org/terms#Container'/>\
+				    <sp:capability rdf:resource='http://smartplatforms.org/capability/SNOMED/lookup'/>\
+				    </rdf:Description>\
+				</rdf:RDF>");
 		}
 
 		else {
@@ -135,8 +140,7 @@
 				},
 				dataType : "text",
 				url : "${pageContext.request.contextPath}"
-						+ "/module/smartcontainer/" + type + ".form" + "?pid="
-						+ pid,
+						+ "/ws/smartcontainer/api" +api_call.func,
 				contentType : activity.contentType,
 				data : activity.params,
 				type : activity.method,

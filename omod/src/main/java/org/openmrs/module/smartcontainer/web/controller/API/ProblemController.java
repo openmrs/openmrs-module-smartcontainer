@@ -10,13 +10,14 @@ import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.smartcontainer.RDFSource;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@RequestMapping(value = "module/smartcontainer/problems.form")
+@RequestMapping(method = RequestMethod.GET,value = "/smartcontainer/api/")
 public class ProblemController {
 	
 	Log log = LogFactory.getLog(getClass());
@@ -31,8 +32,8 @@ public class ProblemController {
 		this.resource = resource;
 	}
 	
-	@RequestMapping(method = RequestMethod.GET)
-	public ModelAndView handle(@RequestParam("pid") Integer patientId, HttpServletResponse resp) {
+	@RequestMapping(method = RequestMethod.GET,value = "records/{pid}/problems/")
+	public ModelAndView handle(@PathVariable("pid") Integer patientId, HttpServletResponse resp) {
 		log.info("In Problem Controller");
 		resp.setContentType("text/xml"); // actually I use a constant
 		Writer writer;

@@ -184,6 +184,7 @@ public class SMARTAppFormController {
 		
 		Collection<App> apps = Context.getService(AppService.class).getAllApps();
 		// Context.getService(UserService.class).saveUser(new SMARTAppUser());
+		
 		return apps;
 	}
 	
