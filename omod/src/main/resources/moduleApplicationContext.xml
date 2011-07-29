@@ -19,9 +19,10 @@
   		    http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
   		    http://www.springframework.org/schema/util
   		    http://www.springframework.org/schema/util/spring-util-3.0.xsd">
-   <bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping" />
+	<bean
+		class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping" />
 	<context:component-scan base-package="@MODULE_PACKAGE@.web.controller" />
-	
+
 	<bean id="smartcontainerUrlMapping"
 		class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
 		<property name="order">
@@ -30,22 +31,10 @@
 		<property name="mappings">
 			<props>
 				<prop key="**/smartAppForm.portlet">smartAppPortletController</prop>
-			<prop key="**/options.form">smartAppOptionController</prop>
+
 			</props>
 		</property>
 	</bean>
-	
-	<bean id="smartAppPortletController"
-		class="@MODULE_PACKAGE@.web.controller.smartcontainerPortletController"></bean>
-		<bean id="smartAppOptionController"
-		class="@MODULE_PACKAGE@.web.controller.SmartAppOptionController">
-		<property name="commandName"><value>opts</value></property>
-		<property name="commandClass"><value>org.openmrs.web.OptionsForm</value></property>
-		<property name="formView"><value>/optionsForm</value></property>
-		<property name="successView"><value>options.form</value></property>
-		</bean>
-
-	
 	<bean parent="serviceContext">
 		<property name="moduleService">
 			<list>
@@ -150,7 +139,7 @@
 		class="org.openmrs.module.smartcontainer.web.controller.API.LabResultController">
 		<property name="resource" ref="labResultRDF" />
 	</bean>
-	
-   
-		
+
+
+
 </beans>
