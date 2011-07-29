@@ -27,7 +27,7 @@ public class SMARTConceptMap {
 	private ConceptMap map = null;
 	
 	public String lookUp(Concept concept) throws ConceptMappingNotFoundException {
-		log.info(CONCEPT_SOURCE_NAME + "  ddd");
+		log.info("concept source name: "+CONCEPT_SOURCE_NAME + ".");
 		String conceptSource = null;
 		conceptSource = conceptMap.get(concept);
 		if (conceptSource == null) {

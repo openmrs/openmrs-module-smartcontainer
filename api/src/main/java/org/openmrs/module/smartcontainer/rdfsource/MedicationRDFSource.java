@@ -56,7 +56,12 @@ public class MedicationRDFSource extends RDFSource {
 			}
 			//
 			URI instructions = factory.createURI(sp, "instructions");
-			Value sig = factory.createLiteral(oder.getInstructions());
+			Value sig=null;
+			if(oder.getInstructions()!=null){
+			
+		       sig = factory.createLiteral(oder.getInstructions());
+			
+			}
 			graph.writeStatement(medicationNode, instructions, sig);
 			//
 			if ((oder.getQuantity() != null) && (oder.getUnits() != null)) {

@@ -39,16 +39,16 @@ public class DemographicsRDFSource extends RDFSource {
 		graph.writeStatement(demographicsNode, familyName, fNameVal);
 		//
 		URI gender = factory.createURI(foaf, "gender");
-		Value genderVal = factory.createLiteral(patient.getGender());
+		Value genderVal = factory.createLiteral((patient.getGender().equals("M")?"male":"female"));
 		graph.writeStatement(demographicsNode, gender, genderVal);
 		//
 		if (!patient.getAddresses().isEmpty()) {
-			URI zipcode = factory.createURI(foaf, "zipcode");
+			URI zipcode = factory.createURI(sp, "zipcode");
 			Value zipcodeVal = factory.createLiteral(((PersonAddress) patient.getAddresses().toArray()[0]).getPostalCode());
 			graph.writeStatement(demographicsNode, zipcode, zipcodeVal);
 		}
 		//
-		URI birthday = factory.createURI(foaf, "birthday");
+		URI birthday = factory.createURI(sp, "birthday");
 		Value birthdayVal = factory.createLiteral(date(patient.getBirthdate()));
 		graph.writeStatement(demographicsNode, birthday, birthdayVal);
 		

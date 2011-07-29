@@ -6,6 +6,7 @@ import java.util.Date;
 import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
 import org.openrdf.model.Graph;
+import org.openrdf.model.Value;
 import org.openrdf.model.ValueFactory;
 import org.springframework.format.datetime.DateFormatter;
 
@@ -19,6 +20,8 @@ public abstract class RDFSource {
 	
 	public final static String foaf = "http://xmlns.com/foaf/0.1/";
 	
+	public final static String v = "http://www.w3.org/2006/vcard/ns#";
+	
 	protected Graph modelGraph = new org.openrdf.model.impl.GraphImpl();
 	
 	protected ValueFactory factory = modelGraph.getValueFactory();
@@ -27,7 +30,7 @@ public abstract class RDFSource {
 	
 	protected String date(Date startDate) {
 		
-		DateFormatter parser = new DateFormatter("yyyy-MM-dd HH:mm");
+		DateFormatter parser = new DateFormatter("yyyy-MM-dd");
 		return parser.print(startDate, Context.getLocale());
 		
 	}

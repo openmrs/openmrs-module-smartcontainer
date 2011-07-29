@@ -30,12 +30,20 @@
 		<property name="mappings">
 			<props>
 				<prop key="**/smartAppForm.portlet">smartAppPortletController</prop>
+			<prop key="**/options.form">smartAppOptionController</prop>
 			</props>
 		</property>
 	</bean>
 	
 	<bean id="smartAppPortletController"
 		class="@MODULE_PACKAGE@.web.controller.smartcontainerPortletController"></bean>
+		<bean id="smartAppOptionController"
+		class="@MODULE_PACKAGE@.web.controller.SmartAppOptionController">
+		<property name="commandName"><value>opts</value></property>
+		<property name="commandClass"><value>org.openmrs.web.OptionsForm</value></property>
+		<property name="formView"><value>/optionsForm</value></property>
+		<property name="successView"><value>options.form</value></property>
+		</bean>
 
 	
 	<bean parent="serviceContext">
@@ -108,6 +116,9 @@
 	<bean id="problemConceptMapping" class="org.openmrs.module.smartcontainer.SMARTConceptMap">
 		<property name="CONCEPT_SOURCE_NAME" value="SNOMED CT" />
 	</bean>
+	<bean id="labResultMapping" class="org.openmrs.module.smartcontainer.SMARTConceptMap">
+		<property name="CONCEPT_SOURCE_NAME" value="LOINC" />
+	</bean>
 	<bean id="medicationRDF"
 		class="org.openmrs.module.smartcontainer.rdfsource.MedicationRDFSource">
 		<property name="map" ref="medicationConceptMapping" />
@@ -115,6 +126,13 @@
 	<bean id="problemRDF"
 		class="org.openmrs.module.smartcontainer.rdfsource.ProblemRDFSource">
 		<property name="map" ref="problemConceptMapping" />
+	</bean>
+	<bean id="demographicsRDF"
+		class="org.openmrs.module.smartcontainer.rdfsource.DemographicsRDFSource">
+	</bean>
+	<bean id="labResultRDF"
+		class="org.openmrs.module.smartcontainer.rdfsource.LabResultRDFSource">
+		<property name="map" ref="labResultMapping" />
 	</bean>
 	<bean id="problemController"
 		class="org.openmrs.module.smartcontainer.web.controller.API.ProblemController">
@@ -124,6 +142,15 @@
 		class="org.openmrs.module.smartcontainer.web.controller.API.MedicationController">
 		<property name="resource" ref="medicationRDF" />
 	</bean>
+	<bean id="demographicsController"
+		class="org.openmrs.module.smartcontainer.web.controller.API.DemographicsController">
+		<property name="resource" ref="demographicsRDF" />
+	</bean>
+	<bean id="labResultController"
+		class="org.openmrs.module.smartcontainer.web.controller.API.LabResultController">
+		<property name="resource" ref="labResultRDF" />
+	</bean>
+	
    
 		
 </beans>
