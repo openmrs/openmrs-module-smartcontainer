@@ -2,6 +2,8 @@ package org.openmrs.module.smartcontainer.web.controller.API;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.List;
+
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
@@ -9,6 +11,11 @@ import org.apache.commons.logging.LogFactory;
 import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.smartcontainer.RDFSource;
+import org.openmrs.module.smartcontainer.SmartDataService;
+import org.openmrs.module.smartcontainer.rdfsource.ProblemRDFSource;
+import org.openmrs.module.smartcontainer.smartData.SmartDemographics;
+import org.openmrs.module.smartcontainer.smartData.SmartMedication;
+import org.openmrs.module.smartcontainer.smartData.SmartProblem;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,13 +29,13 @@ public class ProblemController {
 	
 	Log log = LogFactory.getLog(getClass());
 	
-	private RDFSource resource;
+	private ProblemRDFSource resource;
 	
-	public RDFSource getResource() {
+	public ProblemRDFSource getResource() {
 		return resource;
 	}
 	
-	public void setResource(RDFSource resource) {
+	public void setResource(ProblemRDFSource resource) {
 		this.resource = resource;
 	}
 	
@@ -40,8 +47,9 @@ public class ProblemController {
 		try {
 			writer = resp.getWriter();
 			Patient patient = Context.getPatientService().getPatient(patientId);
-			
-			writer.write(resource.getRDF(patient)); // get the object
+			List<SmartProblem> props=(List<SmartProblem>) Context.getService(SmartDataService.class).getAllForPatient(patient, SmartProblem.class);
+			log.error(props.get(0).getProblemName().getTitle()+"dfdfdfffdf");
+			writer.write(resource.getRDF(props)); // get the object
 			
 			writer.close();
 		}

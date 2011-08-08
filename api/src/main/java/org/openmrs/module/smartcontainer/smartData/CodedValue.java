@@ -1,0 +1,33 @@
+package org.openmrs.module.smartcontainer.smartData;
+
+public class CodedValue {
+private String code;
+private String codeBaseURL;
+private String title;
+private CodeProvenance codeProvenance;
+public String getCode() {
+	return code;
+}
+public void setCode(String code) {
+	this.code = code;
+}
+public String getCodeBaseURL() {
+	return codeBaseURL;
+}
+public void setCodeBaseURL(String codeBaseURL) {
+	this.codeBaseURL = codeBaseURL;
+}
+public String getTitle() {
+	return title;
+}
+public void setTitle(String title) {
+	this.title = title;
+}
+public CodeProvenance getCodeProvenance() {
+	return codeProvenance;
+}
+public void setCodeProvenance(CodeProvenance codeProvenance) {
+	this.codeProvenance = codeProvenance;
+}
+
+}

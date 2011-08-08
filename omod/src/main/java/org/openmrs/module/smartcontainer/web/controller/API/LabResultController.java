@@ -2,6 +2,7 @@ package org.openmrs.module.smartcontainer.web.controller.API;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -10,6 +11,10 @@ import org.apache.commons.logging.LogFactory;
 import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.smartcontainer.RDFSource;
+import org.openmrs.module.smartcontainer.SmartDataService;
+import org.openmrs.module.smartcontainer.rdfsource.LabResultRDFSource;
+import org.openmrs.module.smartcontainer.smartData.SmartLabResult;
+import org.openmrs.module.smartcontainer.smartData.SmartMedication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,13 +25,13 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping(value = "/smartcontainer/api/")
 public class LabResultController {
 	Log log = LogFactory.getLog(getClass());
-	private RDFSource resource;
+	private LabResultRDFSource resource;
 	
-    public RDFSource getResource() {
+    public LabResultRDFSource getResource() {
     	return resource;
     }
 	
-    public void setResource(RDFSource resource) {
+    public void setResource(LabResultRDFSource resource) {
     	this.resource = resource;
     }
     @RequestMapping(method = RequestMethod.GET,value = "records/{pid}/lab_results")
@@ -37,8 +42,8 @@ public class LabResultController {
 		try {
 			writer = resp.getWriter();
 			Patient patient = Context.getPatientService().getPatient(patientId);
-			
-			writer.write(resource.getRDF(patient)); // get the
+			List<SmartLabResult> labs=(List<SmartLabResult>) Context.getService(SmartDataService.class).getAllForPatient(patient, SmartLabResult.class);
+			writer.write(resource.getRDF(labs)); // get the
 			                                        // object
 			writer.close();
 		}

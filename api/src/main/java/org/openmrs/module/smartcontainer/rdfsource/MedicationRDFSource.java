@@ -13,6 +13,9 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.smartcontainer.ConceptMappingNotFoundException;
 import org.openmrs.module.smartcontainer.RDFSource;
 import org.openmrs.module.smartcontainer.SMARTConceptMap;
+import org.openmrs.module.smartcontainer.smartData.CodedValue;
+import org.openmrs.module.smartcontainer.smartData.SmartMedication;
+import org.openmrs.module.smartcontainer.smartData.ValueAndUnit;
 import org.openrdf.model.BNode;
 import org.openrdf.model.Literal;
 import org.openrdf.model.URI;
@@ -21,17 +24,8 @@ import org.openrdf.rio.rdfxml.RdfXmlWriter;
 
 public class MedicationRDFSource extends RDFSource {
 	
-	private SMARTConceptMap map;
 	
-	public SMARTConceptMap getMap() {
-		return map;
-	}
-	
-	public void setMap(SMARTConceptMap map) {
-		this.map = map;
-	}
-	
-	private String getRDF(List<DrugOrder> drugs) throws IOException {
+	public String getRDF(List<SmartMedication> meds) throws IOException {
 		Writer sWriter = new StringWriter();
 		RdfXmlWriter graph = new RdfXmlWriter(sWriter);
 		
@@ -39,7 +33,7 @@ public class MedicationRDFSource extends RDFSource {
 		graph.setNamespace("rdf", rdf);
 		graph.setNamespace("dcterms", dcterms);
 		graph.startDocument();
-		for (DrugOrder oder : drugs) {
+		for (SmartMedication med :meds ) {
 			//
 			BNode medicationNode = factory.createBNode();
 			URI medication = factory.createURI(sp, "Medication");
@@ -47,33 +41,33 @@ public class MedicationRDFSource extends RDFSource {
 			graph.writeStatement(medicationNode, type, medication);
 			//
 			URI drugName = factory.createURI(sp, "drugName");
-			graph.writeStatement(medicationNode, drugName, codedValue(graph, oder.getDrug()));
+			graph.writeStatement(medicationNode, drugName, codedValue(graph, med.getDrugName()));
 			//
-			if (oder.getStartDate() != null) {
+			if (med.getStartDate() != null) {
 				URI startDate = factory.createURI(sp, "startDate");
-				Value startDateVal = factory.createLiteral(date(oder.getStartDate()));
+				Value startDateVal = factory.createLiteral(med.getStartDate());
 				graph.writeStatement(medicationNode, startDate, startDateVal);
 			}
 			//
 			URI instructions = factory.createURI(sp, "instructions");
 			Value sig=null;
-			if(oder.getInstructions()!=null){
+			if(med.getInstructions()!=null){
 			
-		       sig = factory.createLiteral(oder.getInstructions());
+		       sig = factory.createLiteral(med.getInstructions());
 			
 			}
 			graph.writeStatement(medicationNode, instructions, sig);
 			//
-			if ((oder.getQuantity() != null) && (oder.getUnits() != null)) {
+			if ((med.getQuantity() != null)) {
 				URI quantity = factory.createURI(sp, "quantity");
 				graph.writeStatement(medicationNode, quantity,
-				    valueAndUnit(oder.getQuantity().toString(), oder.getUnits(), graph));
+				    valueAndUnit(med.getQuantity(), graph));
 			}
 			//
-			if ((oder.getFrequency() != null) && (oder.getUnits() != null)) {
+			if ((med.getFrequency() != null)) {
 				URI frequency = factory.createURI(sp, "frequency");
 				graph.writeStatement(medicationNode, frequency,
-				    valueAndUnit(oder.getFrequency().toString(), oder.getUnits(), graph));
+				    valueAndUnit(med.getFrequency(), graph));
 				
 			}//
 			
@@ -82,62 +76,49 @@ public class MedicationRDFSource extends RDFSource {
 		return sWriter.toString();
 	}
 	
-	private Value valueAndUnit(String quantity, String units, RdfXmlWriter graph) throws IOException {
+	private Value valueAndUnit(ValueAndUnit valAndUnit, RdfXmlWriter graph) throws IOException {
 		BNode valueAndUnitNode = factory.createBNode();
 		URI type = factory.createURI(org.openrdf.vocabulary.RDF.TYPE);
 		URI valueAndUnit = factory.createURI(sp, "ValueAndUnit");
 		graph.writeStatement(valueAndUnitNode, type, valueAndUnit);
 		//
 		URI value = factory.createURI(sp, "value");
-		Value valueVal = factory.createLiteral(quantity);
+		Value valueVal = factory.createLiteral(valAndUnit.getValue());
 		graph.writeStatement(valueAndUnitNode, value, valueVal);
 		//
 		URI unit = factory.createURI(sp, "unit");
-		Value unitVal = factory.createLiteral(units);
+		Value unitVal = factory.createLiteral(valAndUnit.getUnit());
 		graph.writeStatement(valueAndUnitNode, unit, unitVal);
 		
 		return valueAndUnitNode;
 	}
 	
-	private Value codedValue(RdfXmlWriter graph, Drug drug) throws IOException {
+	private Value codedValue(RdfXmlWriter graph, CodedValue codedVal) throws IOException {
 		BNode codedValueNode = factory.createBNode();
 		URI type = factory.createURI(org.openrdf.vocabulary.RDF.TYPE);
 		URI codedValue = factory.createURI(sp, "CodedValue");
 		graph.writeStatement(codedValueNode, type, codedValue);
 		//
-		Concept concept = drug.getConcept();
-		String conceptCode = null;
-		try {
-			conceptCode = map.lookUp(concept);
-		}
-		catch (ConceptMappingNotFoundException e) {
-			
-			e.printStackTrace();
-		}
+		
 		URI code = factory.createURI(sp, "code");
-		URI uri = factory.createURI("http://rxnav.nlm.nih.gov/REST/rxcui/" + conceptCode);
+		URI uri = factory.createURI("http://rxnav.nlm.nih.gov/REST/rxcui/" + codedVal.getCode());
 		graph.writeStatement(codedValueNode, code, uri);
 		//
 		URI title = factory.createURI(dcterms, "title");
-		Literal titleVal = factory.createLiteral(concept.getDisplayString());
+		Literal titleVal = factory.createLiteral(codedVal.getTitle());
 		graph.writeStatement(codedValueNode, title, titleVal);
 		//
 		graph.writeStatement(uri, type, code);
 		//
 		URI system = factory.createURI(sp, "system");
-		URI systemVal = factory.createURI("http://www.ihtsdo.org/snomed-ct/concepts/");
+		URI systemVal = factory.createURI(codedVal.getCodeBaseURL());
 		graph.writeStatement(uri, system, systemVal);
 		//
 		URI identifier = factory.createURI(dcterms, "identifier");
-		Literal identifierVal = factory.createLiteral(conceptCode);
+		Literal identifierVal = factory.createLiteral(codedVal.getCode());
 		graph.writeStatement(uri, identifier, identifierVal);
 		
 		return codedValueNode;
 	}
 	
-	@Override
-	public String getRDF(Patient patient) throws IOException {
-		List<DrugOrder> drugs = Context.getOrderService().getDrugOrdersByPatient(patient);
-		return getRDF(drugs);
-	}
 }
