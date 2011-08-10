@@ -89,7 +89,7 @@ public class SmartVitalSignsHandler implements SmartDataHandler {
 			code.setCodeBaseURL("http://smartplatforms.org/terms/code/encounterType#");
 			code.setTitle("Ambulatory encounter");
 			encounter.setEncounterType(code);
-			if (e.getVisit() != null) {
+			if (hasVisit(e) && e.getVisit() != null) {
 				encounter.setStartDate(date(e.getVisit().getStartDatetime()));
 				encounter.setEndDate(date(e.getVisit().getStopDatetime()));
 			}
@@ -228,6 +228,14 @@ Boolean isVitalSignEncounter(Encounter encounter) {
 		}
 	}
 	return found;
+}
+private Boolean hasVisit(Encounter e){
+	Method methods[]=e.getClass().getMethods();
+	for(Method m:methods){
+		if(m.getName().equals("getVisit"))
+			return true;
+	}
+	return false;
 }
 
 }
