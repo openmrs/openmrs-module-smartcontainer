@@ -3,6 +3,7 @@ package org.openmrs.module.smartcontainer.smartData.handler;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.lang.reflect.Method;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -89,10 +90,9 @@ public class SmartVitalSignsHandler implements SmartDataHandler {
 			code.setCodeBaseURL("http://smartplatforms.org/terms/code/encounterType#");
 			code.setTitle("Ambulatory encounter");
 			encounter.setEncounterType(code);
-			if (hasVisit(e) && e.getVisit() != null) {
-				encounter.setStartDate(date(e.getVisit().getStartDatetime()));
-				encounter.setEndDate(date(e.getVisit().getStopDatetime()));
-			}
+			//if (hasVisit(e) && e.getVisit() != null) {
+			//	encounter.setEndDate(date(e.getVisit().getStopDatetime()));
+			//}
 			signs.setSmartEncounter(encounter);
 			bloodPreassure=new BloodPressure();
 			for (Obs o : e.getAllObs()) {
