@@ -17,13 +17,13 @@ import java.util.Collection;
 
 import org.openmrs.api.APIException;
 import org.openmrs.api.db.DAOException;
-import org.openmrs.module.smartcontainer.SMARTAppUser;
+import org.openmrs.module.smartcontainer.SmartUser;
 
 /**
  * DAO for User service
  */
 public interface UserDAO {
-	
+
 	/**
 	 * to get User by username
 	 * 
@@ -31,15 +31,22 @@ public interface UserDAO {
 	 * @return
 	 * @throws DAOException
 	 */
-	public SMARTAppUser getUserByName(String name) throws DAOException;
-	
+	public SmartUser getUserByName(String name) throws DAOException;
+
 	/**
 	 * to get all Users
 	 * 
 	 * @return
 	 * @throws DAOException
 	 */
-	public Collection<SMARTAppUser> getAllUsers() throws DAOException;
-	
-	public void saveUser(SMARTAppUser user) throws APIException;
+	public Collection<SmartUser> getAllUsers() throws DAOException;
+
+	/**
+	 * Save a SMART user
+	 * 
+	 * @param user
+	 * @throws APIException
+	 */
+	public void saveUser(SmartUser user) throws APIException;
+
 }

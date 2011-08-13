@@ -1,9 +1,10 @@
 package org.openmrs.module.smartcontainer.smartData.handler;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.lang.reflect.Method;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -14,20 +15,18 @@ import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.smartcontainer.ConceptMappingNotFoundException;
-import org.openmrs.module.smartcontainer.SMARTConceptMap;
-import org.openmrs.module.smartcontainer.smartData.BloodPressure;
+import org.openmrs.module.smartcontainer.SmartConceptMap;
 import org.openmrs.module.smartcontainer.smartData.CodedValue;
 import org.openmrs.module.smartcontainer.smartData.SmartBaseData;
 import org.openmrs.module.smartcontainer.smartData.SmartEncounter;
-import org.openmrs.module.smartcontainer.smartData.SmartLabResult;
 import org.openmrs.module.smartcontainer.smartData.SmartVitalSigns;
-import org.openmrs.module.smartcontainer.smartData.ValueAndUnit;
 import org.openmrs.module.smartcontainer.smartData.VitalSign;
-import org.springframework.format.datetime.DateFormatter;
+import org.openmrs.module.smartcontainer.util.SmartDataHandlerUtil;
 
 public class SmartVitalSignsHandler implements SmartDataHandler {
 
-	Log log=LogFactory.getLog(getClass());
+	Log log = LogFactory.getLog(getClass());
+
 	public String[] getLoincCodes() {
 		return loincCodes;
 	}
@@ -44,198 +43,178 @@ public class SmartVitalSignsHandler implements SmartDataHandler {
 		this.snomedCodes = snomedCodes;
 	}
 
+	private SmartConceptMap loincMap;
+	private SmartConceptMap snomedMap;
 
-	private SMARTConceptMap loincMap;
-	private SMARTConceptMap snomedMap;
-	public SMARTConceptMap getLoincMap() {
+	public SmartConceptMap getLoincMap() {
 		return loincMap;
 	}
 
-	public void setLoincMap(SMARTConceptMap loincMap) {
+	public void setLoincMap(SmartConceptMap loincMap) {
 		this.loincMap = loincMap;
 	}
-	public SmartBaseData get(Patient patient) {
-		
+
+	public SmartBaseData getForPatient(Patient patient) {
+
 		return null;
 	}
-	public SMARTConceptMap getSnomedMap() {
+
+	public SmartConceptMap getSnomedMap() {
 		return snomedMap;
 	}
 
-	public void setSnomedMap(SMARTConceptMap snomedMap) {
+	public void setSnomedMap(SmartConceptMap snomedMap) {
 		this.snomedMap = snomedMap;
 	}
 
-	
 	private String loincCodes[] = { "8302-2", "3141-9", "39156-5", "9279-1",
 			"8867-4", "2710-2", "8310-5", "8480-6", "8462-4" };
 	private String snomedCodes[] = { "33586001", "368209003" };
 
 	public List<? extends SmartBaseData> getAllForPatient(Patient patient) {
-		List<Encounter> encounters = Context.getEncounterService().getEncountersByPatient(patient);
-		List<SmartVitalSigns> smartVitalSigns=new ArrayList<SmartVitalSigns>();
-		String conceptCode=null;
-		SmartVitalSigns signs=null;
-		SmartEncounter encounter=null;
-		VitalSign sign=null;
-		CodedValue code=null;
-		//ValueAndUnit sign=null;
-		BloodPressure bloodPreassure=null;
+		List<Encounter> encounters = Context.getEncounterService()
+				.getEncountersByPatient(patient);
+		List<SmartVitalSigns> smartVitalSigns = new ArrayList<SmartVitalSigns>();
+
 		for (Encounter e : encounters) {
-			signs=new SmartVitalSigns();
-			signs.setDate(date(e.getEncounterDatetime()));
-			encounter=new SmartEncounter();
-			code=new CodedValue();
+
+			SmartVitalSigns signs = new SmartVitalSigns();
+			signs.setDate(SmartDataHandlerUtil.date(e.getEncounterDatetime()));
+			SmartEncounter encounter = new SmartEncounter();
+			// TODO fix this to use the OpenMRS encounter's type
+			CodedValue code = new CodedValue();
 			code.setCode("ambulatory");
 			code.setCodeBaseURL("http://smartplatforms.org/terms/code/encounterType#");
 			code.setTitle("Ambulatory encounter");
 			encounter.setEncounterType(code);
-			//if (hasVisit(e) && e.getVisit() != null) {
-			//	encounter.setEndDate(date(e.getVisit().getStopDatetime()));
-			//}
+			setDates(encounter, e);
 			signs.setSmartEncounter(encounter);
-			bloodPreassure=new BloodPressure();
-			for (Obs o : e.getAllObs()) {
-				
-				if (!o.isObsGrouping()) {
-					conceptCode = getVitalSignCode(o.getConcept());
-					Concept concept = o.getConcept();
-					ConceptNumeric cn;
-					if (concept.isNumeric()) {
-						cn = Context.getConceptService()
-								.getConceptNumeric(
-										concept.getConceptId());
-						if (cn != null) {
-					if (conceptCode != null) {
-						sign=new VitalSign();
-						code=new CodedValue();
-						code.setCode(conceptCode);
-						code.setCodeBaseURL("http://loinc.org/codes/");
-						code.setTitle(cn.getName().getName());
-						sign.setVitalName(code);
-						
-						
-						if (conceptCode.equals("8462-4")) {
-							sign.setValue(o.getValueNumeric().toString());
-							sign.setUnit(cn.getUnits());
-							bloodPreassure.setDiastolic(sign);
-							log.error("diastolic");
-							
-						}else if(conceptCode.equals("8480-6")){
-							sign.setValue(Double.toString(o.getValueNumeric()));
-							sign.setUnit(cn.getUnits());
-							bloodPreassure.setSystolic(sign);
-						}else if(conceptCode.equals("8302-2")){
-							sign.setValue(Double.toString(o.getValueNumeric()));
-							sign.setUnit(cn.getUnits());
-							signs.setHeight(sign);
-						}else if(conceptCode.equals("3141-9")){
-							sign.setValue(Double.toString(o.getValueNumeric()));
-							sign.setUnit(cn.getUnits());
-							signs.setWeight(sign);	
-						}else if(conceptCode.equals("39156-5")){
-							sign.setValue(Double.toString(o.getValueNumeric()));
-							sign.setUnit(cn.getUnits());
-							signs.setBodyMassIndex(sign);
-						}else if(conceptCode.equals("9279-1")){
-							sign.setValue(Double.toString(o.getValueNumeric()));
-							sign.setUnit(cn.getUnits());
-							signs.setRespiratoryRate(sign);
-						}else if(conceptCode.equals("8867-4")){
-							sign.setValue(Double.toString(o.getValueNumeric()));
-							sign.setUnit(cn.getUnits());
-							signs.setHeartRate(sign);
-						}else if(conceptCode.equals("2710-2")){
-							sign.setValue(Double.toString(o.getValueNumeric()));
-							sign.setUnit(cn.getUnits());
-							signs.setOxygenSaturation(sign);
-						}else if(conceptCode.equals("8310-5")){
-							sign.setValue(Double.toString(o.getValueNumeric()));
-							sign.setUnit(cn.getUnits());
-							signs.setTemperature(sign);
-						
-						}
-						signs.setBloodPressure(bloodPreassure);
-						
-					}
-					
-						}
-				}
-			}
-		}
-		smartVitalSigns.add(signs);
+			signs.addAll(getAllVitalSign(e));
+			smartVitalSigns.add(signs);
 		}
 		return smartVitalSigns;
 	}
-protected String date(Date date) {
-		
-		DateFormatter parser = new DateFormatter("yyyy-MM-dd");
-		return parser.print(date, Context.getLocale());
-		
-	}
-private String getConceptCode(Concept c) {
-	String ConceptCode = null;
-	try {
-		ConceptCode = loincMap.lookUp(c);
-	} catch (ConceptMappingNotFoundException e) {
 
-		e.printStackTrace();
-	}
-	return ConceptCode;
-
-}
-
-private String getVitalSignCode(Concept c) {
-	String conceptCode = null;
-	Boolean found = false;
-	try {
-		conceptCode = loincMap.lookUp(c);
-	} catch (ConceptMappingNotFoundException e) {
-
-		e.printStackTrace();
-	}
-	for (String code : loincCodes) {
-		if (conceptCode.equals(code)) {
-			found = true;
-			break;
-		}
-	}
-	if (!found) {
+	private void setDates(SmartEncounter encounter, Encounter e) {
+		Method getVisit = null;
+		Date start = null;
+		Date stop = null;
+		Object[] args = new Object[0];
 		try {
-			conceptCode = snomedMap.lookUp(c);
+			getVisit = e.getClass().getDeclaredMethod("getVisit", new Class[0]);
+			if (getVisit != null) {
+				Object visit = getVisit.invoke(e, args);
+				if (visit != null) {
+					start = (Date) visit
+							.getClass()
+							.getDeclaredMethod("getStartDatetime", new Class[0])
+							.invoke(visit, args);
+					stop = (Date) visit.getClass()
+							.getDeclaredMethod("getStopDatetime", new Class[0])
+							.invoke(visit, args);
+				}
+			}
+		} catch (SecurityException e1) {
+			throw new RuntimeException(e1);
+		} catch (NoSuchMethodException e2) {
+			throw new RuntimeException(e2);
+		} catch (IllegalArgumentException e3) {
+			throw new RuntimeException(e3);
+		} catch (IllegalAccessException e4) {
+			throw new RuntimeException(e4);
+		} catch (InvocationTargetException e5) {
+			throw new RuntimeException(e5);
+		}
+		if (start != null)
+			encounter.setStartDate(SmartDataHandlerUtil.date(start));
+		if (stop != null)
+			encounter.setEndDate(SmartDataHandlerUtil.date(stop));
+
+	}
+
+	private List<VitalSign> getAllVitalSign(Encounter e) {
+		List<VitalSign> signList = new ArrayList<VitalSign>();
+		for (Obs o : e.getAllObs()) {
+
+			if (!o.isObsGrouping()) {
+				String conceptCode = getVitalSignCode(o.getConcept());
+				ConceptNumeric cn = getNumericConcept(o.getConcept());
+
+				if (cn != null && conceptCode != null) {
+
+					if (conceptCode.equals("8302-2")) {
+						if (cn.getUnits().toLowerCase().equals("cm")) {
+							Double value = null;
+							if (o.getValueNumeric() != 0) {
+								value = (o.getValueNumeric() / 100.0);
+							} else {
+								value = 0.0;
+							}
+							cn.setUnits("m");
+							signList.add(SmartDataHandlerUtil.vitalSignHelper(
+									value, cn, loincMap));
+						} else {
+
+							signList.add(SmartDataHandlerUtil.vitalSignHelper(
+									o.getValueNumeric(), cn, loincMap));
+						}
+
+					} else {
+						signList.add(SmartDataHandlerUtil.vitalSignHelper(
+								o.getValueNumeric(), cn, loincMap));
+					}
+				}
+			}
+		}
+
+		return signList;
+	}
+
+	private ConceptNumeric getNumericConcept(Concept concept) {
+		if (concept.isNumeric()) {
+			return Context.getConceptService().getConceptNumeric(
+					concept.getConceptId());
+		} else {
+			return null;
+		}
+
+	}
+
+	private String getVitalSignCode(Concept c) {
+		String conceptCode = null;
+		Boolean found = false;
+		try {
+			conceptCode = loincMap.lookUp(c);
 		} catch (ConceptMappingNotFoundException e) {
 
 			e.printStackTrace();
 		}
-		for (String code : snomedCodes) {
+		for (String code : loincCodes) {
 			if (conceptCode.equals(code)) {
 				found = true;
 				break;
 			}
 		}
-	}
-	if(found)
-	return conceptCode;
-	else
-		return null;
-}
-Boolean isVitalSignEncounter(Encounter encounter) {
-	Boolean found = false;
-	for (Obs o : encounter.getAllObs()) {
-		if (getVitalSignCode(o.getConcept()) != null) {
-			found = true;
-			break;
+		if (!found) {
+			try {
+				conceptCode = snomedMap.lookUp(c);
+			} catch (ConceptMappingNotFoundException e) {
+
+				throw new RuntimeException(e);
+			}
+			for (String code : snomedCodes) {
+				if (conceptCode.equals(code)) {
+					found = true;
+					break;
+				}
+			}
 		}
+		if (found)
+			return conceptCode;
+		else
+			return null;
 	}
-	return found;
-}
-private Boolean hasVisit(Encounter e){
-	Method methods[]=e.getClass().getMethods();
-	for(Method m:methods){
-		if(m.getName().equals("getVisit"))
-			return true;
-	}
-	return false;
-}
+
+	
 
 }

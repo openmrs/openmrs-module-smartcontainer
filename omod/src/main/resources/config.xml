@@ -25,12 +25,18 @@
 		<point>org.openmrs.patientDashboardTab</point>
 		<class>@MODULE_PACKAGE@.extension.html.SMARTAppTab</class>
 	</extension>
-	<!--<extension> <point>org.openmrs.optionForm</point> <class>@MODULE_PACKAGE@.extension.html.UserOptionTab</class> 
-		</extension> -->
-	<!-- AOP <advice> <point>org.openmrs.api.FormService</point> <class>@MODULE_PACKAGE@.advice.DuplicateFormAdvisor</class> 
-		</advice> /AOP -->
+	<extension> 
+	<point>org.openmrs.userOptionExtension</point>
+	<class>@MODULE_PACKAGE@.extension.html.UserOptionTabExtention</class> 
+	</extension>
+	<!-- 
+	  <advice> <point>org.openmrs.web.controller.OptionsFormController</point> <class>@MODULE_PACKAGE@.advice.UserOptionsFormControllerBeforeAdvisor</class> 
+		</advice>
+		 <advice> <point>org.openmrs.web.controller.OptionsFormController</point> <class>@MODULE_PACKAGE@.advice.UserOptionsFormControllerAfterAdvisor</class> 
+		</advice> 
 
 
+	-->
 	<!-- Required Privileges <privilege> <name>Form Entry</name> <description>Allows 
 		user to access Form Entry pages/functions</description> </privilege> /Required 
 		Privileges -->

@@ -155,4 +155,17 @@
 			deferrable="false" initiallyDeferred="false" referencedColumnNames="smartcontainer_user_id"
 			referencedTableName="smartcontainer_user" />
 	</changeSet>
+	<changeSet author="ajanthan" id="smartcontainer-2011-07-24-19:50">
+	<sql>
+	INSERT INTO smartcontainer_user(user_id)
+	SELECT user_id  FROM users;
+	</sql>
+	</changeSet>
+	<changeSet author="ajanthan" id="smartcontainer-2011-07-25-19:50">
+	<addColumn tableName="smartcontainer_app" >
+	<column name="retire" type="int(1)" defaultValueBoolean="false" >
+	<constraints nullable="false"/>
+	</column>
+	</addColumn>
+	</changeSet>
 </databaseChangeLog>

@@ -20,7 +20,7 @@ import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.openmrs.api.APIException;
 import org.openmrs.api.db.DAOException;
-import org.openmrs.module.smartcontainer.SMARTAppUser;
+import org.openmrs.module.smartcontainer.SmartUser;
 import org.openmrs.module.smartcontainer.db.UserDAO;
 
 /**
@@ -47,14 +47,14 @@ public class HibernateUserDAO implements UserDAO {
 	/**
 	 * @see org.openmrs.module.smartcontainer.db.UserDAO#getUserByName(java.lang.String)
 	 */
-	public SMARTAppUser getUserByName(String name) throws DAOException {
+	public SmartUser getUserByName(String name) throws DAOException {
 		Query query = sessionFactory
 		        .getCurrentSession()
 		        .createQuery(
 		            "from SMARTAppUser u where u.openMRSUser.retired = 0 and (u.openMRSUser.username = ? or u.openMRSUser.systemId = ?)");
 		query.setString(0, name);
 		query.setString(1, name);
-		List<SMARTAppUser> users = query.list();
+		List<SmartUser> users = query.list();
 		
 		return users.get(0);
 	}
@@ -62,18 +62,17 @@ public class HibernateUserDAO implements UserDAO {
 	/**
 	 * @see org.openmrs.module.smartcontainer.db.UserDAO#getAllUsers()
 	 */
-	public Collection<SMARTAppUser> getAllUsers() throws DAOException {
+	public Collection<SmartUser> getAllUsers() throws DAOException {
 		
 		return sessionFactory.getCurrentSession().createQuery("from SMARTAppUser u order by u.openMRSUser.userId").list();
 	}
 	
 	/**
-	 * @see org.openmrs.module.smartcontainer.db.UserDAO#saveUser(org.openmrs.module.smartcontainer.SMARTAppUser)
+	 * @see org.openmrs.module.smartcontainer.db.UserDAO#saveUser(org.openmrs.module.smartcontainer.SmartUser)
 	 */
-	public void saveUser(SMARTAppUser user) throws APIException {
+	public void saveUser(SmartUser user) throws APIException {
 		
 		sessionFactory.getCurrentSession().saveOrUpdate(user);
-		sessionFactory.getCurrentSession().evict(user);
 		
 	}
 	

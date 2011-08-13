@@ -16,7 +16,7 @@ package org.openmrs.module.smartcontainer.rdfsource;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
-import org.openmrs.module.smartcontainer.RDFSource;
+import org.openmrs.module.smartcontainer.RdfSource;
 import org.openmrs.module.smartcontainer.smartData.SmartDemographics;
 import org.openrdf.model.BNode;
 import org.openrdf.model.URI;
@@ -28,56 +28,61 @@ import org.openrdf.rio.rdfxml.RdfXmlWriter;
  * 
  * 
  */
-public class DemographicsRDFSource extends RDFSource {
+public class DemographicsRDFSource extends RdfSource {
 
-	/**
-	 * Here the received SmartDemographics is a perfect object. no need to check
-	 * for null
-	 * 
+	/** 
 	 * @param d SMART Demographics
 	 * @return RDF/XML as a String
 	 * @throws IOException
 	 */
 	public String getRDF(SmartDemographics d) throws IOException {
-		// Create a writer
+		
 		Writer sWriter = new StringWriter();
-		// Create a graph and add the writer
 		RdfXmlWriter graph = new RdfXmlWriter(sWriter);
-		// Add required name spaces
-		graph.setNamespace("sp", sp);
-		graph.setNamespace("rdf", rdf);
-		graph.setNamespace("dcterms", dcterms);
-		graph.setNamespace("foaf", foaf);
+		addHeader(graph);
 		graph.startDocument();
-		// Blank root node to represent a Demographics
+		/*
+		 * <sp:Demographics>
+		 * ....child nodes
+		 * </sp:Demographics>
+		 */
 		BNode demographicsNode = factory.createBNode();
-		// This node is a type of person
 		URI person = factory.createURI(foaf, "Person");
 		URI type = factory.createURI(org.openrdf.vocabulary.RDF.TYPE);
 		graph.writeStatement(demographicsNode, type, person);
-		// Add givenName node to root node
+		/*Add child node
+		 * <foaf:givenName>Bob</foaf:givenName>
+		 */
 		URI givenName = factory.createURI(foaf, "givenName");
 		Value gNameVal = factory.createLiteral(d.getGivenName());
 		graph.writeStatement(demographicsNode, givenName, gNameVal);
-		// Add familyName node to root node
+		/*Add child node
+		 * <foaf:familyName>Odenkirk</foaf:familyName>
+		 */
 		URI familyName = factory.createURI(foaf, "familyName");
 		Value fNameVal = factory.createLiteral(d.getFamilyName());
 		graph.writeStatement(demographicsNode, familyName, fNameVal);
-		// Add gender node to root node
+		/*Add child node
+		 * <foaf:gender>male</foaf:gender>
+		 */
 		URI gender = factory.createURI(foaf, "gender");
 		Value genderVal = factory.createLiteral(d.getGender());
 		graph.writeStatement(demographicsNode, gender, genderVal);
-		// Add zip code node to root node
+		/*Add child node
+		 *  <sp:zipcode>90001</sp:zipcode>
+		 */
 		URI zipcode = factory.createURI(sp, "zipcode");
 		Value zipcodeVal = factory.createLiteral(d.getZipCode());
 		graph.writeStatement(demographicsNode, zipcode, zipcodeVal);
-		// Add birthday node to root node
+		/*Add child node
+		 *  <sp:birthday>1959-12-25</sp:birthday>
+		 */
 		URI birthday = factory.createURI(sp, "birthday");
 		Value birthdayVal = factory.createLiteral(d.getBirthDate());
 		graph.writeStatement(demographicsNode, birthday, birthdayVal);
-		// End the graph to root node
+		
 		graph.endDocument();
-		// Return the graph as a String
+		
 		return sWriter.toString();
 	}
 

@@ -1,8 +1,14 @@
 package org.openmrs.module.smartcontainer.smartData;
 
-
-
-public class SmartDemographics implements SmartBaseData{
+/**
+ * The class representing SMART datatype
+ * 
+ *  <a
+ *      href="http://wiki.chip.org/smart-project/index.php/Developers_Documentation:_SMART_Data_Model#Demographics_RDF">
+ *      Demographics</a>
+ *
+ */
+public class SmartDemographics implements SmartBaseData {
 	private String givenName;
 	private String familyName;
 	private String gender;

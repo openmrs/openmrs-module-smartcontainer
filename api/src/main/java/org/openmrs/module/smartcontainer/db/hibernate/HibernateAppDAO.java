@@ -13,11 +13,15 @@
  */
 package org.openmrs.module.smartcontainer.db.hibernate;
 
+import java.util.Collection;
 import java.util.List;
+
+import org.apache.commons.lang.NotImplementedException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
+import org.openmrs.User;
 import org.openmrs.api.db.DAOException;
 import org.openmrs.module.smartcontainer.app.App;
 import org.openmrs.module.smartcontainer.db.AppDAO;
@@ -26,11 +30,11 @@ import org.openmrs.module.smartcontainer.db.AppDAO;
  * Implimentation for App DAO
  */
 public class HibernateAppDAO implements AppDAO {
-	
+
 	protected Log log = LogFactory.getLog(this.getClass());
-	
+
 	private SessionFactory sessionFactory;
-	
+
 	/**
 	 * getter for session factory
 	 * 
@@ -39,7 +43,7 @@ public class HibernateAppDAO implements AppDAO {
 	public SessionFactory getSessionFactory() {
 		return sessionFactory;
 	}
-	
+
 	/**
 	 * setter for session factory
 	 * 
@@ -48,65 +52,79 @@ public class HibernateAppDAO implements AppDAO {
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
 	}
-	
+
 	/**
 	 * @see org.openmrs.module.smartcontainer.db.AppDAO#getAppByName(java.lang.String)
 	 */
 	public App getAppByName(String name) throws DAOException {
-		Query query = sessionFactory.getCurrentSession().createQuery("from App u where  u.name = ?");
+		Query query = sessionFactory.getCurrentSession().createQuery(
+				"from App a where  a.name = ?");
 		query.setString(0, name);
-		// query.setString(1, name);
-		List users = (List) query.list();
-		
-		if (users == null || ((List) users).size() == 0) {
+		@SuppressWarnings("unchecked")
+		List<App> users = (List<App>) query.list();
+
+		if (users == null || ((List<App>) users).size() == 0) {
 			log.warn("request for username '" + name + "' not found");
 			return null;
 		}
-		
+
 		return (App) users.get(0);
 	}
-	
+
 	/**
 	 * @see org.openmrs.module.smartcontainer.db.AppDAO#getAllApps()
 	 */
+	@SuppressWarnings("unchecked")
 	public List<App> getAllApps() throws DAOException {
-		
-		return sessionFactory.getCurrentSession().createQuery("from App u order by u.appId").list();
+
+		return sessionFactory.getCurrentSession()
+				.createQuery("from App u where u.retire=0 order by u.appId")
+				.list();
 	}
-	
-	/**
-	 * @see org.openmrs.module.smartcontainer.db.AppDAO#deleteApp()
-	 */
-	public void deleteApp(App app) {
-		// sessionFactory.getCurrentSession().delete(app.getWebHook());
-		// sessionFactory.getCurrentSession().delete(app.getActivity());
-		sessionFactory.getCurrentSession().delete(app);
-		
-	}
-	
+
 	/**
 	 * @see org.openmrs.module.smartcontainer.db.AppDAO#getAppById(java.lang.Integer)
 	 */
 	public App getAppById(Integer id) {
-		Query query = sessionFactory.getCurrentSession().createQuery("from App a where  a.appId = ?");
+		Query query = sessionFactory.getCurrentSession().createQuery(
+				"from App a where  a.appId = ?");
 		query.setInteger(0, id);
 		// query.setString(1, name);
-		List apps = (List) query.list();
-		
-		if (apps == null || ((List) apps).size() == 0) {
+		@SuppressWarnings("unchecked")
+		List<App> apps = (List) query.list();
+
+		if (apps == null || ((List<App>) apps).size() == 0) {
 			log.warn("request for username '" + id + "' not found");
 			return null;
 		}
-		
+
 		return (App) apps.get(0);
 	}
-	
+
 	/**
 	 * @see org.openmrs.module.smartcontainer.db.AppDAO#save(org.openmrs.module.smartcontainer.app.App)
 	 */
 	public void save(App newApp) {
 		sessionFactory.getCurrentSession().saveOrUpdate(newApp);
-		
+
 	}
-	
+
+	public Collection<App> getAppsByUserName(User user) {
+		Query query = sessionFactory
+				.getCurrentSession()
+				.createQuery(
+						"select u.app from SmartUser u where  u. openMRSUser.systemId = ?");
+		query.setString(0, user.getSystemId());
+		// query.setString(1, name);
+		@SuppressWarnings("unchecked")
+		List<App> apps = (List) query.list();
+
+		if (apps == null || ((List<App>) apps).size() == 0) {
+
+			return null;
+		}
+
+		return (apps);
+	}
+
 }

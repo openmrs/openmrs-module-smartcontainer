@@ -5,94 +5,76 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.util.List;
 
-import org.openmrs.Concept;
 import org.openmrs.Patient;
-import org.openmrs.activelist.Problem;
-import org.openmrs.api.context.Context;
-import org.openmrs.module.smartcontainer.ConceptMappingNotFoundException;
-import org.openmrs.module.smartcontainer.RDFSource;
-import org.openmrs.module.smartcontainer.SMARTConceptMap;
-import org.openmrs.module.smartcontainer.smartData.CodedValue;
+import org.openmrs.module.smartcontainer.RdfSource;
 import org.openmrs.module.smartcontainer.smartData.SmartProblem;
+import org.openmrs.module.smartcontainer.util.RdfUtil;
 import org.openrdf.model.BNode;
 import org.openrdf.model.Literal;
 import org.openrdf.model.URI;
-import org.openrdf.model.Value;
 import org.openrdf.rio.rdfxml.RdfXmlWriter;
 
-public class ProblemRDFSource extends RDFSource {
-			
+/**
+ * Render a RDF/XML for SMART Problem
+ * 
+ */
+public class ProblemRDFSource extends RdfSource {
+
+	/**
+	 * Primary method to render rdf
+	 * 
+	 * @param problems
+	 * @return
+	 * @throws IOException
+	 */
 	public String getRDF(List<SmartProblem> problems) throws IOException {
-		
+
 		Writer sWriter = new StringWriter();
 		RdfXmlWriter graph = new RdfXmlWriter(sWriter);
-		
-		graph.setNamespace("sp", sp);
-		graph.setNamespace("rdf", rdf);
-		graph.setNamespace("dcterms", dcterms);
+		addHeader(graph);
 		graph.startDocument();
 		for (SmartProblem p : problems) {
-			//
+			/*
+			 * Add parent node <sp:Problem> ..child nodes </sp:Problem>
+			 */
 			BNode problemNode = factory.createBNode();
-			
 			URI problem = factory.createURI(sp, "Problem");
 			URI type = factory.createURI(org.openrdf.vocabulary.RDF.TYPE);
 			graph.writeStatement(problemNode, type, problem);
-			//
+			/*
+			 * Add child node <sp:problemName> ..Coded value node
+			 * </sp:problemName>
+			 */
+			URI problemName = factory.createURI(sp, "problemName");
+			graph.writeStatement(problemNode, problemName,
+					RdfUtil.codedValue(factory, graph, p.getProblemName()));
+			/*
+			 * Add child node <sp:onset>2007-06-12</sp:onset>
+			 */
 			URI onset = factory.createURI(sp, "onset");
 			Literal onsetVal = factory.createLiteral(p.getOnset());
 			graph.writeStatement(problemNode, onset, onsetVal);
-			//
+			/*
+			 * Add child node <sp:resolution>2007-08-01</sp:resolution>
+			 */
 			if (p.getResolution() != null) {
 				URI resolution = factory.createURI(sp, "resolution");
-				Literal resolutionVal = factory.createLiteral(p.getResolution());
+				Literal resolutionVal = factory
+						.createLiteral(p.getResolution());
 				graph.writeStatement(problemNode, resolution, resolutionVal);
 			}
-			//
-			URI problemName = factory.createURI(sp, "problemName");
-			graph.writeStatement(problemNode, problemName, codedValue(graph, p.getProblemName()));
+
 		}
 		//
-		
+
 		graph.endDocument();
-		
+
 		return sWriter.toString();
 	}
-	
-	private Value codedValue(RdfXmlWriter graph, CodedValue p) throws IOException {
-		BNode codedValueNode = factory.createBNode();
-		URI type = factory.createURI(org.openrdf.vocabulary.RDF.TYPE);
-		URI codedValue = factory.createURI(sp, "CodedValue");
-		graph.writeStatement(codedValueNode, type, codedValue);
-		
-		URI code = factory.createURI(sp, "code");
-		URI uri;
-		
-		uri = factory.createURI(p.getCodeBaseURL() + p.getCode());
-		
-		graph.writeStatement(codedValueNode, code, uri);
-		//
-		URI title = factory.createURI(dcterms, "title");
-		Literal titleVal = factory.createLiteral(p.getTitle());
-		graph.writeStatement(codedValueNode, title, titleVal);
-		//
-		graph.writeStatement(uri, type, code);
-		//
-		URI system = factory.createURI(sp, "system");
-		URI systemVal = factory.createURI(p.getCodeBaseURL());
-		graph.writeStatement(uri, system, systemVal);
-		//
-		URI identifier = factory.createURI(dcterms, "identifier");
-		Literal identifierVal = factory.createLiteral(p.getCode());
-		graph.writeStatement(uri, identifier, identifierVal);
-		
-		return codedValueNode;
-	}
-	
 
 	public String getRDF(Patient patient) throws IOException {
-		
+
 		return null;
 	}
-	
+
 }

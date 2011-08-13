@@ -10,10 +10,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.smartcontainer.RDFSource;
 import org.openmrs.module.smartcontainer.SmartDataService;
 import org.openmrs.module.smartcontainer.rdfsource.VitalSignRDFSource;
-import org.openmrs.module.smartcontainer.smartData.SmartProblem;
 import org.openmrs.module.smartcontainer.smartData.SmartVitalSigns;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,37 +23,38 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping(value = "/smartcontainer/api/")
 public class VitalSignController {
 	Log log = LogFactory.getLog(getClass());
-private VitalSignRDFSource resource;
-	
+	private VitalSignRDFSource resource;
+
 	public VitalSignRDFSource getResource() {
 		return resource;
 	}
-	
+
 	public void setResource(VitalSignRDFSource resource) {
 		this.resource = resource;
 	}
-	@RequestMapping(method = RequestMethod.GET,value = "records/{pid}/vital_signs/")
-	public ModelAndView handle(@PathVariable("pid") Integer patientId, HttpServletResponse resp) {
+
+	@RequestMapping(method = RequestMethod.GET, value = "records/{pid}/vital_signs/")
+	public ModelAndView handle(@PathVariable("pid") Patient patient,
+			HttpServletResponse resp) {
 		log.info("In the Medication Controller");
 		resp.setContentType("text/xml"); // actually I use a constant
 		Writer writer;
 		try {
 			writer = resp.getWriter();
-			Patient patient = Context.getPatientService().getPatient(patientId);
-			List<SmartVitalSigns> signs=(List<SmartVitalSigns>) Context.getService(SmartDataService.class).getAllForPatient(patient, SmartVitalSigns.class);
+			List<SmartVitalSigns> signs = Context.getService(
+					SmartDataService.class).getAllForPatient(patient,
+					SmartVitalSigns.class);
 			writer.write(resource.getRDF(signs)); // get the object
 			writer.close();
-		}
-		catch (IOException e) {
-			
-			e.printStackTrace();
-		}
-		catch (Exception e) {
-			
-			e.printStackTrace();
+		} catch (IOException e) {
+
+			throw new RuntimeException(e);
+		} catch (Exception e) {
+
+			throw new RuntimeException(e);
 		}
 		return null; // indicates this controller did all necessary processing
-		
+
 	}
 
 }

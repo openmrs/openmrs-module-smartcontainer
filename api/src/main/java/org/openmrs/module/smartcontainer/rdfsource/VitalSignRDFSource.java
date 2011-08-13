@@ -3,333 +3,283 @@ package org.openmrs.module.smartcontainer.rdfsource;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
-
-import java.util.ArrayList;
 import java.util.List;
 
-import org.openmrs.Concept;
-import org.openmrs.ConceptNumeric;
-import org.openmrs.Encounter;
-import org.openmrs.Obs;
 import org.openmrs.Patient;
-import org.openmrs.api.context.Context;
-import org.openmrs.module.smartcontainer.ConceptMappingNotFoundException;
-import org.openmrs.module.smartcontainer.RDFSource;
-import org.openmrs.module.smartcontainer.SMARTConceptMap;
-import org.openmrs.module.smartcontainer.smartData.CodedValue;
+import org.openmrs.module.smartcontainer.RdfSource;
+import org.openmrs.module.smartcontainer.smartData.SmartEncounter;
 import org.openmrs.module.smartcontainer.smartData.SmartVitalSigns;
 import org.openmrs.module.smartcontainer.smartData.VitalSign;
+import org.openmrs.module.smartcontainer.util.RdfUtil;
 import org.openrdf.model.BNode;
 import org.openrdf.model.Literal;
 import org.openrdf.model.URI;
 import org.openrdf.model.Value;
 import org.openrdf.rio.rdfxml.RdfXmlWriter;
 
-public class VitalSignRDFSource extends RDFSource {
+/**
+ * Render a RDF/XML for SMART Vital Signs
+ *
+ */
+public class VitalSignRDFSource extends RdfSource {
 
+	/**
+	 * Primary method to render
+	 * 
+	 * @param signs
+	 * @return
+	 * @throws IOException
+	 */
 	public String getRDF(List<SmartVitalSigns> signs) throws IOException {
-
 		Writer sWriter = new StringWriter();
 		RdfXmlWriter graph = new RdfXmlWriter(sWriter);
-
-		graph.setNamespace("rdf", rdf);
-		graph.setNamespace("sp", sp);
-		graph.setNamespace("foaf", foaf);
-		graph.setNamespace("dc", dc);
-		graph.setNamespace("dcterms", dcterms);
-		graph.setNamespace("v", v);
+		addHeader(graph);
 		graph.startDocument();
+		
 		for (SmartVitalSigns s : signs) {
-			//
-
+			/*Add parent node
+			 * <sp:VitalSigns>
+			 * ..child nodes
+			 * </sp:VitalSigns>
+			 * 
+			 */
 			BNode vitalSignNode = factory.createBNode();
-
 			URI vitalSigns = factory.createURI(sp, "VitalSigns");
-			URI type = factory.createURI(org.openrdf.vocabulary.RDF.TYPE);
 			graph.writeStatement(vitalSignNode, type, vitalSigns);
-			//
+		    /*Add child node
+		     * <dc:date>2010-05-12T04:00:00Z</dc:date>
+		     * 
+		     */
 			URI date = factory.createURI(dc, "date");
 			Literal dateVal = factory.createLiteral(s.getDate());
 			graph.writeStatement(vitalSignNode, date, dateVal);
-			//
-			BNode encounterNode = factory.createBNode();
-			//
-			BNode codedValueNode = factory.createBNode();
-			//
-			URI codedValue = factory.createURI(sp, "CodedValue");
-			graph.writeStatement(codedValueNode, type, codedValue);
-			//
-			URI code = factory.createURI(sp, "code");
-			URI codeURI = factory.createURI(s.getSmartEncounter()
-					.getEncounterType().getCodeBaseURL()
-					+ s.getSmartEncounter().getEncounterType().getCode());
-			graph.writeStatement(codedValueNode, code, codeURI);
-			//
-			URI title = factory.createURI(dcterms, "title");
-			Literal titleVal = factory.createLiteral(s.getSmartEncounter()
-					.getEncounterType().getCode());
-			graph.writeStatement(codedValueNode, title, titleVal);
-			//
-			URI encounter = factory.createURI(sp, "Encounter");
-			graph.writeStatement(encounterNode, type, encounter);
-			//
-			if (s.getSmartEncounter().getStartDate() != null
-					&& s.getSmartEncounter().getStartDate() != null) {
-				URI startDate = factory.createURI(sp, "startDate");
-				Value startDateVal = factory.createLiteral(s
-						.getSmartEncounter().getStartDate());
-				graph.writeStatement(encounterNode, startDate, startDateVal);
-				//
-				URI endDate = factory.createURI(sp, "endtDate");
-				Value endDateVal = factory.createLiteral(s.getSmartEncounter()
-						.getStartDate());
-				graph.writeStatement(encounterNode, endDate, endDateVal);
-				//
-			}
-			URI encounterType = factory.createURI(sp, "encounterType");
-			graph.writeStatement(encounterNode, encounterType, codedValueNode);
-			//
-			URI encounterS = factory.createURI(sp, "encounter");
-			graph.writeStatement(vitalSignNode, encounterS, encounterNode);
-			//
+            /*Add child node
+             * <sp:encounter>
+             * ..Encounter node
+             * </sp:encounter>
+             * 
+             */
+			URI encounter = factory.createURI(sp, "encounter");
+			graph.writeStatement(vitalSignNode, encounter,
+					addEncounter(s.getSmartEncounter(), graph));
+			/*Add child node
+             * <sp:bloodPressure>
+             * ..Blood Pressure node
+             * </sp:bloodPressure>
+             * 
+             */
 			BNode bpNode = factory.createBNode();
 			URI bp = factory.createURI(sp, "BloodPressure");
 			graph.writeStatement(bpNode, type, bp);
-
-			
+            
 			if (s.getBloodPressure() != null) {
-				
+				/*Add child node to Blood Pressure node
+				 *  <sp:diastolic>
+				 *  ..Vital Sign node
+				 *  </sp:diastolic>
+				 */
 				if (s.getBloodPressure().getDiastolic() != null) {
-					BNode avitalSignNameNode = factory.createBNode();
-					URI aVitalSign = factory.createURI(sp, "VitalSign");
-					graph.writeStatement(avitalSignNameNode, type, aVitalSign);
-					URI vitalName = factory.createURI(sp, "vitalName");
+					URI diastolic = factory.createURI(sp, "diastolic");
 					graph.writeStatement(
-							avitalSignNameNode,
-							vitalName,
-							codedValue(graph, s.getBloodPressure()
-									.getDiastolic().getVitalName()));
-					//
-					URI value = factory.createURI(sp, "value");
-					Value valueVal = factory.createLiteral(s.getBloodPressure().getDiastolic().getValue());
-					graph.writeStatement(avitalSignNameNode, value, valueVal);
-					//
-					URI unit = factory.createURI(sp, "unit");
-					Value unitVal = factory.createLiteral(s.getBloodPressure()
-							.getDiastolic().getUnit());
-					graph.writeStatement(avitalSignNameNode, unit, unitVal);
-					URI unknown = factory.createURI(sp, "diastolic");
-					graph.writeStatement(bpNode, unknown, avitalSignNameNode);
+							bpNode,
+							diastolic,
+							addVitalsign(s.getBloodPressure().getDiastolic(),
+									graph));
 				}
+				/*Add child node to Blood Pressure node
+				 * <sp:systolic>
+				 *  ..Vital Sign node
+				 *  </sp:systolic>
+				 */
 				if (s.getBloodPressure().getSystolic() != null) {
-					BNode avitalSignNameNode = factory.createBNode();
-					URI aVitalSign = factory.createURI(sp, "VitalSign");
-					graph.writeStatement(avitalSignNameNode, type, aVitalSign);
-					URI vitalName = factory.createURI(sp, "vitalName");
+					URI systolic = factory.createURI(sp, "systolic");
 					graph.writeStatement(
-							avitalSignNameNode,
-							vitalName,
-							codedValue(graph, s.getBloodPressure()
-									.getSystolic().getVitalName()));
-					//
-					URI value = factory.createURI(sp, "value");
-					Value valueVal = factory.createLiteral(s.getBloodPressure()
-							.getSystolic().getValue());
-					graph.writeStatement(avitalSignNameNode, value, valueVal);
-					//
-					URI unit = factory.createURI(sp, "unit");
-					Value unitVal = factory.createLiteral(s.getBloodPressure()
-							.getSystolic().getUnit());
-					graph.writeStatement(avitalSignNameNode, unit, unitVal);
-
-					URI unknown = factory.createURI(sp, "systolic");
-					graph.writeStatement(bpNode, unknown, avitalSignNameNode);
+							bpNode,
+							systolic,
+							addVitalsign(s.getBloodPressure().getSystolic(),
+									graph));
 				}
 			}
-
+            /*Add child node to parent node
+             * <sp:weight>
+			 *  ..Vital Sign node
+			 *  </sp:weight>
+             */
 			if (s.getWeight() != null) {
-				BNode avitalSignNameNode = factory.createBNode();
-				URI aVitalSign = factory.createURI(sp, "VitalSign");
-				graph.writeStatement(avitalSignNameNode, type, aVitalSign);
-				URI vitalName = factory.createURI(sp, "vitalName");
-				graph.writeStatement(avitalSignNameNode, vitalName,
-						codedValue(graph, s.getWeight().getVitalName()));
-				//
-				URI value = factory.createURI(sp, "value");
-				Value valueVal = factory
-						.createLiteral(s.getWeight().getValue());
-				graph.writeStatement(avitalSignNameNode, value, valueVal);
-				//
-				URI unit = factory.createURI(sp, "unit");
-				Value unitVal = factory.createLiteral(s.getWeight().getUnit());
-				graph.writeStatement(avitalSignNameNode, unit, unitVal);
-				//
-				URI unknown = factory.createURI(sp, "weight");
-				graph.writeStatement(vitalSignNode, unknown, avitalSignNameNode);
+				URI weight = factory.createURI(sp, "weight");
+				graph.writeStatement(vitalSignNode, weight,
+						addVitalsign(s.getWeight(), graph));
 			}
+			/*Add child node to parent node
+             * <sp:height>
+			 *  ..Vital Sign node
+			 *  </sp:height>
+             */
 			if (s.getHeight() != null) {
-				BNode avitalSignNameNode = factory.createBNode();
-				URI aVitalSign = factory.createURI(sp, "VitalSign");
-				graph.writeStatement(avitalSignNameNode, type, aVitalSign);
-				URI vitalName = factory.createURI(sp, "vitalName");
-				graph.writeStatement(avitalSignNameNode, vitalName,
-						codedValue(graph, s.getHeight().getVitalName()));
-				//
-				URI value = factory.createURI(sp, "value");
-				Value valueVal = factory
-						.createLiteral(s.getHeight().getValue());
-				graph.writeStatement(avitalSignNameNode, value, valueVal);
-				//
-				URI unit = factory.createURI(sp, "unit");
-				Value unitVal = factory.createLiteral(s.getHeight().getUnit());
-				graph.writeStatement(avitalSignNameNode, unit, unitVal);
-				//
-				URI unknown = factory.createURI(sp, "height");
-				graph.writeStatement(vitalSignNode, unknown, avitalSignNameNode);
+				URI height = factory.createURI(sp, "height");
+				graph.writeStatement(vitalSignNode, height,
+						addVitalsign(s.getHeight(), graph));
 			}
+			/*Add child node to parent node
+             * <sp:bodyMassIndex>
+			 *  ..Vital Sign node
+			 *  </sp:bodyMassIndex>
+             */
 			if (s.getBodyMassIndex() != null) {
-				BNode avitalSignNameNode = factory.createBNode();
-				URI aVitalSign = factory.createURI(sp, "VitalSign");
-				graph.writeStatement(avitalSignNameNode, type, aVitalSign);
-				URI vitalName = factory.createURI(sp, "vitalName");
-				graph.writeStatement(avitalSignNameNode, vitalName,
-						codedValue(graph, s.getBodyMassIndex().getVitalName()));
-				//
-				URI value = factory.createURI(sp, "value");
-				Value valueVal = factory.createLiteral(s.getBodyMassIndex()
-						.getValue());
-				graph.writeStatement(avitalSignNameNode, value, valueVal);
-				//
-				URI unit = factory.createURI(sp, "unit");
-				Value unitVal = factory.createLiteral(s.getBodyMassIndex()
-						.getUnit());
-				graph.writeStatement(avitalSignNameNode, unit, unitVal);
-				//
-				URI unknown = factory.createURI(sp, "bodyMassIndex");
-				graph.writeStatement(vitalSignNode, unknown, avitalSignNameNode);
+				URI bodyMassIndex = factory.createURI(sp, "bodyMassIndex");
+				graph.writeStatement(vitalSignNode, bodyMassIndex,
+						addVitalsign(s.getBodyMassIndex(), graph));
 			}
+			/*Add child node to parent node
+             * <sp:respiratoryRate>
+			 *  ..Vital Sign node
+			 *  </sp:respiratoryRate>
+             */
 			if (s.getRespiratoryRate() != null) {
-				BNode avitalSignNameNode = factory.createBNode();
-				URI aVitalSign = factory.createURI(sp, "VitalSign");
-				graph.writeStatement(avitalSignNameNode, type, aVitalSign);
-				URI vitalName = factory.createURI(sp, "vitalName");
-				graph.writeStatement(
-						avitalSignNameNode,
-						vitalName,
-						codedValue(graph, s.getRespiratoryRate().getVitalName()));
-				//
-				URI value = factory.createURI(sp, "value");
-				Value valueVal = factory.createLiteral(s.getRespiratoryRate()
-						.getValue());
-				graph.writeStatement(avitalSignNameNode, value, valueVal);
-				//
-				URI unit = factory.createURI(sp, "unit");
-				Value unitVal = factory.createLiteral(s.getRespiratoryRate()
-						.getUnit());
-				graph.writeStatement(avitalSignNameNode, unit, unitVal);
-				//
-				URI unknown = factory.createURI(sp, "respiratoryRate");
-				graph.writeStatement(vitalSignNode, unknown, avitalSignNameNode);
+				URI respiratoryRate = factory.createURI(sp, "respiratoryRate");
+				graph.writeStatement(vitalSignNode, respiratoryRate,
+						addVitalsign(s.getRespiratoryRate(), graph));
 			}
+			/*Add child node to parent node
+             * <sp:heartRate>
+			 *  ..Vital Sign node
+			 *  </sp:heartRate>
+             */
 			if (s.getHeartRate() != null) {
-				BNode avitalSignNameNode = factory.createBNode();
-				URI aVitalSign = factory.createURI(sp, "VitalSign");
-				graph.writeStatement(avitalSignNameNode, type, aVitalSign);
-				URI vitalName = factory.createURI(sp, "vitalName");
-				graph.writeStatement(avitalSignNameNode, vitalName,
-						codedValue(graph, s.getHeartRate().getVitalName()));
-				//
-				URI value = factory.createURI(sp, "value");
-				Value valueVal = factory.createLiteral(s.getHeartRate()
-						.getValue());
-				graph.writeStatement(avitalSignNameNode, value, valueVal);
-				//
-				URI unit = factory.createURI(sp, "unit");
-				Value unitVal = factory.createLiteral(s.getHeartRate()
-						.getUnit());
-				graph.writeStatement(avitalSignNameNode, unit, unitVal);
-				//
-				URI unknown = factory.createURI(sp, "heartRate");
-				graph.writeStatement(vitalSignNode, unknown, avitalSignNameNode);
+				URI heartRate = factory.createURI(sp, "heartRate");
+				graph.writeStatement(vitalSignNode, heartRate,
+						addVitalsign(s.getHeartRate(), graph));
 			}
+			/*Add child node to parent node
+             * <sp:oxygenSaturation>
+			 *  ..Vital Sign node
+			 *  </sp:oxygenSaturation>
+             */
 			if (s.getOxygenSaturation() != null) {
-				BNode avitalSignNameNode = factory.createBNode();
-				URI aVitalSign = factory.createURI(sp, "VitalSign");
-				graph.writeStatement(avitalSignNameNode, type, aVitalSign);
-				URI vitalName = factory.createURI(sp, "vitalName");
-				graph.writeStatement(
-						avitalSignNameNode,
-						vitalName,
-						codedValue(graph, s.getOxygenSaturation()
-								.getVitalName()));
-				//
-				URI value = factory.createURI(sp, "value");
-				Value valueVal = factory.createLiteral(s.getOxygenSaturation()
-						.getValue());
-				graph.writeStatement(avitalSignNameNode, value, valueVal);
-				//
-				URI unit = factory.createURI(sp, "unit");
-				Value unitVal = factory.createLiteral(s.getOxygenSaturation()
-						.getUnit());
-				graph.writeStatement(avitalSignNameNode, unit, unitVal);
-				//
-				URI unknown = factory.createURI(sp, "oxygenSaturation");
-				graph.writeStatement(vitalSignNode, unknown, avitalSignNameNode);
+				URI oxygenSaturation = factory
+						.createURI(sp, "oxygenSaturation");
+				graph.writeStatement(vitalSignNode, oxygenSaturation,
+						addVitalsign(s.getOxygenSaturation(), graph));
 			}
+			/*Add child node to parent node
+             * <sp:temperature>
+			 *  ..Vital Sign node
+			 *  </sp:temperature>
+             */
 			if (s.getTemperature() != null) {
-				BNode avitalSignNameNode = factory.createBNode();
-				URI aVitalSign = factory.createURI(sp, "VitalSign");
-				graph.writeStatement(avitalSignNameNode, type, aVitalSign);
-				URI vitalName = factory.createURI(sp, "vitalName");
-				graph.writeStatement(avitalSignNameNode, vitalName,
-						codedValue(graph, s.getTemperature().getVitalName()));
-				//
-				URI value = factory.createURI(sp, "value");
-				Value valueVal = factory.createLiteral(s.getTemperature()
-						.getValue());
-				graph.writeStatement(avitalSignNameNode, value, valueVal);
-				//
-				URI unit = factory.createURI(sp, "unit");
-				Value unitVal = factory.createLiteral(s.getTemperature()
-						.getUnit());
-				graph.writeStatement(avitalSignNameNode, unit, unitVal);
-				//
-				URI unknown = factory.createURI(sp, "temperature");
-				graph.writeStatement(vitalSignNode, unknown, avitalSignNameNode);
+     			URI temperature = factory.createURI(sp, "temperature");
+				graph.writeStatement(vitalSignNode, temperature,
+						addVitalsign(s.getTemperature(), graph));
 			}
 			URI bps = factory.createURI(sp, "bloodPressure");
 			graph.writeStatement(vitalSignNode, bps, bpNode);
 		}
-
-		//
-
 		graph.endDocument();
 
 		return sWriter.toString();
 	}
 
-	private Value codedValue(RdfXmlWriter graph, CodedValue c)
+	/**
+	 * Create following rdf:
+	 * 
+	 * <sp:Encounter>
+	 * ..child nodes
+	 * </sp:Encounter>
+	 * 
+	 * @param smartEncounter
+	 * @param graph
+	 * @return
+	 * @throws IOException
+	 */
+	private Value addEncounter(SmartEncounter smartEncounter, RdfXmlWriter graph)
 			throws IOException {
-		BNode codedValueNode = factory.createBNode();
-		URI type = factory.createURI(org.openrdf.vocabulary.RDF.TYPE);
-		URI codedValue = factory.createURI(sp, "CodedValue");
-		graph.writeStatement(codedValueNode, type, codedValue);
-		//
+	    /*Add parent node
+	     * <sp:Encounter>
+	     * ..child nodes
+	     * </sp:Encounter>
+	     * 
+	     */
+		BNode encounterNode = factory.createBNode();	
+		URI encounter = factory.createURI(sp, "Encounter");
+		graph.writeStatement(encounterNode, type, encounter);
+		/*Add child node
+	     * <sp:startDate>2010-05-12T04:00:00Z</sp:startDate>
+	     * 
+	     */
+		if (smartEncounter.getStartDate() != null) {
+			URI startDate = factory.createURI(sp, "startDate");
+			Value startDateVal = factory.createLiteral(smartEncounter
+					.getStartDate());
+			graph.writeStatement(encounterNode, startDate, startDateVal);
+		}
+		/*Add child node
+	     * <sp:endDate>2010-05-12T04:20:00Z</sp:endDate>
+	     * 
+	     */
+		if(smartEncounter.getEndDate() != null){
+			URI endDate = factory.createURI(sp, "endtDate");
+			Value endDateVal = factory.createLiteral(smartEncounter
+					.getEndDate());
+			graph.writeStatement(encounterNode, endDate, endDateVal);
+		
+		}
+		/*Add child node
+	     * <sp:encounterType>
+	     * ..Coded value
+	     * </sp:encounterType>
+	     * 
+	     */
+		URI encounterType = factory.createURI(sp, "encounterType");
+		graph.writeStatement(encounterNode, encounterType, RdfUtil.codedValue(factory, graph, smartEncounter.getEncounterType()));
+		return encounterNode;
+	}
 
-		URI code = factory.createURI(sp, "code");
-		URI uri;
-
-		uri = factory.createURI(c.getCodeBaseURL() + c.getCode());
-
-		graph.writeStatement(codedValueNode, code, uri);
-		//
-		URI title = factory.createURI(dcterms, "title");
-		Literal titleVal = factory.createLiteral(c.getCode());
-		graph.writeStatement(codedValueNode, title, titleVal);
-		//
-		graph.writeStatement(uri, type, code);
-		//
-		return codedValueNode;
+	/**
+	 * Create following rdf:
+	 * 
+	 * <sp:VitalSign>
+	 * ..child node
+	 * </sp:VitalSign>
+	 * 
+	 * @param v
+	 * @param graph
+	 * @return
+	 * @throws IOException
+	 */
+	private BNode addVitalsign(VitalSign v, RdfXmlWriter graph)
+			throws IOException {
+		/*
+		 * Add parent node
+		 * <sp:VitalSign>
+	     * ..child node
+	     * </sp:VitalSign>
+		 */
+		BNode avitalSignNameNode = factory.createBNode();
+		URI aVitalSign = factory.createURI(sp, "VitalSign");
+		graph.writeStatement(avitalSignNameNode, type, aVitalSign);
+		/*
+		 * Add child node
+		 * <sp:vitalName>
+	     * ..coded value node
+	     * </sp:vitalName>
+		 */
+		URI vitalName = factory.createURI(sp, "vitalName");
+		graph.writeStatement(avitalSignNameNode, vitalName,
+				RdfUtil.codedValue(factory, graph, v.getVitalName()));
+		/*Add child node
+		 * <sp:value>1.80</sp:value>
+		 */
+		URI value = factory.createURI(sp, "value");
+		Value valueVal = factory.createLiteral(v.getValue());
+		graph.writeStatement(avitalSignNameNode, value, valueVal);
+		/*Add child node
+		 *<sp:unit>m</sp:unit> 
+		 */
+		URI unit = factory.createURI(sp, "unit");
+		Value unitVal = factory.createLiteral(v.getUnit());
+		graph.writeStatement(avitalSignNameNode, unit, unitVal);
+		
+		return avitalSignNameNode;
 	}
 
 	public String getRDF(Patient patient) throws IOException {

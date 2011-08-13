@@ -28,10 +28,10 @@ public interface SmartDataHandler {
  * @param patient
  * @return
  */
-public SmartBaseData get(Patient patient);
+public <T extends SmartBaseData> T getForPatient(Patient patient);
 /**
  * @param patient
  * @return
  */
-public List<? extends SmartBaseData> getAllForPatient(Patient patient);
+public <T extends SmartBaseData> List<T> getAllForPatient(Patient patient);
 }

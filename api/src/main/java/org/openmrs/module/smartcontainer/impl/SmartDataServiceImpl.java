@@ -55,8 +55,8 @@ public class SmartDataServiceImpl implements SmartDataService {
 	 * @see org.openmrs.module.smartcontainer.SmartDataService#getAllForPatient(org.openmrs.Patient,
 	 *      java.lang.Class)
 	 */
-	public List<? extends SmartBaseData> getAllForPatient(Patient patient,
-			Class clazz) {
+	public <T extends SmartBaseData> List<T> getAllForPatient(Patient patient,
+			Class<T> clazz) {
 		// Get a handler from the handlers which is mapped to simple name of the
 		// clazz and call getAllForPatient(patient)
 		return handlers.get(clazz.getSimpleName()).getAllForPatient(patient);
@@ -66,10 +66,10 @@ public class SmartDataServiceImpl implements SmartDataService {
 	 * @see org.openmrs.module.smartcontainer.SmartDataService#getForPatient(org.openmrs.Patient,
 	 *      java.lang.Class)
 	 */
-	public SmartBaseData getForPatient(Patient patient, Class clazz) {
+	public <T extends SmartBaseData>  T getForPatient(Patient patient, Class<T> clazz) {
 		// Get a handler from the handlers which is mapped to simple name of the
 		// clazz and call getForPatient(patient)
-		return handlers.get(clazz.getSimpleName()).get(patient);
+		return handlers.get(clazz.getSimpleName()).getForPatient(patient);
 
 	}
 
