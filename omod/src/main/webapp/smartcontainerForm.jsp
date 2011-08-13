@@ -1,5 +1,4 @@
-<%@ include file="/WEB-INF/template/include.jsp"%>
-<%@ include file="/WEB-INF/template/header.jsp"%>
+<%@ include file="localHeader.jsp" %>
 <openmrs:htmlInclude
 	file="/scripts/jquery/dataTables/css/dataTables.css" />
 <openmrs:htmlInclude

@@ -107,7 +107,6 @@ public class SmartAppFormController {
 				
 			}
 			appService.deleteApp(app);
-			;
 			Collection<App> apps = Context.getService(SmartAppService.class).getAllApps();
 			modelAndView.setViewName(SUCCESS_FORM_VIEW);
 			modelAndView.addObject("appList", apps);
