@@ -17,34 +17,35 @@ package org.openmrs.module.smartcontainer.app;
  * Represents Activity corresponding to a SMART App
  */
 public class Activity {
-	
+
 	private Integer activityId;
-	
+
 	private String activityName;
-	
+
 	private String activityURL;
-	
+
 	/**
 	 * @return the activityId
 	 */
 	public Integer getActivityId() {
 		return activityId;
 	}
-	
+
 	/**
-	 * @param activityId the activityId to set
+	 * @param activityId
+	 *            the activityId to set
 	 */
 	public void setActivityId(Integer activityId) {
 		this.activityId = activityId;
 	}
-	
+
 	/**
 	 * @return the activityName
 	 */
 	public String getActivityName() {
 		return activityName;
 	}
-	
+
 	/**
 	 * @param activityName
 	 * @param activityURL
@@ -54,32 +55,34 @@ public class Activity {
 		this.activityName = activityName;
 		this.activityURL = activityURL;
 	}
-	
+
 	/**
 	 * @return the activityURL
 	 */
 	public String getActivityURL() {
 		return activityURL;
 	}
-	
+
 	/**
-	 * @param activityName the activityName to set
+	 * @param activityName
+	 *            the activityName to set
 	 */
 	public void setActivityName(String activityName) {
 		this.activityName = activityName;
 	}
-	
+
 	/**
-	 * @param activityURL the activityURL to set
+	 * @param activityURL
+	 *            the activityURL to set
 	 */
 	public void setActivityURL(String activityURL) {
 		this.activityURL = activityURL;
 	}
-	
+
 	/**
 	 * no-arg constructor
 	 */
 	public Activity() {
-		
+
 	}
 }

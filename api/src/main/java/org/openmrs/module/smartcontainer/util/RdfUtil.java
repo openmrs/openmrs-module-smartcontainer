@@ -20,8 +20,11 @@ public class RdfUtil {
 
 	/**
 	 * Utility method for adding valueAndUnit to the RDF graph. The output is
-	 * looks like following: <sp:ValueAndUnit> <sp:value>2</sp:value>
-	 * <sp:unit>{tablet}</sp:unit> </sp:ValueAndUnit>
+	 * looks like following: 
+         * <sp:ValueAndUnit> 
+         * <sp:value>2</sp:value>
+	 * <sp:unit>{tablet}</sp:unit>
+         * </sp:ValueAndUnit>
 	 * 
 	 * 
 	 * @param factory
@@ -53,17 +56,23 @@ public class RdfUtil {
 
 	/**
 	 * Utility method for adding codedValue to the RDF graph The output is looks
-	 * like following: <sp:CodedValue> <sp:code
-	 * rdf:resource="http://loinc.org/codes/2951-2"/> <dcterms:title>Serum
-	 * sodium</dcterms:title> <sp:codeProvenance> <sp:CodeProvenance>
+	 * like following:
+         * <sp:CodedValue> 
+         * <sp:code rdf:resource="http://loinc.org/codes/2951-2"/>
+	 * <dcterms:title>Serum sodium</dcterms:title>
+	 * <sp:codeProvenance>
+         * <sp:CodeProvenance>
 	 * <sp:sourceCode rdf:resource="http://my.local.coding.system/01234" />
 	 * <dcterms:title>Random blood sodium level</dcterms:title>
 	 * <sp:translationFidelity
 	 * rdf:resource="http://smartplatforms.org/terms/code/fidelity#verified" />
-	 * </sp:CodeProvenance> </sp:codeProvenance> </sp:CodedValue> <sp:Code
-	 * rdf:about="http://loinc.org/codes/2951-2"> <sp:system
-	 * rdf:resource="http://loinc.org/codes/" />
-	 * <dcterms:identifier>2951-2</dcterms:identifier> </sp:Code>
+	 * </sp:CodeProvenance>
+         * </sp:codeProvenance> 
+         * </sp:CodedValue> 
+         * <sp:Code rdf:about="http://loinc.org/codes/2951-2"> 
+	 * <sp:system rdf:resource="http://loinc.org/codes/" />
+	 * <dcterms:identifier>2951-2</dcterms:identifier>
+	 * </sp:Code>
 	 * 
 	 * 
 	 * @param factory

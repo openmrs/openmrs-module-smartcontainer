@@ -22,39 +22,40 @@ import org.apache.commons.logging.LogFactory;
  * Used to construct a SMART App from its manifest file
  */
 public class AppFactory {
-	
+
 	public static Log log = LogFactory.getLog(AppFactory.class);
-	
+
 	public static final String NAME = "name";
-	
+
 	public static final String DESCRIPTION = "description";
-	
+
 	public static final String AUTHOR = "author";
-	
+
 	public static final String MODE = "mode";
-	
+
 	public static final String VERSION = "version";
-	
+
 	public static final String BASEURL = "base_url";
-	
+
 	public static final String ICON = "icon";
-	
+
 	public static final String SMARTAPPID = "id";
-	
+
 	public static final String ACTIVITY = "activities";
-	
+
 	public static final String WEBHOOK = "web_hooks";
-	
+
 	public static final String DEFAULTAPP = "enabled_by_default";
-	
+	public static final String URL = "url";
+
 	private static Activity activity;
-	
+
 	private static WebHook webHook;
-	
+
 	private static ManifestParser pa;
-	
+
 	static String temp = null;
-	
+
 	/**
 	 * Method to construct the App
 	 * 
@@ -62,25 +63,26 @@ public class AppFactory {
 	 * @return
 	 */
 	public static App getApp(String maniFile) {
-		
+
 		App app = new App();
 		pa = new ManifestParser();
 		pa.parse(maniFile);
 		return getApp(app, pa);
-		
+
 	}
-	
+
 	/**
 	 * helper method
 	 * 
 	 * @param app2
 	 * @param pa
 	 * @return
+	 * @should return an App
 	 */
 	private static App getApp(App app, ManifestParser pa) {
-		
+
 		app.setName((String) pa.get(NAME));
-		
+
 		app.setAuthor((String) pa.get(AUTHOR));
 		app.setBaseURL((String) pa.get(BASEURL));
 		app.setDefaultApp(Boolean.valueOf((String) pa.get(DEFAULTAPP)));
@@ -91,13 +93,13 @@ public class AppFactory {
 		app.setMode((String) pa.get(MODE));
 		app.setsMARTAppId((String) pa.get(SMARTAPPID));
 		app.setVersion((String) pa.get(VERSION));
-		
+
 		setActivity(app, (Map) pa.get(ACTIVITY));
-		
+
 		setWebhook(app, (Map) pa.get(WEBHOOK));
 		return app;
 	}
-	
+
 	/**
 	 * helper method to set the web hooks
 	 * 
@@ -106,22 +108,22 @@ public class AppFactory {
 	 */
 	private static void setWebhook(App app, Map map) {
 		webHook = new WebHook();
-		if (map!=null &&  !map.isEmpty()) {
+		if (map != null && !map.isEmpty()) {
 			// pa.parse(webhookString);
-			
+
 			webHook.setName((String) map.keySet().toArray()[0]);
 			map = (Map) (map.get(webHook.getName()));
-			webHook.setDescription((String) map.get("description"));
-			temp = (String) map.get("url");
+			webHook.setDescription((String) map.get(DESCRIPTION));
+			temp = (String) map.get(URL);
 			temp = removeBaseURL(temp, app.getBaseURL());
 			webHook.setURL(temp);
 			app.setWebHook(webHook);
 		} else {
 			app.setWebHook(webHook);
 		}
-		
+
 	}
-	
+
 	/**
 	 * helper method to set the activity
 	 * 
@@ -129,8 +131,8 @@ public class AppFactory {
 	 * @param string
 	 */
 	private static void setActivity(App app, Map map) {
-		if (map!=null && !map.isEmpty()) {
-			
+		if (map != null && !map.isEmpty()) {
+
 			activity = new Activity();
 			activity.setActivityName((String) map.keySet().toArray()[0]);
 			temp = (String) map.get(activity.getActivityName());
@@ -139,16 +141,16 @@ public class AppFactory {
 			app.setActivity(activity);
 		}
 	}
-	
+
 	/**
-	 * helper method to insert base url
+	 * helper method to insert base url into all URL
 	 * 
 	 * @param url
 	 * @param base
 	 * @return
 	 */
 	private static String removeBaseURL(String url, String base) {
-		
+
 		url = url.replaceAll("\\{base_url\\}", base);
 		log.info(url);
 		return url;
