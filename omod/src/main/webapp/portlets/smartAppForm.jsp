@@ -1,5 +1,3 @@
-<%@ page language="java" contentType="text/html; charset=US-ASCII"
-	pageEncoding="US-ASCII"%>
 <%@ include file="/WEB-INF/template/include.jsp"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -8,13 +6,13 @@
 <title>SMART Apps in OpenMRS</title>
 <!--<script-->
 <!--	src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>-->
-<script
-	src="http://sandbox.smartplatforms.org/static/smart_ui_server/resources/class.js"></script>
-<script
-	src="http://sandbox.smartplatforms.org/static/smart_ui_server/resources/smart-api-container.js"></script>
+<openmrs:htmlInclude
+	file="/moduleResources/smartcontainer/class.js" />
+<openmrs:htmlInclude
+	file="/moduleResources/smartcontainer/smart-api-container.js" />
+<openmrs:htmlInclude
+	file="/moduleResources/smartcontainer/jschannel.js" />
 
-<script
-	src="http://sample-apps.smartplatforms.org/framework/smart/scripts/jschannel.js"></script>
 <style type="text/css">
 #main {
 	position: relative;
@@ -46,7 +44,7 @@
 	padding: 10px;
 	padding-left: 205px;
 	padding-bottom: 11px;
-	width: 100%; //
+	width: 100%; 
 	height: 100%;
 	border: 0px;
 	box-sizing: border-box;
@@ -57,13 +55,13 @@
 }
 
 #iframe_holder iframe {
-	width: 100%; //
+	width: 100%; 
 	height: 100%;
 	border: 2px dotted #ddd;
 }
 
 .activity_iframe {
-	width: 100%; //
+	width: 100%; 
 	height: 100%;
 	border: 0px;
 }

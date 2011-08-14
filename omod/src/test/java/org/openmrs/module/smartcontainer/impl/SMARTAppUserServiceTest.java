@@ -18,7 +18,7 @@ import junit.framework.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.smartcontainer.UserService;
+import org.openmrs.module.smartcontainer.SmartUserService;
 
 /**
  * This test validates the functionality of the User Service
@@ -28,7 +28,7 @@ public class SMARTAppUserServiceTest {
 	@Test
 	@Ignore
 	public void verifySMARTAppUserService() {
-		UserService us = Context.getService(UserService.class);
+		SmartUserService us = Context.getService(SmartUserService.class);
 		Assert.assertNotNull(us.getAllUsers());
 		Assert.assertEquals("admin", us.getUserByName("admin").getOpenMRSUser().getName());
 	}
