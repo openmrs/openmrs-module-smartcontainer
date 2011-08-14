@@ -51,7 +51,7 @@ public class HibernateUserDAO implements UserDAO {
 		Query query = sessionFactory
 		        .getCurrentSession()
 		        .createQuery(
-		            "from SMARTAppUser u where u.openMRSUser.retired = 0 and (u.openMRSUser.username = ? or u.openMRSUser.systemId = ?)");
+		            "from SmartUser u where u.openMRSUser.retired = 0 and (u.openMRSUser.username = ? or u.openMRSUser.systemId = ?)");
 		query.setString(0, name);
 		query.setString(1, name);
 		List<SmartUser> users = query.list();
@@ -64,7 +64,7 @@ public class HibernateUserDAO implements UserDAO {
 	 */
 	public Collection<SmartUser> getAllUsers() throws DAOException {
 		
-		return sessionFactory.getCurrentSession().createQuery("from SMARTAppUser u order by u.openMRSUser.userId").list();
+		return sessionFactory.getCurrentSession().createQuery("from SmartUser u order by u.openMRSUser.userId").list();
 	}
 	
 	/**

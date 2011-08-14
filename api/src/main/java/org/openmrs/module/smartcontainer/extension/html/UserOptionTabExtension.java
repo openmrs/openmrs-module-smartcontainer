@@ -21,7 +21,7 @@ import org.openmrs.module.Extension.MEDIA_TYPE;
  * This class defines a horizontal tab that will appear on the user option page
  * 
  */
-public class UserOptionTabExtention  {
+public class UserOptionTabExtension extends Extension {
 	/**
 	 * @see org.openmrs.module.web.extension.UserOptionExtension#getPortletUrl()
 	 */
