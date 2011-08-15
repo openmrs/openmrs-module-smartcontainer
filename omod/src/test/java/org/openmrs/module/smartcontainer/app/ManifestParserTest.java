@@ -1,36 +1,49 @@
-/**
- * The contents of this file are subject to the OpenMRS Public License
- * Version 1.0 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://license.openmrs.org
- *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations
- * under the License.
- *
- * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
  */
 package org.openmrs.module.smartcontainer.app;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.junit.Ignore;
+import java.util.Scanner;
+import java.io.InputStream;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
+import static org.junit.Assert.*;
 
 /**
- * This test validates the functionality of the Manifest parser
+ *
+ * @author aja
  */
-@Ignore
 public class ManifestParserTest {
-	
-	private Log log = LogFactory.getLog(this.getClass());
-	
-	/**
-	 * verify the parsing
-	 */
-	@Test
-	public void testparser() {
-		
-	}
+    
+    public ManifestParserTest() {
+    }
+
+    
+    
+    @Before
+    public void setUp() {
+    }
+    
+    @After
+    public void tearDown() {
+    }
+
+    
+    
+    /**
+     * Test of parse method, of class ManifestParser.
+     */
+    @Test
+    public void testParse() {
+        InputStream manifest=getClass().getClassLoader().getResourceAsStream("smart_manifest.json");
+        assertNotNull(manifest);
+        String maniFile = new Scanner(manifest).useDelimiter("\\A").next();
+        ManifestParser instance = new ManifestParser();
+        Boolean result = instance.parse(maniFile);
+        assertTrue(result);
+    }
+
+    
 }

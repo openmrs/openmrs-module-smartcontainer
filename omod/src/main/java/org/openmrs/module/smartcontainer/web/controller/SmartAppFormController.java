@@ -14,15 +14,13 @@
 package org.openmrs.module.smartcontainer.web.controller;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Collection;
 import java.util.List;
-import java.util.Scanner;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -32,6 +30,7 @@ import org.openmrs.module.smartcontainer.SmartUser;
 import org.openmrs.module.smartcontainer.SmartUserService;
 import org.openmrs.module.smartcontainer.app.App;
 import org.openmrs.module.smartcontainer.app.AppFactory;
+import org.openmrs.web.WebConstants;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.ServletRequestUtils;
@@ -76,11 +75,13 @@ public class SmartAppFormController {
 	 */
 	@RequestMapping(method = RequestMethod.POST)
 	public ModelAndView deleteApp(HttpServletRequest request) {
+            
 		ModelAndView modelAndView = new ModelAndView();
 		SmartAppService appService = Context.getService(SmartAppService.class);
 		SmartUserService userService = Context.getService(SmartUserService.class);
 		String action = ServletRequestUtils.getStringParameter(request, "action", "");
 		Boolean isUploadFromURL = ServletRequestUtils.getBooleanParameter(request, "updateFromURL", false);
+                HttpSession httpSession = request.getSession();
 		//
 		if ("removeApp".equals(action)) {
 			Integer appId = null;
@@ -107,41 +108,35 @@ public class SmartAppFormController {
 				
 			}
 			appService.deleteApp(app);
-			Collection<App> apps = Context.getService(SmartAppService.class).getAllApps();
-			modelAndView.setViewName(SUCCESS_FORM_VIEW);
-			modelAndView.addObject("appList", apps);
+			
 		} else if ("upload".equals(action)) {
 			App newApp = null;
 			if (isUploadFromURL) {
 				String app = null;
 				String url = ServletRequestUtils.getStringParameter(request, "manifestURL", "");
 				log.info("URL stirng :" + url);
-				URL appURL = null;
+				
 				try {
-					appURL = new URL(url);
-					log.info("URL  :" + appURL);
-					// File file= OpenmrsUtil.url2file(appURL);
-					// log.info("File  :"+file);
-					app = new Scanner((InputStream) appURL.getContent()).useDelimiter("\\A").next();
-					log.info("File String :" + app);
-				}
-				catch (MalformedURLException e) {
-					
-					log.error("Error generated", e);
-				}
-				catch (IOException e) {
-					
-					log.error("Error generated", e);
-				}
-				
-				newApp = AppFactory.getApp(app);
-				log.info("APP  :" + newApp);
-				
-				List<App> apps = (List<App>) appService.getAllApps();
+					newApp = AppFactory.getAppFromUrl(url);
+				        log.info("APP  :" + newApp);
+                                        List<App> apps = (List<App>) appService.getAllApps();
 				if (!apps.contains(newApp)) {
 					newApp.setRetire(false);
 					appService.saveApp(newApp);
 				}
+				}
+				catch (MalformedURLException e) {
+					httpSession.setAttribute(WebConstants.OPENMRS_ERROR_ATTR, "Malformed URL");
+					log.error("Error generated", e);
+				}
+				catch (IOException e) {
+					httpSession.setAttribute(WebConstants.OPENMRS_ERROR_ATTR, "Malformed Manifest file");
+					log.error("Error generated", e);
+				}
+				
+				
+				
+				
 				
 			} else {
 				MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
@@ -149,22 +144,21 @@ public class SmartAppFormController {
 				
 				String text = null;
 				try {
-					text = new String(multipartModuleFile.getBytes());
+					newApp = AppFactory.getAppFromLocalFile(multipartModuleFile.getInputStream());
+                                        List<App> apps = (List<App>) appService.getAllApps();
+				        if (!apps.contains(newApp)) {
+					  newApp.setRetire(false);
+					  appService.saveApp(newApp);
+				        } else {
+
+				         }
 				}
 				catch (IOException e1) {
-					
+					httpSession.setAttribute(WebConstants.OPENMRS_ERROR_ATTR, "Malformed Manifest file");
 					log.error("Error generated", e1);
 				}
+												
 				
-				newApp = AppFactory.getApp(text);
-				
-				List<App> apps = (List<App>) appService.getAllApps();
-				if (!apps.contains(newApp)) {
-					newApp.setRetire(false);
-					appService.saveApp(newApp);
-				} else {
-
-				}
 			}
 		}
 		//
