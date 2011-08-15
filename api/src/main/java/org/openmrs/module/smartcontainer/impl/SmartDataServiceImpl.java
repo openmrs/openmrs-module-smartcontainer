@@ -26,9 +26,9 @@ import org.openmrs.module.smartcontainer.smartData.handler.SmartDataHandler;
  * 
  */
 public class SmartDataServiceImpl implements SmartDataService {
-	private Map<String, SmartDataHandler> handlers;
+	private Map<String, SmartDataHandler<? extends SmartBaseData>> handlers;
 
-	public Map<String, SmartDataHandler> getHandlers() {
+	public Map<String, SmartDataHandler<? extends SmartBaseData>> getHandlers() {
 		return handlers;
 	}
 
@@ -39,7 +39,7 @@ public class SmartDataServiceImpl implements SmartDataService {
 	 * 
 	 * @param h
 	 */
-	public void setHandlers(Map<String, SmartDataHandler> h) {
+	public void setHandlers(Map<String, SmartDataHandler<? extends SmartBaseData>> h) {
 		if (this.handlers == null) {
 			this.handlers = h;
 		} else {
@@ -59,17 +59,17 @@ public class SmartDataServiceImpl implements SmartDataService {
 			Class<T> clazz) {
 		// Get a handler from the handlers which is mapped to simple name of the
 		// clazz and call getAllForPatient(patient)
-		return handlers.get(clazz.getSimpleName()).getAllForPatient(patient);
+		return (List<T>) handlers.get(clazz.getSimpleName()).getAllForPatient(patient);
 	}
 
 	/**
 	 * @see org.openmrs.module.smartcontainer.SmartDataService#getForPatient(org.openmrs.Patient,
 	 *      java.lang.Class)
 	 */
-	public <T extends SmartBaseData>  T getForPatient(Patient patient, Class<T> clazz) {
+	public <T extends SmartBaseData> T getForPatient(Patient patient, Class<T> clazz) {
 		// Get a handler from the handlers which is mapped to simple name of the
 		// clazz and call getForPatient(patient)
-		return handlers.get(clazz.getSimpleName()).getForPatient(patient);
+		return (T) handlers.get(clazz.getSimpleName()).getForPatient(patient);
 
 	}
 

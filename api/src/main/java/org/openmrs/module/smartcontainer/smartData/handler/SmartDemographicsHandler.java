@@ -16,7 +16,6 @@ package org.openmrs.module.smartcontainer.smartData.handler;
 import java.util.List;
 
 import org.openmrs.Patient;
-import org.openmrs.module.smartcontainer.smartData.SmartBaseData;
 import org.openmrs.module.smartcontainer.smartData.SmartDemographics;
 import org.openmrs.module.smartcontainer.util.SmartDataHandlerUtil;
 
@@ -24,7 +23,8 @@ import org.openmrs.module.smartcontainer.util.SmartDataHandlerUtil;
  * Default Handler Implementation for SMART Demographics
  * 
  */
-public class SmartDemographicsHandler implements SmartDataHandler {
+public class SmartDemographicsHandler implements
+		SmartDataHandler<SmartDemographics> {
 
 	/**
 	 * @see org.openmrs.module.smartcontainer.smartData.handler.SmartDataHandler#getForPatient(org.openmrs.Patient)
@@ -40,9 +40,9 @@ public class SmartDemographicsHandler implements SmartDataHandler {
 		if (patient.getBirthdate() != null) // avoid null
 			demographics.setBirthDate(SmartDataHandlerUtil.date(patient
 					.getBirthdate())); // ISO-8601 string
-		if(patient.getPersonAddress()!=null)
-		demographics.setZipCode(patient.getPersonAddress().getPostalCode()); // Free
-																				// text
+		if (patient.getPersonAddress() != null)
+			demographics.setZipCode(patient.getPersonAddress().getPostalCode()); // Free
+																					// text
 		return demographics;
 	}
 
@@ -51,7 +51,7 @@ public class SmartDemographicsHandler implements SmartDataHandler {
 	 * 
 	 * @see org.openmrs.module.smartcontainer.smartData.handler.SmartDataHandler#getAllForPatient(org.openmrs.Patient)
 	 */
-	public List<? extends SmartBaseData> getAllForPatient(Patient patient) {
+	public List<SmartDemographics> getAllForPatient(Patient patient) {
 		return null;
 	}
 }

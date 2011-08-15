@@ -22,16 +22,17 @@ import org.openmrs.module.smartcontainer.smartData.SmartBaseData;
  * 
  *
  */
-public interface SmartDataHandler {
-	
-/**
- * @param patient
- * @return
- */
-public <T extends SmartBaseData> T getForPatient(Patient patient);
-/**
- * @param patient
- * @return
- */
-public <T extends SmartBaseData> List<T> getAllForPatient(Patient patient);
+public interface SmartDataHandler<T extends SmartBaseData> {
+
+	/**
+	 * @param patient
+	 * @return
+	 */
+	public T getForPatient(Patient patient);
+
+	/**
+	 * @param patient
+	 * @return
+	 */
+	public List<T> getAllForPatient(Patient patient);
 }

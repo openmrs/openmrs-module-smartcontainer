@@ -25,8 +25,6 @@ import org.openrdf.rio.rdfxml.RdfXmlWriter;
 
 /**
  * Render a RDF/XML for SMART Demographics
- * 
- * 
  */
 public class DemographicsRDFSource extends RdfSource {
 

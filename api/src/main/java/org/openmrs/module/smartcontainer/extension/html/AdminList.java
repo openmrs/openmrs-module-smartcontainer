@@ -13,7 +13,7 @@
  */
 package org.openmrs.module.smartcontainer.extension.html;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.openmrs.module.Extension;
@@ -43,7 +43,7 @@ public class AdminList extends AdministrationSectionExt {
 	 */
 	public Map<String, String> getLinks() {
 		
-		Map<String, String> map = new HashMap<String, String>();
+		Map<String, String> map = new LinkedHashMap<String, String>();
 		
 		map.put("module/smartcontainer/smartcontainerLink.form", "smartcontainer.admin.manage");
 		map.put("module/smartcontainer/manageUserAppLink.form", "smartcontainer.admin.manage.user");

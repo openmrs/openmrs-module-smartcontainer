@@ -39,23 +39,20 @@ public class DemographicsController {
 	public ModelAndView handle(@PathVariable("pid") Patient patient,
 			HttpServletResponse resp) {
 		log.info("In the Demographics Controller");
-		resp.setContentType("text/xml"); // actually I use a constant
+		resp.setContentType("text/xml"); // should use a constant
 		Writer writer;
 		
 		try {
 			writer = resp.getWriter();
 			SmartDemographics d = Context.getService(SmartDataService.class)
 					.getForPatient(patient, SmartDemographics.class);
-			writer.write(resource.getRDF(d)); // get the
-												// object
+			writer.write(resource.getRDF(d));
+			
 			writer.close();
 		} catch (IOException e) {
-
-			throw new RuntimeException(e);
-		} catch (Exception e) {
-
-			throw new RuntimeException(e);
-		}
+			log.error("Unable to write out demographics for pid: " + patient.getId(), e);
+		} 
+		
 		return null; // indicates this controller did all necessary processing
 
 	}
