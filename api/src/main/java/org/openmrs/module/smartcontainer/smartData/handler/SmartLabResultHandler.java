@@ -11,12 +11,11 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.smartcontainer.SmartConceptMap;
 import org.openmrs.module.smartcontainer.smartData.Attribution;
 import org.openmrs.module.smartcontainer.smartData.QuantitativeResult;
-import org.openmrs.module.smartcontainer.smartData.SmartBaseData;
 import org.openmrs.module.smartcontainer.smartData.SmartLabResult;
 import org.openmrs.module.smartcontainer.smartData.ValueAndUnit;
 import org.openmrs.module.smartcontainer.util.SmartDataHandlerUtil;
 
-public class SmartLabResultHandler implements SmartDataHandler {
+public class SmartLabResultHandler implements SmartDataHandler<SmartLabResult> {
 	private SmartConceptMap map;
 
 	public SmartConceptMap getMap() {
@@ -27,12 +26,11 @@ public class SmartLabResultHandler implements SmartDataHandler {
 		this.map = map;
 	}
 
-	public SmartBaseData getForPatient(Patient patient) {
-
+	public SmartLabResult getForPatient(Patient patient) {
 		return null;
 	}
 
-	public List<? extends SmartBaseData> getAllForPatient(Patient patient) {
+	public List<SmartLabResult> getAllForPatient(Patient patient) {
 		List<Obs> obs = Context.getObsService()
 				.getObservationsByPerson(patient);
 		List<SmartLabResult> smartLabs = new ArrayList<SmartLabResult>();
@@ -50,12 +48,14 @@ public class SmartLabResultHandler implements SmartDataHandler {
 						quantity.setValueAndUnit(SmartDataHandlerUtil
 								.valueAndUnitHelper(o.getValueNumeric(),
 										cn.getUnits()));
+						
 						quantity.setNormalRange(SmartDataHandlerUtil
-								.rangeHelper(cn.getHiAbsolute(),
-										cn.getLowAbsolute(), cn.getUnits()));
+								.rangeHelper(cn.getHiNormal(),
+										cn.getLowNormal(), cn.getUnits()));
 						quantity.setNonCriticalRange(SmartDataHandlerUtil
 								.rangeHelper(cn.getHiCritical(),
 										cn.getLowCritical(), cn.getUnits()));
+						
 						result.setQuantitativeResult(quantity);
 
 					
@@ -76,6 +76,10 @@ public class SmartLabResultHandler implements SmartDataHandler {
 		return smartLabs;
 	}
 
+	/**
+	 * @param concept a concept (that should be datatype=numeric)
+	 * @return a ConceptNumeric fetched from the database, or null if <code>concept</code> is not a numeric
+	 */
 	private ConceptNumeric getNumericConcept(Concept concept) {
 		if (concept.isNumeric()) {
 			return Context.getConceptService().getConceptNumeric(
@@ -86,7 +90,6 @@ public class SmartLabResultHandler implements SmartDataHandler {
 	}
 
 	private boolean isLabTest(Concept concept) {
-
 		return concept.getConceptClass().getName().equals("Test");
 	}
 
