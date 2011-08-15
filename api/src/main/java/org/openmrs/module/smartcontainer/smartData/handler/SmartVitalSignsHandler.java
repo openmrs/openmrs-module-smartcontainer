@@ -3,6 +3,7 @@ package org.openmrs.module.smartcontainer.smartData.handler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -17,32 +18,21 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.smartcontainer.ConceptMappingNotFoundException;
 import org.openmrs.module.smartcontainer.SmartConceptMap;
 import org.openmrs.module.smartcontainer.smartData.CodedValue;
-import org.openmrs.module.smartcontainer.smartData.SmartBaseData;
 import org.openmrs.module.smartcontainer.smartData.SmartEncounter;
 import org.openmrs.module.smartcontainer.smartData.SmartVitalSigns;
 import org.openmrs.module.smartcontainer.smartData.VitalSign;
 import org.openmrs.module.smartcontainer.util.SmartDataHandlerUtil;
 
-public class SmartVitalSignsHandler implements SmartDataHandler {
+public class SmartVitalSignsHandler implements SmartDataHandler<SmartVitalSigns> {
 
 	Log log = LogFactory.getLog(getClass());
 
-	public String[] getLoincCodes() {
-		return loincCodes;
-	}
-
-	public void setLoincCodes(String[] loincCodes) {
-		this.loincCodes = loincCodes;
-	}
-
-	public String[] getSnomedCodes() {
-		return snomedCodes;
-	}
-
-	public void setSnomedCodes(String[] snomedCodes) {
-		this.snomedCodes = snomedCodes;
-	}
-
+	private final List<String> LOINC_CODES = Arrays.asList("8302-2", "3141-9", "39156-5", "9279-1",
+			"8867-4", "2710-2", "8310-5", "8480-6", "8462-4");
+	
+	private final List<String> SNOMED_CODES = Arrays.asList( "33586001", "368209003" );
+	
+	// set by the moduleApplicationContext
 	private SmartConceptMap loincMap;
 	private SmartConceptMap snomedMap;
 
@@ -54,8 +44,7 @@ public class SmartVitalSignsHandler implements SmartDataHandler {
 		this.loincMap = loincMap;
 	}
 
-	public SmartBaseData getForPatient(Patient patient) {
-
+	public SmartVitalSigns getForPatient(Patient patient) {
 		return null;
 	}
 
@@ -67,11 +56,7 @@ public class SmartVitalSignsHandler implements SmartDataHandler {
 		this.snomedMap = snomedMap;
 	}
 
-	private String loincCodes[] = { "8302-2", "3141-9", "39156-5", "9279-1",
-			"8867-4", "2710-2", "8310-5", "8480-6", "8462-4" };
-	private String snomedCodes[] = { "33586001", "368209003" };
-
-	public List<? extends SmartBaseData> getAllForPatient(Patient patient) {
+	public List<SmartVitalSigns> getAllForPatient(Patient patient) {
 		List<Encounter> encounters = Context.getEncounterService()
 				.getEncountersByPatient(patient);
 		List<SmartVitalSigns> smartVitalSigns = new ArrayList<SmartVitalSigns>();
@@ -103,6 +88,7 @@ public class SmartVitalSignsHandler implements SmartDataHandler {
 		try {
 			getVisit = e.getClass().getDeclaredMethod("getVisit", new Class[0]);
 			if (getVisit != null) {
+				// we're in 1.9+ openmrs, so there is an Encounter.getVisit method
 				Object visit = getVisit.invoke(e, args);
 				if (visit != null) {
 					start = (Date) visit
@@ -125,6 +111,7 @@ public class SmartVitalSignsHandler implements SmartDataHandler {
 		} catch (InvocationTargetException e5) {
 			throw new RuntimeException(e5);
 		}
+		
 		if (start != null)
 			encounter.setStartDate(SmartDataHandlerUtil.date(start));
 		if (stop != null)
@@ -137,31 +124,35 @@ public class SmartVitalSignsHandler implements SmartDataHandler {
 		for (Obs o : e.getAllObs()) {
 
 			if (!o.isObsGrouping()) {
-				String conceptCode = getVitalSignCode(o.getConcept());
 				ConceptNumeric cn = getNumericConcept(o.getConcept());
-
-				if (cn != null && conceptCode != null) {
-
-					if (conceptCode.equals("8302-2")) {
-						if (cn.getUnits().toLowerCase().equals("cm")) {
-							Double value = null;
-							if (o.getValueNumeric() != 0) {
-								value = (o.getValueNumeric() / 100.0);
+				if (cn != null) {
+					// we have a numeric concept, look up the codes
+					String conceptCode = getVitalSignCode(o.getConcept());
+					
+					if ( conceptCode != null) {
+						
+						// TODO: Do we want to convert to standard units across the board? Why just this one concept?
+						// TODO #2: Put this into a constant string on this class and ref from here and in the LOINC_CODES
+						if (conceptCode.equals("8302-2")) {
+							if (cn.getUnits().toLowerCase().equals("cm")) {
+								Double value = 0.0;
+								if (o.getValueNumeric() != 0)
+									value = (o.getValueNumeric() / 100.0);
+								
+								VitalSign vital = SmartDataHandlerUtil.vitalSignHelper(
+										value, cn, loincMap);
+								vital.setUnit("m");
+								signList.add(vital);
 							} else {
-								value = 0.0;
+	
+								signList.add(SmartDataHandlerUtil.vitalSignHelper(
+										o.getValueNumeric(), cn, loincMap));
 							}
-							cn.setUnits("m");
-							signList.add(SmartDataHandlerUtil.vitalSignHelper(
-									value, cn, loincMap));
+	
 						} else {
-
 							signList.add(SmartDataHandlerUtil.vitalSignHelper(
 									o.getValueNumeric(), cn, loincMap));
 						}
-
-					} else {
-						signList.add(SmartDataHandlerUtil.vitalSignHelper(
-								o.getValueNumeric(), cn, loincMap));
 					}
 				}
 			}
@@ -180,39 +171,39 @@ public class SmartVitalSignsHandler implements SmartDataHandler {
 
 	}
 
+	/**
+	 * Looks at the given LOINC and then SNOMED codes for the given <code>c</code> Concept.
+	 * If the concept has a mapping to LOINC or SNOMED and that code is in the {@link #LOINC_CODES}
+	 * or {@link #SNOMED_CODES} list, return that code.
+	 *  
+	 * @param c concept to look at mappings of
+	 * @return 
+	 */
 	private String getVitalSignCode(Concept c) {
 		String conceptCode = null;
-		Boolean found = false;
+		
 		try {
 			conceptCode = loincMap.lookUp(c);
+			
+			if (LOINC_CODES.contains(conceptCode))
+				return conceptCode;
+			
 		} catch (ConceptMappingNotFoundException e) {
-
-			e.printStackTrace();
+			// only doing a debug here so we don't litter the logs when getting snomed codes
+			log.debug("Unable to find loinc code on concept: " + c.getConceptId());
 		}
-		for (String code : loincCodes) {
-			if (conceptCode.equals(code)) {
-				found = true;
-				break;
-			}
+		
+		try {
+			conceptCode = snomedMap.lookUp(c);
+			
+			if (SNOMED_CODES.contains(conceptCode))
+				return conceptCode;
+			
+		} catch (ConceptMappingNotFoundException e) {
+			log.debug("Unable to find snomed code on concept: " + c.getConceptId());
 		}
-		if (!found) {
-			try {
-				conceptCode = snomedMap.lookUp(c);
-			} catch (ConceptMappingNotFoundException e) {
-
-				throw new RuntimeException(e);
-			}
-			for (String code : snomedCodes) {
-				if (conceptCode.equals(code)) {
-					found = true;
-					break;
-				}
-			}
-		}
-		if (found)
-			return conceptCode;
-		else
-			return null;
+		
+		return null;
 	}
 
 	

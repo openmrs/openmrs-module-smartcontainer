@@ -23,28 +23,29 @@ import org.openmrs.ConceptMap;
 
 /**
  * Class is used to retrieve and cache the mapped concepts
- * 
  */
 public class SmartConceptMap {
 
 	/**
-	 * Hash map to store a concept and corresponding mapped code which already
-	 * looked up for later use
+	 * Hash map to cache source codes for concepts which were already
+	 * looked up. Saves processing when accessed multiple times.
 	 */
 	private Map<Concept, String> conceptMap = new HashMap<Concept, String>();
+	
 	private final Log log = LogFactory.getLog(getClass());
+	
 	/**
-	 * Variable set through the moduleapplicationcontext.xml;this represents the
-	 * concept source name
+	 * Variable set through the moduleapplicationcontext.xml; this represents the
+	 * concept source name (LOINC vs SNOMED-CT vs ICD9)
 	 */
 	private String conceptSourceName;
+	
 	/**
 	 * Variable set through the moduleapplicationcontext.xml;this represents the
 	 * name space URL for a Concept source
 	 */
 	private String baseURL;
-	private ConceptMap map = null;
-
+	
 	public String getBaseURL() {
 		return baseURL;
 	}
@@ -62,38 +63,47 @@ public class SmartConceptMap {
 	}
 
 	/**
-	 * Actual method to look up the mapped concept source code for a concept
+	 * Find the source code on the given concept for source <code>{@link #getConceptSourceName()}</code>
+	 * 
+	 * TODO: We really should add this as a convenience method on concept.  Something like <code>String getSourceCode(sourceName)</code>
 	 * 
 	 * @param concept
-	 * @return
-	 * @throws ConceptMappingNotFoundException
+	 * @return the source code on this concept or an exception if not found
+	 * @throws ConceptMappingNotFoundException if the given concept does 
+	 * 			not have a mapping to the current source code name
 	 */
 	public String lookUp(Concept concept)
 			throws ConceptMappingNotFoundException {
 		log.info("concept source name: " + conceptSourceName + ".");
-		String conceptSource = null;
-		// get the concept source of the concept
-		conceptSource = conceptMap.get(concept);
-		// search for a concept map which has concept source name of
-		if (conceptSource == null) {
-			for (ConceptMap cm : concept.getConceptMappings()) {
-				if (cm.getSource().getName().equals(getConceptSourceName())) {
-					map = cm;
-				}
-			}
-			// if the mapping is found cache it otherwise throw an exception
-			if (map != null) {
-				conceptSource = map.getSourceCode();
-				conceptMap.put(concept, conceptSource);
-
-			} else {
-				// TODO there should be better way of indicating the failure of
-				// finding mapped concept code.
-				throw new ConceptMappingNotFoundException(
-						"Can not find Concept mapping for concept " + concept);
+		
+		// look in our cache for the code first to see if we've already looked up this concept
+		String sourceCode = conceptMap.get(concept);
+		if (sourceCode != null)
+			return sourceCode;
+			
+		// we don't have a cache of the code, search for a concept mapping 
+		// which has our concept source name
+		ConceptMap map = null;
+		
+		for (ConceptMap cm : concept.getConceptMappings()) {
+			if (cm.getSource().getName().equals(getConceptSourceName())) {
+				map = cm;
+				break;
 			}
 		}
-		return conceptSource;
+		
+		// if the mapping is found, cache it. otherwise throw an exception
+		if (map != null) {
+			sourceCode = map.getSourceCode();
+			conceptMap.put(concept, sourceCode);
+			return sourceCode;
+			
+		} else {
+			// TODO there should be better way of indicating the failure of
+			// finding mapped concept code.
+			throw new ConceptMappingNotFoundException(
+					"Can not find Concept mapping for concept " + concept + " with source: " + getConceptSourceName());
+		}
 
 	}
 

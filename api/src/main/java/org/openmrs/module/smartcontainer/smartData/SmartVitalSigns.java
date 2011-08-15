@@ -103,15 +103,15 @@ public class SmartVitalSigns implements SmartBaseData {
 	}
 
 	public void addAll(List<VitalSign> signList) {
-		BloodPressure bloodPreassure = new BloodPressure();
+		BloodPressure bloodPressure = new BloodPressure();
 		Boolean isBpFound = false;
 		for (VitalSign v : signList) {
 			String conceptCode = v.getVitalName().getCode();
 			if (conceptCode.equals("8462-4")) {
-				bloodPreassure.setDiastolic(v);
+				bloodPressure.setDiastolic(v);
 				isBpFound = true;
 			} else if (conceptCode.equals("8480-6")) {
-				bloodPreassure.setSystolic(v);
+				bloodPressure.setSystolic(v);
 				isBpFound = true;
 			} else if (conceptCode.equals("8302-2")) {
 
@@ -139,7 +139,7 @@ public class SmartVitalSigns implements SmartBaseData {
 			}
 		}
 		if (isBpFound)
-			setBloodPressure(bloodPreassure);
+			setBloodPressure(bloodPressure);
 
 	}
 

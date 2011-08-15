@@ -147,13 +147,13 @@ public class SmartDataHandlerUtil {
          * 
          * @param valueNumeric
          * @param cn
-         * @param loincMap
+         * @param smartConceptMap
          * @return 
          */
 	public static VitalSign vitalSignHelper(Double valueNumeric,
-			ConceptNumeric cn, SmartConceptMap loincMap) {
+			ConceptNumeric cn, SmartConceptMap smartConceptMap) {
 		VitalSign sign = new VitalSign();
-		sign.setVitalName(SmartDataHandlerUtil.codedValueHelper(cn, loincMap));
+		sign.setVitalName(SmartDataHandlerUtil.codedValueHelper(cn, smartConceptMap));
 		sign.setValue(valueNumeric.toString());
 		sign.setUnit(cn.getUnits());
 		return sign;
