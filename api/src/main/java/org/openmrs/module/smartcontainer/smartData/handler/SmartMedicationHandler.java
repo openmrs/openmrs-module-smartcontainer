@@ -11,10 +11,10 @@ import org.openmrs.module.smartcontainer.smartData.SmartBaseData;
 import org.openmrs.module.smartcontainer.smartData.SmartMedication;
 import org.openmrs.module.smartcontainer.util.SmartDataHandlerUtil;
 
-public class SmartMedicationHandler implements SmartDataHandler {
+public class SmartMedicationHandler implements SmartDataHandler<SmartMedication> {
 	private SmartConceptMap map;
 
-	public List<? extends SmartBaseData> getAllForPatient(Patient patient) {
+	public List<SmartMedication> getAllForPatient(Patient patient) {
 		List<DrugOrder> drugs = Context.getOrderService()
 				.getDrugOrdersByPatient(patient);
 		List<SmartMedication> medications = new ArrayList<SmartMedication>();
@@ -22,22 +22,29 @@ public class SmartMedicationHandler implements SmartDataHandler {
 			SmartMedication medication = new SmartMedication();
 			medication.setDrugName(SmartDataHandlerUtil.codedValueHelper(d
 					.getDrug().getConcept(), getMap()));
+			
 			if (d.getAutoExpireDate() != null)// may be not expired yet
 				medication.setEndDate(SmartDataHandlerUtil.date(d
 						.getAutoExpireDate()));
+			
+			// TODO: what if it isn't started yet?  Is startDate allowed to be null?
 			medication
 					.setStartDate(SmartDataHandlerUtil.date(d.getStartDate()));
-			// for quantity
 
+			// for quantity
 			medication.setQuantity(SmartDataHandlerUtil.valueAndUnitHelper(
 					d.getQuantity(), d.getUnits()));
+			
 			// for frequency
-
 			String frequency = d.getFrequency().split(" ")[0];
 			Integer val = Integer.valueOf(frequency.split("/")[0]);
-
+			
+			
+			// TODO: why are we presuming per day here ?!
+			
 			medication.setFrequency(SmartDataHandlerUtil.valueAndUnitHelper(
 					val, "/d"));
+			
 			// TODO:if the instruction is not present generate one
 			medication.setInstructions(d.getInstructions());
 			//
@@ -55,7 +62,7 @@ public class SmartMedicationHandler implements SmartDataHandler {
 		this.map = map;
 	}
 
-	public SmartBaseData getForPatient(Patient patient) {
+	public SmartMedication getForPatient(Patient patient) {
 		
 		return null;
 	}
