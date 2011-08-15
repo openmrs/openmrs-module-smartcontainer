@@ -13,7 +13,13 @@
  */
 package org.openmrs.module.smartcontainer.app;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Map;
+import java.util.Scanner;
+import javax.management.RuntimeErrorException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -62,12 +68,30 @@ public class AppFactory {
 	 * @param maniFile
 	 * @return
 	 */
-	public static App getApp(String maniFile) {
-
+	public static App getAppFromLocalFile(InputStream maniFileAsStream) {
+                String maniFile = new Scanner(maniFileAsStream).useDelimiter("\\A").next();
 		App app = new App();
 		pa = new ManifestParser();
 		pa.parse(maniFile);
 		return getApp(app, pa);
+
+	}
+        /**
+	 * Method to construct the App
+	 * 
+	 * @param maniFile
+	 * @return
+	 */
+	public static App getAppFromUrl(String url)throws MalformedURLException, IOException {
+                URL appURL=new URL(url);
+                App app = new App();
+                String maniFile = null;
+                maniFile= new Scanner((InputStream) appURL.getContent()).useDelimiter("\\A").next();
+                pa = new ManifestParser();
+		pa.parse(maniFile);
+                return getApp(app, pa);
+       
+       
 
 	}
 

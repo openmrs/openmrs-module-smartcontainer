@@ -113,7 +113,7 @@ public class HibernateAppDAO implements AppDAO {
 		Query query = sessionFactory
 				.getCurrentSession()
 				.createQuery(
-						"select u.app from SmartUser u where  u. openMRSUser.systemId = ?");
+						"select u.apps from SmartUser u where  u. openMRSUser.systemId = ?");
 		query.setString(0, user.getSystemId());
 		// query.setString(1, name);
 		@SuppressWarnings("unchecked")
