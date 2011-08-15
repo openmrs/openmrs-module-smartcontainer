@@ -30,13 +30,12 @@ public class SmartDataHandlerUtil {
 	}
 
 	/**
-         * 
-         * @param concept
-         * @param map
-         * @return 
-         */
-        public static CodedValue codedValueHelper(Concept concept,
-			SmartConceptMap map) {
+     * 
+     * @param concept
+     * @param map
+     * @return 
+     */
+    public static CodedValue codedValueHelper(Concept concept, SmartConceptMap map) {
 		CodedValue code = new CodedValue();
 		code.setTitle(codedValueNameHelper(concept));
 		code.setCode(codedValueCodeHelper(concept, map));
@@ -44,12 +43,13 @@ public class SmartDataHandlerUtil {
 		code.setCodeProvenance(codedValueProvenanceHelper(concept, map));
 		return code;
 	}
-        /**
-         * 
-         * @param concept
-         * @param map
-         * @return 
-         */
+        
+    /**
+     * 
+     * @param concept
+     * @param map
+     * @return 
+     */
 	private static CodeProvenance codedValueProvenanceHelper(Concept concept,
 			SmartConceptMap map) {
 		CodeProvenance provenance = new CodeProvenance();

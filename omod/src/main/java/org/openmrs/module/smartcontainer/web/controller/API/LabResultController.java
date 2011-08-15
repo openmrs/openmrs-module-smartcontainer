@@ -44,8 +44,7 @@ public class LabResultController {
 			List<SmartLabResult> labs = Context.getService(
 					SmartDataService.class).getAllForPatient(patient,
 					SmartLabResult.class);
-			writer.write(resource.getRDF(labs)); // get the
-													// object
+			writer.write(resource.getRDF(labs));
 			writer.close();
 		} catch (IOException e) {
 
