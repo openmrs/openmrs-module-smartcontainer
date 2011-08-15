@@ -7,11 +7,11 @@
 	<version>0.1</version>
 	<package>org.openmrs.module.@MODULE_ID@</package>
 	<author>Balachandiran Ajanthan</author>
-	<description>Converts OpenMRS as a SMART container</description>
+	<description>Provides API and space for this instace to be a SMART Apps container</description>
 
 	<activator>@MODULE_PACKAGE@.SmartContainerActivator</activator>
 
-	<!-- <updateURL>https://dev.openmrs.org/modules/download/@MODULE_ID@/update.rdf</updateURL> -->
+	<updateURL>http://modules.openmrs.org/modules/download/@MODULE_ID@/update.rdf</updateURL>
 	<!-- /Base Module Properties -->
 
 	<require_version>1.7.0</require_version>
@@ -25,21 +25,18 @@
 		<point>org.openmrs.patientDashboardTab</point>
 		<class>@MODULE_PACKAGE@.extension.html.SmartAppTab</class>
 	</extension>
-<!--	<extension> 
+	<!--
+	<extension> 
 	<point>org.openmrs.userOptionExtension</point>
 	<class>@MODULE_PACKAGE@.extension.html.UserOptionTabExtension</class> 
 	</extension>-->
-	<!-- 
-	  <advice> <point>org.openmrs.web.controller.OptionsFormController</point> <class>@MODULE_PACKAGE@.advice.UserOptionsFormControllerBeforeAdvisor</class> 
-		</advice>
-		 <advice> <point>org.openmrs.web.controller.OptionsFormController</point> <class>@MODULE_PACKAGE@.advice.UserOptionsFormControllerAfterAdvisor</class> 
-		</advice> 
 
 
-	-->
-	<!-- Required Privileges <privilege> <name>Form Entry</name> <description>Allows 
-		user to access Form Entry pages/functions</description> </privilege> /Required 
-		Privileges -->
+	<!-- Required Privileges -->
+	<privilege>
+		<name>Manage SMART Apps</name>
+		<description>Allows user to install/uninstall SMART apps</description>
+	</privilege>
 
 
 	<!-- Required Global Properties <globalProperty> <property>@MODULE_ID@.someProperty</property> 
@@ -47,20 +44,6 @@
 		goes here. The description should explain enough for administrators to understand 
 		the purpose and possible values for the global property. </description> </globalProperty> 
 		/Required Global Properties -->
-
-	<!-- <dwr> <allow> <create creator="new" javascript="DWRFormEntryService"> 
-		<param name="class" value="org.openmrs.module.@MODULE_ID@.web.DWRFormEntryService"/> 
-		<include method="enterForm"/> </create> </allow> <signatures> <![CDATA[ import 
-		@MODULE_PACKAGE@.web.DWRFormEntryService; DWRFormEntryService.enterForm(Integer 
-		patientId, Integer formId, boolean useEncounter, List<String> fields); ]]> 
-		</signatures> </dwr> -->
-
-	<!-- Servlets -->
-	<!-- Accessed through the url /pageContext()/moduleServlet/<moduleId>/<servlet-name> 
-		<servlet> <servlet-name>formDownload</servlet-name> <servlet-class>@MODULE_PACKAGE@.web.FormDownloadServlet</servlet-class> 
-		</servlet> -->
-	<!-- /Servlets -->
-
 
 	<!-- Internationalization -->
 	<!-- All message codes should start with @MODULE_ID@.* -->
@@ -77,10 +60,11 @@
 		<file>messages_es.properties</file>
 	</messages>
 	<!-- /Internationalization -->
+	
 	<mappingFiles>
 		App.hbm.xml
 		Activity.hbm.xml
 		WebHook.hbm.xml
-                SmartUser.hbm.xml
+        SmartUser.hbm.xml
 	</mappingFiles>
 </module>

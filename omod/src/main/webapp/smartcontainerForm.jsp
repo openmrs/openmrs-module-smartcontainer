@@ -1,4 +1,7 @@
 <%@ include file="localHeader.jsp" %>
+
+<openmrs:require privilege="Manage SMART Apps" otherwise="/login.htm" redirect="/module/smartcontainer/smartcontainerLink.form" />
+
 <openmrs:htmlInclude
 	file="/scripts/jquery/dataTables/css/dataTables.css" />
 <openmrs:htmlInclude

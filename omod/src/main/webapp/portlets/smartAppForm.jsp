@@ -1,9 +1,5 @@
 <%@ include file="/WEB-INF/template/include.jsp"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
-<title>SMART Apps in OpenMRS</title>
+
 <!--<script-->
 <!--	src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>-->
 <openmrs:htmlInclude
@@ -167,23 +163,23 @@
 		}
 	};
 </script>
-</head>
+
 <div id="main">
 <div id="app_selector" style="float: left">
 <table>
 	<tbody>
 		<c:forEach items="${model.list}" var="app" varStatus="status">
-			<tr
-				onclick="appSelected('${app.sMARTAppId}','${app.activity.activityURL}')">
+			<tr onclick="appSelected('${app.sMARTAppId}','${app.activity.activityURL}')">
 				<td><input type="image" src="${app.icon}" /></td>
 				<td><a>${app.name}</a></td>
 			</tr>
 		</c:forEach>
+		<c:if test="${fn:length(model.list) == 0}">
+			<tr><td><spring:message code="smartcontainer.noappsinstalledforusertochoose"/></td></tr>
+		</c:if>
 	</tbody>
 </table>
 </div>
 
 <div id="iframe_holder"></div>
 </div>
-
-</html>
