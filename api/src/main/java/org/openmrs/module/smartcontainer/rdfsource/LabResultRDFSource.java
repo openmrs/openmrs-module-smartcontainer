@@ -106,7 +106,7 @@ public class LabResultRDFSource extends RdfSource {
 			graph.writeStatement(
 					labResultNode,
 					specimenCollected,
-					AddattributionNode(factory, graph, l.getSpecimenCollected()));
+					addattributionNode(factory, graph, l.getSpecimenCollected()));
 			/*
 			 * Add child node <sp:externalID>AC09205823577</sp:externalID>
 			 */
@@ -131,7 +131,7 @@ public class LabResultRDFSource extends RdfSource {
 	 * @return
 	 * @throws IOException
 	 */
-	private Value AddattributionNode(ValueFactory factory, RdfXmlWriter graph,
+	private Value addattributionNode(ValueFactory factory, RdfXmlWriter graph,
 			Attribution specimenCollected) throws IOException {
 		/*
 		 * Add parent node <sp:Attribution> ..child nodes </sp:Attribution>
