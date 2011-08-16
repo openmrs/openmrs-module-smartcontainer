@@ -18,71 +18,68 @@ package org.openmrs.module.smartcontainer.app;
  */
 public class Activity {
 
-	private Integer activityId;
+    private Integer activityId;
 
-	private String activityName;
+    private String activityName;
 
-	private String activityURL;
+    private String activityURL;
 
-	/**
-	 * @return the activityId
-	 */
-	public Integer getActivityId() {
-		return activityId;
-	}
+    /**
+     * @return the activityId
+     */
+    public Integer getActivityId() {
+        return activityId;
+    }
 
-	/**
-	 * @param activityId
-	 *            the activityId to set
-	 */
-	public void setActivityId(Integer activityId) {
-		this.activityId = activityId;
-	}
+    /**
+     * @param activityId the activityId to set
+     */
+    public void setActivityId(Integer activityId) {
+        this.activityId = activityId;
+    }
 
-	/**
-	 * @return the activityName
-	 */
-	public String getActivityName() {
-		return activityName;
-	}
+    /**
+     * @return the activityName
+     */
+    public String getActivityName() {
+        return activityName;
+    }
 
-	/**
-	 * @param activityName
-	 * @param activityURL
-	 */
-	public Activity(String activityName, String activityURL) {
-		super();
-		this.activityName = activityName;
-		this.activityURL = activityURL;
-	}
+    /**
+     * @param activityName
+     * @param activityURL
+     */
+    public Activity(String activityName, String activityURL) {
+        super();
+        this.activityName = activityName;
+        this.activityURL = activityURL;
+    }
 
-	/**
-	 * @return the activityURL
-	 */
-	public String getActivityURL() {
-		return activityURL;
-	}
+    /**
+     * @return the activityURL
+     */
+    public String getActivityURL() {
+        return activityURL;
+    }
 
-	/**
-	 * @param activityName
-	 *            the activityName to set
-	 */
-	public void setActivityName(String activityName) {
-		this.activityName = activityName;
-	}
+    /**
+     * @param activityName the activityName to set
+     */
+    public void setActivityName(String activityName) {
+        this.activityName = activityName;
+    }
 
-	/**
-	 * @param activityURL
-	 *            the activityURL to set
-	 */
-	public void setActivityURL(String activityURL) {
-		this.activityURL = activityURL;
-	}
+    /**
+     * @param activityURL the activityURL to set
+     */
+    public void setActivityURL(String activityURL) {
+        this.activityURL = activityURL;
+    }
 
-	/**
-	 * no-arg constructor
-	 */
-	public Activity() {
+    /**
+     * no-arg constructor
+     */
+    public Activity() {
 
-	}
+    }
 }

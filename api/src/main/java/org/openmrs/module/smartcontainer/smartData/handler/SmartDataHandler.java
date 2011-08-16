@@ -13,26 +13,26 @@
  */
 package org.openmrs.module.smartcontainer.smartData.handler;
 
-import java.util.List;
-
 import org.openmrs.Patient;
 import org.openmrs.module.smartcontainer.smartData.SmartBaseData;
 
+import java.util.List;
+
 /**
- * 
+ *
  *
  */
 public interface SmartDataHandler<T extends SmartBaseData> {
 
-	/**
-	 * @param patient
-	 * @return
-	 */
-	public T getForPatient(Patient patient);
+    /**
+     * @param patient
+     * @return
+     */
+    public T getForPatient(Patient patient);
 
-	/**
-	 * @param patient
-	 * @return
-	 */
-	public List<T> getAllForPatient(Patient patient);
+    /**
+     * @param patient
+     * @return
+     */
+    public List<T> getAllForPatient(Patient patient);
 }

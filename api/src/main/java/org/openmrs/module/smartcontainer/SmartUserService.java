@@ -13,10 +13,10 @@
  */
 package org.openmrs.module.smartcontainer;
 
-import java.util.Collection;
-
 import org.openmrs.api.APIException;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Collection;
 
 /**
  * Contains methods to work with SMART App User
@@ -24,29 +24,29 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public interface SmartUserService {
 
-	/**
-	 * get User by name
-	 * 
-	 * @param name
-	 * @return
-	 * @throws APIException
-	 */
-	public SmartUser getUserByName(String name) throws APIException;
+    /**
+     * get User by name
+     *
+     * @param name
+     * @return
+     * @throws APIException
+     */
+    public SmartUser getUserByName(String name) throws APIException;
 
-	/**
-	 * Get all Users
-	 * 
-	 * @return
-	 * @throws APIException
-	 */
-	public Collection<SmartUser> getAllUsers() throws APIException;
+    /**
+     * Get all Users
+     *
+     * @return
+     * @throws APIException
+     */
+    public Collection<SmartUser> getAllUsers() throws APIException;
 
-	/**
-	 * Save a SMART user
-	 * 
-	 * @param user
-	 * @throws APIException
-	 */
-	public void saveUser(SmartUser user) throws APIException;
+    /**
+     * Save a SMART user
+     *
+     * @param user
+     * @throws APIException
+     */
+    public void saveUser(SmartUser user) throws APIException;
 
 }

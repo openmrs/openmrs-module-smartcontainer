@@ -22,21 +22,21 @@ import org.openmrs.module.Activator;
  */
 @SuppressWarnings("deprecation")
 public class SmartContainerActivator implements Activator {
-	
-	private Log log = LogFactory.getLog(this.getClass());
-	
-	/**
-	 * @see org.openmrs.module.Activator#startup()
-	 */
-	public void startup() {
-		log.info("Starting SMART Container");
-	}
-	
-	/**
-	 * @see org.openmrs.module.Activator#shutdown()
-	 */
-	public void shutdown() {
-		log.info("Shutting down SMART Container");
-	}
-	
+
+    private Log log = LogFactory.getLog(this.getClass());
+
+    /**
+     * @see org.openmrs.module.Activator#startup()
+     */
+    public void startup() {
+        log.info("Starting SMART Container");
+    }
+
+    /**
+     * @see org.openmrs.module.Activator#shutdown()
+     */
+    public void shutdown() {
+        log.info("Shutting down SMART Container");
+    }
+
 }

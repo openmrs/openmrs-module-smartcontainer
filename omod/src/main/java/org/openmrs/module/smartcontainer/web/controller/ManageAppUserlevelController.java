@@ -7,34 +7,53 @@ import org.openmrs.module.smartcontainer.SmartAppService;
 import org.openmrs.module.smartcontainer.SmartUser;
 import org.openmrs.module.smartcontainer.SmartUserService;
 import org.openmrs.module.smartcontainer.app.App;
-import org.openmrs.web.controller.OptionsFormController;
-import org.springframework.validation.BindException;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Map;
 import java.util.Set;
 
-public class SmartAppOptionController extends OptionsFormController {
-
+/**
+ * @author aja
+ */
+@Controller
+@RequestMapping(value = "module/smartcontainer/manageUserAppLink.form")
+public class ManageAppUserlevelController {
     Log log = LogFactory.getLog(getClass());
+
     private SmartAppService service;
+    private final String SUCCESS_FORM_VIEW = "/module/smartcontainer/addAppUserLevel";
 
-
-    protected ModelAndView processFormSubmission(HttpServletRequest request, HttpServletResponse response, Object object,
-                                                 BindException errors) throws Exception {
-        return super.processFormSubmission(request, response, object, errors);
+    /**
+     * Initially called after the formBackingObject method to get the landing form name
+     *
+     * @return String form view name
+     */
+    @RequestMapping(method = RequestMethod.GET)
+    public String showForm() {
+        return SUCCESS_FORM_VIEW;
 
     }
 
-    protected ModelAndView onSubmit(HttpServletRequest request, HttpServletResponse response, Object obj,
-                                    BindException errors) throws Exception {
+    /**
+     * All the parameters are optional based on the necessity
+     *
+     * @param request
+     * @return
+     */
+    @RequestMapping(method = RequestMethod.POST)
+    public String deleteApp(HttpServletRequest request) {
+        SmartUser smartUser = Context.getService(SmartUserService.class).getUserByName(Context.getAuthenticatedUser().getSystemId());
         Collection<App> allApps = service.getAllApps();
-        Collection<App> userApps = service.getAppsByUserName(Context.getAuthenticatedUser());
+        Collection<App> userApps = smartUser.getApps();
+        if (userApps == null) {
+            userApps = new ArrayList<App>();
+        }
+
         String add[] = request.getParameterValues("add");
         String remove[] = request.getParameterValues("remove");
         log.debug("saving users........... add " + add + "remove :" + remove);
@@ -63,16 +82,23 @@ public class SmartAppOptionController extends OptionsFormController {
         user.setApps((Set<App>) userApps);
         Context.getService(SmartUserService.class).saveUser(user);
         log.debug("saved user........... add " + user.getOpenMRSUser().getSystemId());
-
-        return super.onSubmit(request, response, obj, errors);
+        return SUCCESS_FORM_VIEW;
 
     }
 
-    protected Object formBackingObject(HttpServletRequest request) throws ServletException {
-
-        SmartUser smartUser = null;
+    /**
+     * This class returns the form backing object. This can be a string, a boolean, or a normal java
+     * pojo. The bean name defined in the ModelAttribute annotation and the type can be just defined
+     * by the return type of this method
+     */
+    @ModelAttribute("userApps")
+    protected Collection<App> formBackingObject(HttpServletRequest request) throws Exception {
         service = Context.getService(SmartAppService.class);
+        SmartUser smartUser = null;
         Collection<App> allApps = service.getAllApps();
+        Collection<App> userApps = null;
+
+
         try {
             smartUser = Context.getService(SmartUserService.class).getUserByName(Context.getAuthenticatedUser().getSystemId());
         } catch (IndexOutOfBoundsException ex) {
@@ -83,18 +109,12 @@ public class SmartAppOptionController extends OptionsFormController {
 
             }
         }
-        Collection<App> userApps = smartUser.getApps();
+        userApps = smartUser.getApps();
         if (userApps == null) {
             userApps = new ArrayList<App>();
         }
-        request.setAttribute("userApps", userApps);
+        //request.setAttribute("userApps", userApps);
         request.setAttribute("allApps", allApps);
-        return super.formBackingObject(request);
-
-    }
-
-    protected Map<String, Object> referenceData(HttpServletRequest request) throws Exception {
-        return super.referenceData(request);
-
+        return userApps;
     }
 }

@@ -4,34 +4,30 @@
  */
 package org.openmrs.module.smartcontainer.impl;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
-import org.openmrs.User;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.smartcontainer.app.App;
-import org.openmrs.module.smartcontainer.db.AppDAO;
 import org.openmrs.module.smartcontainer.SmartAppService;
+import org.openmrs.module.smartcontainer.app.App;
 import org.openmrs.test.BaseModuleContextSensitiveTest;
 
+import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import static org.junit.Assert.*;
+
 /**
- *
  * @author aja
  */
-public class SmartAppServiceImplTest extends BaseModuleContextSensitiveTest{
-    private  SmartAppService appService;
-    
+public class SmartAppServiceImplTest extends BaseModuleContextSensitiveTest {
+    private SmartAppService appService;
+
     public SmartAppServiceImplTest() {
     }
 
-   
+
     @Before
     public void setUp() {
         try {
@@ -39,25 +35,24 @@ public class SmartAppServiceImplTest extends BaseModuleContextSensitiveTest{
         } catch (Exception ex) {
             Logger.getLogger(SmartAppServiceImplTest.class.getName()).log(Level.SEVERE, null, ex);
         }
-         appService = Context.getService(SmartAppService.class);
+        appService = Context.getService(SmartAppService.class);
     }
-    
+
     @After
     public void tearDown() {
     }
 
-   
+
     /**
      * Test of getAppByName method, of class SmartAppServiceImpl.
      */
     @Test
     public void testGetAppByName() {
-       
-      
-        
+
+
         App expResult = appService.getAppByName("PediBPC");
         assertEquals(expResult.getName(), "PediBPC");
-       
+
     }
 
     /**
@@ -65,8 +60,8 @@ public class SmartAppServiceImplTest extends BaseModuleContextSensitiveTest{
      */
     @Test
     public void testGetAllApps() {
-       
-       Collection <App>result = appService.getAllApps();
+
+        Collection<App> result = appService.getAllApps();
         assertFalse(result.isEmpty());
     }
 
@@ -75,10 +70,10 @@ public class SmartAppServiceImplTest extends BaseModuleContextSensitiveTest{
      */
     @Test
     public void testDeleteApp() {
-        
+
         App app = appService.getAppByName("PediBPC");
         appService.deleteApp(app);
-        app=appService.getAppByName("PediBPC");
+        app = appService.getAppByName("PediBPC");
         assertTrue(app.getRetire());
     }
 
@@ -96,8 +91,8 @@ public class SmartAppServiceImplTest extends BaseModuleContextSensitiveTest{
      */
     @Test
     public void testSaveApp() {
-       
-        App newApp =new App();
+
+        App newApp = new App();
         newApp.setName("BpGraph");
         appService.saveApp(newApp);
         assertNotNull(appService.getAppByName("BpGraph"));
@@ -108,8 +103,8 @@ public class SmartAppServiceImplTest extends BaseModuleContextSensitiveTest{
      */
     @Test
     public void testGetAppsByUserName() {
-        
-       Collection result = appService.getAppsByUserName(Context.getUserService().getUserByUsername("admin"));
-       assertFalse(result.isEmpty());
+
+        Collection result = appService.getAppsByUserName(Context.getUserService().getUserByUsername("admin"));
+        assertFalse(result.isEmpty());
     }
 }

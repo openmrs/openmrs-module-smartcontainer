@@ -1,171 +1,174 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog/1.9"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9
                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
 
-	<!-- See http://wiki.openmrs.org/display/docs/Module+liquibase+File for 
-		documentation on this file. See http://www.liquibase.org/manual/home#available_database_refactorings 
-		for a list of supported elements and attributes -->
+    <!-- See http://wiki.openmrs.org/display/docs/Module+liquibase+File for
+         documentation on this file. See http://www.liquibase.org/manual/home#available_database_refactorings
+         for a list of supported elements and attributes -->
 
 
+    <changeSet id="smartcontainer-2011-05-23-15:50" author="ajanthan">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="smartcontainer_app"/>
+            </not>
+        </preConditions>
+        <comment>
+            Creating the smartcontainer_app table
+        </comment>
+        <createTable tableName="smartcontainer_app">
+            <column name="smartcontainer_app_id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)"/>
+            <column name="description" type="mediumtext"/>
+            <column name="author" type="varchar(255)"/>
+            <column name="mode" type="varchar(255)"/>
+            <column name="version" type="varchar(255)"/>
+            <column name="base_url" type="varchar(255)"/>
+            <column name="icon" type="varchar(255)"/>
+            <column name="smart_id" type="varchar(255)"/>
+            <column name="default_app" type="int(1)"/>
+            <column name="activity_id" type="int">
+                <constraints nullable="true"/>
+            </column>
+            <column name="webhook_id" type="int">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="smartcontainer-2011-05-23-20:50" author="ajanthan">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="smartcontainer_activity"/>
+            </not>
+        </preConditions>
+        <comment>
+            Creating the smartcontainer_activity table
+        </comment>
+        <createTable tableName="smartcontainer_activity">
+            <column name="smartcontainer_activity_id" type="int"
+                    autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="activity_name" type="varchar(255)"/>
+            <column name="activity_url" type="varchar(255)"/>
 
-	<changeSet id="smartcontainer-2011-05-23-15:50" author="ajanthan">
-		<preConditions onFail="MARK_RAN">
-			<not>
-				<tableExists tableName="smartcontainer_app" />
-			</not>
-		</preConditions>
-		<comment>
-			Creating the smartcontainer_app table
-		</comment>
-		<createTable tableName="smartcontainer_app">
-			<column name="smartcontainer_app_id" type="int" autoIncrement="true">
-				<constraints primaryKey="true" nullable="false" />
-			</column>
-			<column name="name" type="varchar(255)" />
-			<column name="description" type="mediumtext" />
-			<column name="author" type="varchar(255)" />
-			<column name="mode" type="varchar(255)" />
-			<column name="version" type="varchar(255)" />
-			<column name="base_url" type="varchar(255)" />
-			<column name="icon" type="varchar(255)" />
-			<column name="smart_id" type="varchar(255)" />
-			<column name="default_app" type="int(1)" />
-			<column name="activity_id" type="int">
-				<constraints nullable="true" />
-			</column>
-			<column name="webhook_id" type="int">
-				<constraints nullable="true" />
-			</column>
-		</createTable>
-	</changeSet>
-	<changeSet id="smartcontainer-2011-05-23-20:50" author="ajanthan">
-		<preConditions onFail="MARK_RAN">
-			<not>
-				<tableExists tableName="smartcontainer_activity" />
-			</not>
-		</preConditions>
-		<comment>
-			Creating the smartcontainer_activity table
-		</comment>
-		<createTable tableName="smartcontainer_activity">
-			<column name="smartcontainer_activity_id" type="int"
-				autoIncrement="true">
-				<constraints primaryKey="true" nullable="false" />
-			</column>
-			<column name="activity_name" type="varchar(255)" />
-			<column name="activity_url" type="varchar(255)" />
 
+        </createTable>
+    </changeSet>
+    <changeSet id="smartcontainer-2011-05-23-22:50" author="ajanthan">
+        <addForeignKeyConstraint baseColumnNames="activity_id"
+                                 baseTableName="smartcontainer_app" constraintName="activity_app"
+                                 deferrable="false" initiallyDeferred="false"
+                                 referencedColumnNames="smartcontainer_activity_id"
+                                 referencedTableName="smartcontainer_activity"/>
+    </changeSet>
+    <changeSet id="smartcontainer-2011-05-23-21:50" author="ajanthan">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="smartcontainer_webhook"/>
+            </not>
+        </preConditions>
+        <comment>
+            Creating the smartcontainer_webhook table
+        </comment>
+        <createTable tableName="smartcontainer_webhook">
+            <column name="smartcontainer_webhook_id" type="int"
+                    autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="webhook_name" type="varchar(255)"/>
+            <column name="webhook_url" type="varchar(255)"/>
+            <column name="webhook_description" type="mediumtext"/>
 
-		</createTable>
-	</changeSet>
-	<changeSet id="smartcontainer-2011-05-23-22:50" author="ajanthan">
-		<addForeignKeyConstraint baseColumnNames="activity_id"
-			baseTableName="smartcontainer_app" constraintName="activity_app"
-			deferrable="false" initiallyDeferred="false" referencedColumnNames="smartcontainer_activity_id"
-			referencedTableName="smartcontainer_activity" />
-	</changeSet>
-	<changeSet id="smartcontainer-2011-05-23-21:50" author="ajanthan">
-		<preConditions onFail="MARK_RAN">
-			<not>
-				<tableExists tableName="smartcontainer_webhook" />
-			</not>
-		</preConditions>
-		<comment>
-			Creating the smartcontainer_webhook table
-		</comment>
-		<createTable tableName="smartcontainer_webhook">
-			<column name="smartcontainer_webhook_id" type="int"
-				autoIncrement="true">
-				<constraints primaryKey="true" nullable="false" />
-			</column>
-			<column name="webhook_name" type="varchar(255)" />
-			<column name="webhook_url" type="varchar(255)" />
-			<column name="webhook_description" type="mediumtext" />
+        </createTable>
+    </changeSet>
+    <changeSet id="smartcontainer-2011-05-23-23:50" author="ajanthan">
+        <addForeignKeyConstraint baseColumnNames="webhook_id"
+                                 baseTableName="smartcontainer_app" constraintName="webhook_app"
+                                 deferrable="false" initiallyDeferred="false"
+                                 referencedColumnNames="smartcontainer_webhook_id"
+                                 referencedTableName="smartcontainer_webhook"/>
+    </changeSet>
+    <changeSet id="smartcontainer-2011-05-24-1:50" author="ajanthan">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="smartcontainer_user"/>
+            </not>
+        </preConditions>
+        <comment>
+            Creating the smartcontainer_user table
+        </comment>
+        <createTable tableName="smartcontainer_user">
+            <column name="smartcontainer_user_id" type="int"
+                    autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
 
-		</createTable>
-	</changeSet>
-	<changeSet id="smartcontainer-2011-05-23-23:50" author="ajanthan">
-		<addForeignKeyConstraint baseColumnNames="webhook_id"
-			baseTableName="smartcontainer_app" constraintName="webhook_app"
-			deferrable="false" initiallyDeferred="false" referencedColumnNames="smartcontainer_webhook_id"
-			referencedTableName="smartcontainer_webhook" />
-	</changeSet>
-	<changeSet id="smartcontainer-2011-05-24-1:50" author="ajanthan">
-		<preConditions onFail="MARK_RAN">
-			<not>
-				<tableExists tableName="smartcontainer_user" />
-			</not>
-		</preConditions>
-		<comment>
-			Creating the smartcontainer_user table
-		</comment>
-		<createTable tableName="smartcontainer_user">
-			<column name="smartcontainer_user_id" type="int"
-				autoIncrement="true">
-				<constraints primaryKey="true" nullable="false" />
-			</column>
+            <column name="user_id" type="int">
+                <constraints nullable="false"/>
+            </column>
 
-			<column name="user_id" type="int">
-				<constraints nullable="false" />
-			</column>
-
-		</createTable>
-	</changeSet>
-	<changeSet id="smartcontainer-2011-05-26-2:50" author="ajanthan">
-		<addForeignKeyConstraint baseColumnNames="user_id"
-			baseTableName="smartcontainer_user" constraintName="user_smart_user"
-			deferrable="false" initiallyDeferred="false" referencedColumnNames="user_id"
-			referencedTableName="users" />
-	</changeSet>
-	<changeSet id="smartcontainer-2011-05-23-16:50" author="ajanthan">
-		<preConditions onFail="MARK_RAN">
-			<not>
-				<tableExists tableName="smartcontainer_user_app" />
-			</not>
-		</preConditions>
-		<comment>
-			Creating the smartcontainer_user_app table
-		</comment>
-		<createTable tableName="smartcontainer_user_app">
-			<column defaultValueNumeric="0" name="smartcontainer_user_id"
-				type="int">
-				<constraints nullable="false" />
-			</column>
-			<column defaultValueNumeric="0" name="smartcontainer_app_id"
-				type="int">
-				<constraints nullable="false" />
-			</column>
-		</createTable>
-	</changeSet>
-	<changeSet id="smartcontainer-2011-05-23-17:50" author="ajanthan">
-		<addPrimaryKey columnNames="smartcontainer_app_id, smartcontainer_user_id"
-			tableName="smartcontainer_user_app" />
-	</changeSet>
-	<changeSet id="smartcontainer-2011-05-23-18:50" author="ajanthan">
-		<addForeignKeyConstraint baseColumnNames="smartcontainer_app_id"
-			baseTableName="smartcontainer_user_app" constraintName="app_relation"
-			deferrable="false" initiallyDeferred="false" referencedColumnNames="smartcontainer_app_id"
-			referencedTableName="smartcontainer_app" />
-	</changeSet>
-	<changeSet id="smartcontainer-2011-05-24-19:50" author="ajanthan">
-		<addForeignKeyConstraint baseColumnNames="smartcontainer_user_id"
-			baseTableName="smartcontainer_user_app" constraintName="user_app"
-			deferrable="false" initiallyDeferred="false" referencedColumnNames="smartcontainer_user_id"
-			referencedTableName="smartcontainer_user" />
-	</changeSet>
-	<changeSet author="ajanthan" id="smartcontainer-2011-07-24-19:50">
-	<sql>
-	INSERT INTO smartcontainer_user(user_id)
-	SELECT user_id  FROM users;
-	</sql>
-	</changeSet>
-	<changeSet author="ajanthan" id="smartcontainer-2011-07-25-19:50">
-	<addColumn tableName="smartcontainer_app" >
-	<column name="retire" type="int(1)" defaultValueBoolean="false" >
-	<constraints nullable="false"/>
-	</column>
-	</addColumn>
-	</changeSet>
+        </createTable>
+    </changeSet>
+    <changeSet id="smartcontainer-2011-05-26-2:50" author="ajanthan">
+        <addForeignKeyConstraint baseColumnNames="user_id"
+                                 baseTableName="smartcontainer_user" constraintName="user_smart_user"
+                                 deferrable="false" initiallyDeferred="false" referencedColumnNames="user_id"
+                                 referencedTableName="users"/>
+    </changeSet>
+    <changeSet id="smartcontainer-2011-05-23-16:50" author="ajanthan">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="smartcontainer_user_app"/>
+            </not>
+        </preConditions>
+        <comment>
+            Creating the smartcontainer_user_app table
+        </comment>
+        <createTable tableName="smartcontainer_user_app">
+            <column defaultValueNumeric="0" name="smartcontainer_user_id"
+                    type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueNumeric="0" name="smartcontainer_app_id"
+                    type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="smartcontainer-2011-05-23-17:50" author="ajanthan">
+        <addPrimaryKey columnNames="smartcontainer_app_id, smartcontainer_user_id"
+                       tableName="smartcontainer_user_app"/>
+    </changeSet>
+    <changeSet id="smartcontainer-2011-05-23-18:50" author="ajanthan">
+        <addForeignKeyConstraint baseColumnNames="smartcontainer_app_id"
+                                 baseTableName="smartcontainer_user_app" constraintName="app_relation"
+                                 deferrable="false" initiallyDeferred="false"
+                                 referencedColumnNames="smartcontainer_app_id"
+                                 referencedTableName="smartcontainer_app"/>
+    </changeSet>
+    <changeSet id="smartcontainer-2011-05-24-19:50" author="ajanthan">
+        <addForeignKeyConstraint baseColumnNames="smartcontainer_user_id"
+                                 baseTableName="smartcontainer_user_app" constraintName="user_app"
+                                 deferrable="false" initiallyDeferred="false"
+                                 referencedColumnNames="smartcontainer_user_id"
+                                 referencedTableName="smartcontainer_user"/>
+    </changeSet>
+    <changeSet author="ajanthan" id="smartcontainer-2011-07-24-19:50">
+        <sql>
+            INSERT INTO smartcontainer_user(user_id)
+            SELECT user_id FROM users;
+        </sql>
+    </changeSet>
+    <changeSet author="ajanthan" id="smartcontainer-2011-07-25-19:50">
+        <addColumn tableName="smartcontainer_app">
+            <column name="retire" type="int(1)" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>

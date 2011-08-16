@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC
-    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
 <hibernate-mapping package="org.openmrs.module.smartcontainer.app">
-	<class name="WebHook" table="smartcontainer_webhook">
-		<id name="webHookId" type="java.lang.Integer" column="smartcontainer_webhook_id"
-			unsaved-value="0">
-			<generator class="native" />
-		</id>
-		<property name="name" type="java.lang.String" column="webhook_name" />
-		<property name="description" type="java.lang.String" column="webhook_description" />
-		<property name="URL" type="java.lang.String" column="webhook_url" />
-	</class>
+    <class name="WebHook" table="smartcontainer_webhook">
+        <id name="webHookId" type="java.lang.Integer" column="smartcontainer_webhook_id"
+            unsaved-value="0">
+            <generator class="native"/>
+        </id>
+        <property name="name" type="java.lang.String" column="webhook_name"/>
+        <property name="description" type="java.lang.String" column="webhook_description"/>
+        <property name="URL" type="java.lang.String" column="webhook_url"/>
+    </class>
 </hibernate-mapping>

@@ -3,11 +3,11 @@
 <!-- Beans to add to the current Application context definition -->
 
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
-	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
-	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:util="http://www.springframework.org/schema/util"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop" xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
   		    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
   		    http://www.springframework.org/schema/context
   		    http://www.springframework.org/schema/context/spring-context-3.0.xsd
@@ -19,219 +19,219 @@
   		    http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
   		    http://www.springframework.org/schema/util
   		    http://www.springframework.org/schema/util/spring-util-3.0.xsd">
-	<bean
-		class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping" />
-	<context:component-scan base-package="@MODULE_PACKAGE@.web.controller" />
+    <bean
+            class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping"/>
+    <context:component-scan base-package="@MODULE_PACKAGE@.web.controller"/>
 
-	<bean id="smartcontainerUrlMapping"
-		class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
-		<property name="order">
-			<value>1</value>
-		</property>
-		<property name="mappings">
-			<props>
-				<prop key="**/smartAppForm.portlet">smartAppPortletController</prop>
-<!-- 				<prop key="**/options.form">smartAppOptionController</prop> -->
-			</props>
-		</property>
-	</bean>
-	<bean id="smartAppPortletController"
-		class="@MODULE_PACKAGE@.web.controller.SmartcontainerPortletController"></bean>
-<!-- 	<bean id="smartAppOptionController"
-		class="@MODULE_PACKAGE@.web.controller.SmartAppOptionController">
-		<property name="commandName">
-			<value>opts</value>
-		</property>
-		<property name="commandClass">
-			<value>org.openmrs.web.OptionsForm</value>
-		</property>
-		<property name="formView">
-			<value>/optionsForm</value>
-		</property>
-		<property name="successView">
-			<value>options.form</value>
-		</property>
-	</bean> -->
-	<bean parent="serviceContext">
-		<property name="moduleService">
-			<list>
-				<value>org.openmrs.module.smartcontainer.SmartAppService</value>
-				<bean
-					class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
-					<property name="transactionManager">
-						<ref bean="transactionManager" />
-					</property>
-					<property name="target">
-						<bean class="org.openmrs.module.smartcontainer.impl.SmartAppServiceImpl">
-							<property name="dao">
-								<bean
-									class="org.openmrs.module.smartcontainer.db.hibernate.HibernateAppDAO">
-									<property name="sessionFactory">
-										<ref bean="sessionFactory" />
-									</property>
-								</bean>
-							</property>
-						</bean>
-					</property>
-					<property name="preInterceptors">
-						<ref bean="serviceInterceptors" />
-					</property>
-					<property name="transactionAttributeSource">
-						<bean
-							class="org.springframework.transaction.annotation.AnnotationTransactionAttributeSource" />
-					</property>
-				</bean>
-			</list>
-		</property>
-	</bean>
-	<bean parent="serviceContext">
-		<property name="moduleService">
-			<list>
-				<value>org.openmrs.module.smartcontainer.SmartUserService</value>
-				<bean
-					class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
-					<property name="transactionManager">
-						<ref bean="transactionManager" />
-					</property>
-					<property name="target">
-						<bean class="org.openmrs.module.smartcontainer.impl.SmartUserServiceImpl">
-							<property name="userDAO">
-								<bean
-									class="org.openmrs.module.smartcontainer.db.hibernate.HibernateUserDAO">
-									<property name="sessionFactory">
-										<ref bean="sessionFactory" />
-									</property>
-								</bean>
-							</property>
-						</bean>
-					</property>
-					<property name="preInterceptors">
-						<ref bean="serviceInterceptors" />
-					</property>
-					<property name="transactionAttributeSource">
-						<bean
-							class="org.springframework.transaction.annotation.AnnotationTransactionAttributeSource" />
-					</property>
-				</bean>
-			</list>
-		</property>
-	</bean>
-	<bean parent="serviceContext">
-		<property name="moduleService">
-			<list>
-				<value>org.openmrs.module.smartcontainer.SmartDataService</value>
-				<bean
-					class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
-					<property name="transactionManager">
-						<ref bean="transactionManager" />
-					</property>
-					<property name="target">
-						<ref bean="smartDataService" />
-					</property>
-					<property name="preInterceptors">
-						<ref bean="serviceInterceptors" />
-					</property>
-					<property name="transactionAttributeSource">
-						<bean
-							class="org.springframework.transaction.annotation.AnnotationTransactionAttributeSource" />
-					</property>
-				</bean>
-			</list>
-		</property>
-	</bean>
-	<bean id="dempgraphicsHandler"
-		class="org.openmrs.module.smartcontainer.smartData.handler.SmartDemographicsHandler" />
-	<bean id="medicationsHandler"
-		class="org.openmrs.module.smartcontainer.smartData.handler.SmartMedicationHandler">
-		<property name="map">
-			<ref bean="rxNormConceptMapping" />
-		</property>
-	</bean>
-	<bean id="problemHandler"
-		class="org.openmrs.module.smartcontainer.smartData.handler.SmartProblemHandler">
-		<property name="map">
-			<ref bean="snomedCtMapping" />
-		</property>
-	</bean>
-	<bean id="labResultHandler"
-		class="org.openmrs.module.smartcontainer.smartData.handler.SmartLabResultHandler">
-		<property name="map">
-			<ref bean="loincMapping" />
-		</property>
-	</bean>
-	<bean id="vitalSignsHandler"
-		class="org.openmrs.module.smartcontainer.smartData.handler.SmartVitalSignsHandler">
-		<property name="loincMap">
-			<ref bean="loincMapping" />
-		</property>
-		<property name="snomedMap">
-			<ref bean="snomedCtMapping" />
-		</property>
-	</bean>
-	<bean id="smartDataService"
-		class="org.openmrs.module.smartcontainer.impl.SmartDataServiceImpl">
-		<property name="handlers">
-			<map>
-				<entry key="SmartDemographics" value-ref="dempgraphicsHandler" />
-				<entry key="SmartMedication" value-ref="medicationsHandler" />
-				<entry key="SmartLabResult" value-ref="labResultHandler" />
-				<entry key="SmartProblem" value-ref="problemHandler" />
-				<entry key="SmartVitalSigns" value-ref="vitalSignsHandler" />
-			</map>
-		</property>
-	</bean>
-	<bean id="rxNormConceptMapping" class="org.openmrs.module.smartcontainer.SmartConceptMap">
-		<property name="conceptSourceName" value="RxNORM" />
-		<property name="baseURL" value="http://rxnav.nlm.nih.gov/REST/rxcui/"></property>
-	</bean>
-	<bean id="snomedCtMapping" class="org.openmrs.module.smartcontainer.SmartConceptMap">
-		<property name="conceptSourceName" value="SNOMED CT" />
-		<property name="baseURL" value="http://www.ihtsdo.org/snomed-ct/concepts/"></property>
-	</bean>
-	<bean id="loincMapping" class="org.openmrs.module.smartcontainer.SmartConceptMap">
-		<property name="conceptSourceName" value="LOINC" />
-		<property name="baseURL" value="http://loinc.org/codes/"></property>
-	</bean>
+    <bean id="smartcontainerUrlMapping"
+          class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+        <property name="order">
+            <value>1</value>
+        </property>
+        <property name="mappings">
+            <props>
+                <prop key="**/smartAppForm.portlet">smartAppPortletController</prop>
+                <!-- 				<prop key="**/options.form">smartAppOptionController</prop> -->
+            </props>
+        </property>
+    </bean>
+    <bean id="smartAppPortletController"
+          class="@MODULE_PACKAGE@.web.controller.SmartcontainerPortletController"></bean>
+    <!-- 	<bean id="smartAppOptionController"
+         class="@MODULE_PACKAGE@.web.controller.SmartAppOptionController">
+         <property name="commandName">
+             <value>opts</value>
+         </property>
+         <property name="commandClass">
+             <value>org.openmrs.web.OptionsForm</value>
+         </property>
+         <property name="formView">
+             <value>/optionsForm</value>
+         </property>
+         <property name="successView">
+             <value>options.form</value>
+         </property>
+     </bean> -->
+    <bean parent="serviceContext">
+        <property name="moduleService">
+            <list>
+                <value>org.openmrs.module.smartcontainer.SmartAppService</value>
+                <bean
+                        class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+                    <property name="transactionManager">
+                        <ref bean="transactionManager"/>
+                    </property>
+                    <property name="target">
+                        <bean class="org.openmrs.module.smartcontainer.impl.SmartAppServiceImpl">
+                            <property name="dao">
+                                <bean
+                                        class="org.openmrs.module.smartcontainer.db.hibernate.HibernateAppDAO">
+                                    <property name="sessionFactory">
+                                        <ref bean="sessionFactory"/>
+                                    </property>
+                                </bean>
+                            </property>
+                        </bean>
+                    </property>
+                    <property name="preInterceptors">
+                        <ref bean="serviceInterceptors"/>
+                    </property>
+                    <property name="transactionAttributeSource">
+                        <bean
+                                class="org.springframework.transaction.annotation.AnnotationTransactionAttributeSource"/>
+                    </property>
+                </bean>
+            </list>
+        </property>
+    </bean>
+    <bean parent="serviceContext">
+        <property name="moduleService">
+            <list>
+                <value>org.openmrs.module.smartcontainer.SmartUserService</value>
+                <bean
+                        class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+                    <property name="transactionManager">
+                        <ref bean="transactionManager"/>
+                    </property>
+                    <property name="target">
+                        <bean class="org.openmrs.module.smartcontainer.impl.SmartUserServiceImpl">
+                            <property name="userDAO">
+                                <bean
+                                        class="org.openmrs.module.smartcontainer.db.hibernate.HibernateUserDAO">
+                                    <property name="sessionFactory">
+                                        <ref bean="sessionFactory"/>
+                                    </property>
+                                </bean>
+                            </property>
+                        </bean>
+                    </property>
+                    <property name="preInterceptors">
+                        <ref bean="serviceInterceptors"/>
+                    </property>
+                    <property name="transactionAttributeSource">
+                        <bean
+                                class="org.springframework.transaction.annotation.AnnotationTransactionAttributeSource"/>
+                    </property>
+                </bean>
+            </list>
+        </property>
+    </bean>
+    <bean parent="serviceContext">
+        <property name="moduleService">
+            <list>
+                <value>org.openmrs.module.smartcontainer.SmartDataService</value>
+                <bean
+                        class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+                    <property name="transactionManager">
+                        <ref bean="transactionManager"/>
+                    </property>
+                    <property name="target">
+                        <ref bean="smartDataService"/>
+                    </property>
+                    <property name="preInterceptors">
+                        <ref bean="serviceInterceptors"/>
+                    </property>
+                    <property name="transactionAttributeSource">
+                        <bean
+                                class="org.springframework.transaction.annotation.AnnotationTransactionAttributeSource"/>
+                    </property>
+                </bean>
+            </list>
+        </property>
+    </bean>
+    <bean id="dempgraphicsHandler"
+          class="org.openmrs.module.smartcontainer.smartData.handler.SmartDemographicsHandler"/>
+    <bean id="medicationsHandler"
+          class="org.openmrs.module.smartcontainer.smartData.handler.SmartMedicationHandler">
+        <property name="map">
+            <ref bean="rxNormConceptMapping"/>
+        </property>
+    </bean>
+    <bean id="problemHandler"
+          class="org.openmrs.module.smartcontainer.smartData.handler.SmartProblemHandler">
+        <property name="map">
+            <ref bean="snomedCtMapping"/>
+        </property>
+    </bean>
+    <bean id="labResultHandler"
+          class="org.openmrs.module.smartcontainer.smartData.handler.SmartLabResultHandler">
+        <property name="map">
+            <ref bean="loincMapping"/>
+        </property>
+    </bean>
+    <bean id="vitalSignsHandler"
+          class="org.openmrs.module.smartcontainer.smartData.handler.SmartVitalSignsHandler">
+        <property name="loincMap">
+            <ref bean="loincMapping"/>
+        </property>
+        <property name="snomedMap">
+            <ref bean="snomedCtMapping"/>
+        </property>
+    </bean>
+    <bean id="smartDataService"
+          class="org.openmrs.module.smartcontainer.impl.SmartDataServiceImpl">
+        <property name="handlers">
+            <map>
+                <entry key="SmartDemographics" value-ref="dempgraphicsHandler"/>
+                <entry key="SmartMedication" value-ref="medicationsHandler"/>
+                <entry key="SmartLabResult" value-ref="labResultHandler"/>
+                <entry key="SmartProblem" value-ref="problemHandler"/>
+                <entry key="SmartVitalSigns" value-ref="vitalSignsHandler"/>
+            </map>
+        </property>
+    </bean>
+    <bean id="rxNormConceptMapping" class="org.openmrs.module.smartcontainer.SmartConceptMap">
+        <property name="conceptSourceName" value="RxNORM"/>
+        <property name="baseURL" value="http://rxnav.nlm.nih.gov/REST/rxcui/"></property>
+    </bean>
+    <bean id="snomedCtMapping" class="org.openmrs.module.smartcontainer.SmartConceptMap">
+        <property name="conceptSourceName" value="SNOMED CT"/>
+        <property name="baseURL" value="http://www.ihtsdo.org/snomed-ct/concepts/"></property>
+    </bean>
+    <bean id="loincMapping" class="org.openmrs.module.smartcontainer.SmartConceptMap">
+        <property name="conceptSourceName" value="LOINC"/>
+        <property name="baseURL" value="http://loinc.org/codes/"></property>
+    </bean>
 
-	<bean id="medicationRDF"
-		class="org.openmrs.module.smartcontainer.rdfsource.MedicationRDFSource">
+    <bean id="medicationRDF"
+          class="org.openmrs.module.smartcontainer.rdfsource.MedicationRDFSource">
 
-	</bean>
-	<bean id="problemRDF"
-		class="org.openmrs.module.smartcontainer.rdfsource.ProblemRDFSource">
+    </bean>
+    <bean id="problemRDF"
+          class="org.openmrs.module.smartcontainer.rdfsource.ProblemRDFSource">
 
-	</bean>
-	<bean id="demographicsRDF"
-		class="org.openmrs.module.smartcontainer.rdfsource.DemographicsRDFSource">
-	</bean>
-	<bean id="labResultRDF"
-		class="org.openmrs.module.smartcontainer.rdfsource.LabResultRDFSource">
+    </bean>
+    <bean id="demographicsRDF"
+          class="org.openmrs.module.smartcontainer.rdfsource.DemographicsRDFSource">
+    </bean>
+    <bean id="labResultRDF"
+          class="org.openmrs.module.smartcontainer.rdfsource.LabResultRDFSource">
 
-	</bean>
-	<bean id="vitalSignRDF"
-		class="org.openmrs.module.smartcontainer.rdfsource.VitalSignRDFSource">
+    </bean>
+    <bean id="vitalSignRDF"
+          class="org.openmrs.module.smartcontainer.rdfsource.VitalSignRDFSource">
 
-	</bean>
-	<bean id="problemController"
-		class="org.openmrs.module.smartcontainer.web.controller.API.ProblemController">
-		<property name="resource" ref="problemRDF" />
-	</bean>
-	<bean id="medicationController"
-		class="org.openmrs.module.smartcontainer.web.controller.API.MedicationController">
-		<property name="resource" ref="medicationRDF" />
-	</bean>
-	<bean id="demographicsController"
-		class="org.openmrs.module.smartcontainer.web.controller.API.DemographicsController">
-		<property name="resource" ref="demographicsRDF" />
-	</bean>
-	<bean id="labResultController"
-		class="org.openmrs.module.smartcontainer.web.controller.API.LabResultController">
-		<property name="resource" ref="labResultRDF" />
-	</bean>
-	<bean id="vitalSignController"
-		class="org.openmrs.module.smartcontainer.web.controller.API.VitalSignController">
-		<property name="resource" ref="vitalSignRDF" />
-	</bean>
+    </bean>
+    <bean id="problemController"
+          class="org.openmrs.module.smartcontainer.web.controller.API.ProblemController">
+        <property name="resource" ref="problemRDF"/>
+    </bean>
+    <bean id="medicationController"
+          class="org.openmrs.module.smartcontainer.web.controller.API.MedicationController">
+        <property name="resource" ref="medicationRDF"/>
+    </bean>
+    <bean id="demographicsController"
+          class="org.openmrs.module.smartcontainer.web.controller.API.DemographicsController">
+        <property name="resource" ref="demographicsRDF"/>
+    </bean>
+    <bean id="labResultController"
+          class="org.openmrs.module.smartcontainer.web.controller.API.LabResultController">
+        <property name="resource" ref="labResultRDF"/>
+    </bean>
+    <bean id="vitalSignController"
+          class="org.openmrs.module.smartcontainer.web.controller.API.VitalSignController">
+        <property name="resource" ref="vitalSignRDF"/>
+    </bean>
 
 
 </beans>

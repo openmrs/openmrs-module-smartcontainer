@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC
-    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
 <hibernate-mapping package="org.openmrs.module.smartcontainer.app">
-	<class name="App" table="smartcontainer_app">
-		<id name="appId" type="int" column="smartcontainer_app_id">
-			<generator class="native" />
-		</id>
-		<property name="name" type="string" column="name" />
-		<property name="description" type="string" column="description" />
-		<property name="author" type="string" column="author" />
-		<property name="mode" type="string" column="mode" />
-		<property name="version" type="string" column="version" />
-		<property name="baseURL" type="string" column="base_url" />
-		<property name="icon" type="string" column="icon" />
-		<property name="sMARTAppId" type="string" column="smart_id" />
-		<property name="defaultApp" type="boolean" column="default_app" />
-		<property name="retire" type="boolean" column="retire"  />
-		<many-to-one name="activity"
-			class="org.openmrs.module.smartcontainer.app.Activity" cascade="all">
-			<column name="activity_id" />
-		</many-to-one>
-		<many-to-one name="webHook" class="WebHook" cascade="all">
-			<column name="webhook_id" />
-		</many-to-one>
+    <class name="App" table="smartcontainer_app">
+        <id name="appId" type="int" column="smartcontainer_app_id">
+            <generator class="native"/>
+        </id>
+        <property name="name" type="string" column="name"/>
+        <property name="description" type="string" column="description"/>
+        <property name="author" type="string" column="author"/>
+        <property name="mode" type="string" column="mode"/>
+        <property name="version" type="string" column="version"/>
+        <property name="baseURL" type="string" column="base_url"/>
+        <property name="icon" type="string" column="icon"/>
+        <property name="sMARTAppId" type="string" column="smart_id"/>
+        <property name="defaultApp" type="boolean" column="default_app"/>
+        <property name="retire" type="boolean" column="retire"/>
+        <many-to-one name="activity"
+                     class="org.openmrs.module.smartcontainer.app.Activity" cascade="all">
+            <column name="activity_id"/>
+        </many-to-one>
+        <many-to-one name="webHook" class="WebHook" cascade="all">
+            <column name="webhook_id"/>
+        </many-to-one>
 
-	</class>
+    </class>
 </hibernate-mapping>

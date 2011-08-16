@@ -1,8 +1,5 @@
 package org.openmrs.module.smartcontainer.smartData.handler;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.openmrs.Concept;
 import org.openmrs.ConceptNumeric;
 import org.openmrs.Obs;
@@ -15,82 +12,93 @@ import org.openmrs.module.smartcontainer.smartData.SmartLabResult;
 import org.openmrs.module.smartcontainer.smartData.ValueAndUnit;
 import org.openmrs.module.smartcontainer.util.SmartDataHandlerUtil;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class SmartLabResultHandler implements SmartDataHandler<SmartLabResult> {
-	private SmartConceptMap map;
+    private SmartConceptMap map;
 
-	public SmartConceptMap getMap() {
-		return map;
-	}
+    public SmartConceptMap getMap() {
+        return map;
+    }
 
-	public void setMap(SmartConceptMap map) {
-		this.map = map;
-	}
+    public void setMap(SmartConceptMap map) {
+        this.map = map;
+    }
 
-	public SmartLabResult getForPatient(Patient patient) {
-		return null;
-	}
+    public SmartLabResult getForPatient(Patient patient) {
+        return null;
+    }
 
-	public List<SmartLabResult> getAllForPatient(Patient patient) {
-		List<Obs> obs = Context.getObsService()
-				.getObservationsByPerson(patient);
-		List<SmartLabResult> smartLabs = new ArrayList<SmartLabResult>();
-		for (Obs o : obs) {
-			Concept concept = o.getConcept();
+    /**
+     * Return labResult for a patient.
+     * Looks for Obs whose  concept is value numeric or coded value  and concept class is test.
+     *
+     * @param patient
+     * @return
+     * @should return LabResult whose OpenMRS concept class is test
+     */
+    public List<SmartLabResult> getAllForPatient(Patient patient) {
+        List<Obs> obs = Context.getObsService()
+                .getObservationsByPerson(patient);
+        List<SmartLabResult> smartLabs = new ArrayList<SmartLabResult>();
+        for (Obs o : obs) {
+            Concept concept = o.getConcept();
 
-			if (isLabTest(concept) && !o.isObsGrouping()) {
-				SmartLabResult result = new SmartLabResult();
-				result.setLabName(SmartDataHandlerUtil.codedValueHelper(
-						concept, map));
+            if (isLabTest(concept) && !o.isObsGrouping()) {
+                SmartLabResult result = new SmartLabResult();
+                result.setLabName(SmartDataHandlerUtil.codedValueHelper(
+                        concept, map));
 
-				ConceptNumeric cn = getNumericConcept(concept);
-					if (cn != null) {
-						QuantitativeResult quantity = new QuantitativeResult();
-						quantity.setValueAndUnit(SmartDataHandlerUtil
-								.valueAndUnitHelper(o.getValueNumeric(),
-										cn.getUnits()));
-						
-						quantity.setNormalRange(SmartDataHandlerUtil
-								.rangeHelper(cn.getHiNormal(),
-										cn.getLowNormal(), cn.getUnits()));
-						quantity.setNonCriticalRange(SmartDataHandlerUtil
-								.rangeHelper(cn.getHiCritical(),
-										cn.getLowCritical(), cn.getUnits()));
-						
-						result.setQuantitativeResult(quantity);
+                ConceptNumeric cn = getNumericConcept(concept);
+                if (cn != null) {
+                    QuantitativeResult quantity = new QuantitativeResult();
+                    quantity.setValueAndUnit(SmartDataHandlerUtil
+                            .valueAndUnitHelper(o.getValueNumeric(),
+                                    cn.getUnits()));
 
-					
-				} else if (concept.getDatatype().isCoded()) {
-					QuantitativeResult quantity = new QuantitativeResult();
-					ValueAndUnit val = new ValueAndUnit();
-					val.setValue(o.getValueCodedName().getName());
-					quantity.setValueAndUnit(val);
-				}
-				Attribution att = new Attribution();
-				att.setStartTime(SmartDataHandlerUtil.date(o.getObsDatetime()));
-				result.setSpecimenCollected(att);
-				result.setExternalID(o.getAccessionNumber());
-				smartLabs.add(result);
+                    quantity.setNormalRange(SmartDataHandlerUtil
+                            .rangeHelper(cn.getHiNormal(),
+                                    cn.getLowNormal(), cn.getUnits()));
+                    quantity.setNonCriticalRange(SmartDataHandlerUtil
+                            .rangeHelper(cn.getHiCritical(),
+                                    cn.getLowCritical(), cn.getUnits()));
 
-			}
-		}
-		return smartLabs;
-	}
+                    result.setQuantitativeResult(quantity);
 
-	/**
-	 * @param concept a concept (that should be datatype=numeric)
-	 * @return a ConceptNumeric fetched from the database, or null if <code>concept</code> is not a numeric
-	 */
-	private ConceptNumeric getNumericConcept(Concept concept) {
-		if (concept.isNumeric()) {
-			return Context.getConceptService().getConceptNumeric(
-					concept.getConceptId());
-		} else {
-			return null;
-		}
-	}
 
-	private boolean isLabTest(Concept concept) {
-		return concept.getConceptClass().getName().equals("Test");
-	}
+                } else if (concept.getDatatype().isCoded()) {
+                    QuantitativeResult quantity = new QuantitativeResult();
+                    ValueAndUnit val = new ValueAndUnit();
+                    val.setValue(o.getValueCodedName().getName());
+                    quantity.setValueAndUnit(val);
+                }
+                Attribution att = new Attribution();
+                att.setStartTime(SmartDataHandlerUtil.date(o.getObsDatetime()));
+                result.setSpecimenCollected(att);
+                result.setExternalID(o.getAccessionNumber());
+                smartLabs.add(result);
+
+            }
+        }
+        return smartLabs;
+    }
+
+    /**
+     * @param concept a concept (that should be datatype=numeric)
+     * @return a ConceptNumeric fetched from the database, or null if <code>concept</code> is not a numeric
+     */
+    private ConceptNumeric getNumericConcept(Concept concept) {
+        if (concept.isNumeric()) {
+            return Context.getConceptService().getConceptNumeric(
+                    concept.getConceptId());
+        } else {
+            return null;
+        }
+    }
+
+    private boolean isLabTest(Concept concept) {
+        return concept.getConceptClass().getName().equals("Test");
+    }
 
 }

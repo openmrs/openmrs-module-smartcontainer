@@ -13,13 +13,13 @@
  */
 package org.openmrs.module.smartcontainer;
 
-import java.util.Collection;
-
 import org.openmrs.User;
 import org.openmrs.api.APIException;
 import org.openmrs.module.smartcontainer.app.App;
 import org.openmrs.module.smartcontainer.db.AppDAO;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Collection;
 
 /**
  * contains service methods to retrieve the SMART Apps
@@ -27,65 +27,60 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public interface SmartAppService {
 
-	/**
-	 * setter method for DAO
-	 * 
-	 * @param dao
-	 * @throws APIException
-	 */
-	public void setDao(AppDAO dao) throws APIException;
+    /**
+     * setter method for DAO
+     *
+     * @param dao
+     * @throws APIException
+     */
+    public void setDao(AppDAO dao) throws APIException;
 
-	/**
-	 * get SMART App by name
-	 * 
-	 * @param name
-	 * @return
-	 * @throws APIException
-	 */
-	public App getAppByName(String name) throws APIException;
+    /**
+     * get SMART App by name
+     *
+     * @param name
+     * @return
+     * @throws APIException
+     */
+    public App getAppByName(String name) throws APIException;
 
-	/**
-	 * Get all SMART Apps
-	 * 
-	 * @return
-	 * @throws APIException
-	 * 
-	 */
-	public Collection<App> getAllApps() throws APIException;
+    /**
+     * Get all SMART Apps
+     *
+     * @return
+     * @throws APIException
+     */
+    public Collection<App> getAllApps() throws APIException;
 
-	/**
-	 * Delete app by id
-	 * 
-	 * @param id
-	 * @throws APIException
-	 * 
-	 */
-	public void deleteApp(App app) throws APIException;
+    /**
+     * Delete app by id
+     *
+     * @param id
+     * @throws APIException
+     */
+    public void deleteApp(App app) throws APIException;
 
-	/**
-	 * Get App by Id
-	 * 
-	 * @param id
-	 * @return
-	 * 
-	 */
-	public App getAppById(Integer id);
+    /**
+     * Get App by Id
+     *
+     * @param id
+     * @return
+     */
+    public App getAppById(Integer id);
 
-	/**
-	 * Auto generated method comment
-	 * 
-	 * @param newApp
-	 * 
-	 */
-	public void saveApp(App newApp);
+    /**
+     * Auto generated method comment
+     *
+     * @param newApp
+     */
+    public void saveApp(App newApp);
 
-	/**
-	 * Get all apps corresponding to a OpenMRS user
-	 * 
-	 * @param user
-	 * @return
-	 * 
-	 */
-	public Collection<App> getAppsByUserName(User user);
+    /**
+     * Get all apps corresponding to a OpenMRS user
+     *
+     * @param user
+     * @return
+     */
+    public Collection<App> getAppsByUserName(User user);
 
 }

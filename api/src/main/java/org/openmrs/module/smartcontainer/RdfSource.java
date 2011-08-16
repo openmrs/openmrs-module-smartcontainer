@@ -17,88 +17,88 @@ import org.openrdf.model.Graph;
 import org.openrdf.model.URI;
 import org.openrdf.model.ValueFactory;
 import org.openrdf.model.impl.GraphImpl;
-import org.openrdf.rio.rdfxml.RdfXmlWriter;
+import org.openrdf.rio.rdfxml.RDFXMLWriter;
+
 
 /**
  * Contains declarations common to all RDFSources
- * 
  */
 
 public abstract class RdfSource {
 
-	/**
-	 * Name space declaration for smartplatform terms
-	 */
-	public final static String sp = "http://smartplatforms.org/terms#";
+    /**
+     * Name space declaration for smartplatform terms
+     */
+    public final static String sp = "http://smartplatforms.org/terms#";
 
-	/**
-	 * Name space declaration for Dublin core terms
-	 */
-	public final static String dcterms = "http://purl.org/dc/terms/";
+    /**
+     * Name space declaration for Dublin core terms
+     */
+    public final static String dcterms = "http://purl.org/dc/terms/";
 
-	/**
-	 * Name space declaration for Dublin core vocabulary
-	 */
-	public final static String dc = "http://purl.org/dc/elements/1.1/";
+    /**
+     * Name space declaration for Dublin core vocabulary
+     */
+    public final static String dc = "http://purl.org/dc/elements/1.1/";
 
-	/**
-	 * Name space declaration for Resource description framework
-	 */
-	public final static String rdf = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
+    /**
+     * Name space declaration for Resource description framework
+     */
+    public final static String rdf = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
 
-	/**
-	 * Name space declaration for Friend of a friend
-	 */
-	public final static String foaf = "http://xmlns.com/foaf/0.1/";
+    /**
+     * Name space declaration for Friend of a friend
+     */
+    public final static String foaf = "http://xmlns.com/foaf/0.1/";
 
-	/**
-	 * Name space declaration for vCard
-	 */
-	public final static String v = "http://www.w3.org/2006/vcard/ns#";
+    /**
+     * Name space declaration for vCard
+     */
+    public final static String v = "http://www.w3.org/2006/vcard/ns#";
 
-	/**
-	 * Model graph for getting factory
-	 */
-	protected Graph modelGraph;
+    /**
+     * Model graph for getting factory
+     */
+    protected Graph modelGraph;
 
-	/**
-	 * Factory for creating URI and Value of RDF
-	 */
-	protected ValueFactory factory;
-	/**
-	 * 
-	 */
-	protected URI type;
+    /**
+     * Factory for creating URI and Value of RDF
+     */
+    protected ValueFactory factory;
+    /**
+     *
+     */
+    public static URI type;
 
-	/**
-	 * No arg constructor for initializing modelGraph and factory
-	 */
-	public RdfSource() {
-		super();
-		modelGraph = new GraphImpl();
-		factory = modelGraph.getValueFactory();
-		type = factory.createURI(org.openrdf.vocabulary.RDF.TYPE);
-	}
+    /**
+     * No arg constructor for initializing modelGraph and factory
+     */
+    public RdfSource() {
+        super();
+        modelGraph = new GraphImpl();
+        factory = modelGraph.getValueFactory();
+        type = (org.openrdf.model.vocabulary.RDF.TYPE);
+    }
 
-	/**
-	 * This method adds following to the rdf output. <rdf:RDF
-	 * xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-	 * xmlns:sp="http://smartplatforms.org/terms#"
-	 * xmlns:dcterms="http://purl.org/dc/terms/"
-	 * xmlns:foaf="http://xmlns.com/foaf/0.1/"
-	 * xmlns:dc="http://purl.org/dc/elements/1.1/"
-	 * xmlns:v="http://www.w3.org/2006/vcard/ns#"> </rdf:RDF>
-	 * 
-	 * @param graph
-	 */
-	protected void addHeader(RdfXmlWriter graph) {
+    /**
+     * This method adds following to the rdf output. <rdf:RDF
+     * xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     * xmlns:sp="http://smartplatforms.org/terms#"
+     * xmlns:dcterms="http://purl.org/dc/terms/"
+     * xmlns:foaf="http://xmlns.com/foaf/0.1/"
+     * xmlns:dc="http://purl.org/dc/elements/1.1/"
+     * xmlns:v="http://www.w3.org/2006/vcard/ns#"> </rdf:RDF>
+     *
+     * @param graph
+     */
+    protected void addHeader(RDFXMLWriter graph) {
 
-		graph.setNamespace("rdf", rdf);
-		graph.setNamespace("sp", sp);
-		graph.setNamespace("foaf", foaf);
-		graph.setNamespace("dc", dc);
-		graph.setNamespace("dcterms", dcterms);
-		graph.setNamespace("v", v);
+        graph.handleNamespace("rdf", rdf);
+        graph.handleNamespace("sp", sp);
+        graph.handleNamespace("foaf", foaf);
+        graph.handleNamespace("dc", dc);
+        graph.handleNamespace("dcterms", dcterms);
+        graph.handleNamespace("v", v);
 
-	}
+    }
 }

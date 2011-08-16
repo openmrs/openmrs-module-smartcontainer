@@ -13,40 +13,40 @@
  */
 package org.openmrs.module.smartcontainer.db;
 
-import java.util.Collection;
-
 import org.openmrs.api.APIException;
 import org.openmrs.api.db.DAOException;
 import org.openmrs.module.smartcontainer.SmartUser;
+
+import java.util.Collection;
 
 /**
  * DAO for User service
  */
 public interface UserDAO {
 
-	/**
-	 * to get User by username
-	 * 
-	 * @param name
-	 * @return
-	 * @throws DAOException
-	 */
-	public SmartUser getUserByName(String name) throws DAOException;
+    /**
+     * to get User by username
+     *
+     * @param name
+     * @return
+     * @throws DAOException
+     */
+    public SmartUser getUserByName(String name) throws DAOException;
 
-	/**
-	 * to get all Users
-	 * 
-	 * @return
-	 * @throws DAOException
-	 */
-	public Collection<SmartUser> getAllUsers() throws DAOException;
+    /**
+     * to get all Users
+     *
+     * @return
+     * @throws DAOException
+     */
+    public Collection<SmartUser> getAllUsers() throws DAOException;
 
-	/**
-	 * Save a SMART user
-	 * 
-	 * @param user
-	 * @throws APIException
-	 */
-	public void saveUser(SmartUser user) throws APIException;
+    /**
+     * Save a SMART user
+     *
+     * @param user
+     * @throws APIException
+     */
+    public void saveUser(SmartUser user) throws APIException;
 
 }

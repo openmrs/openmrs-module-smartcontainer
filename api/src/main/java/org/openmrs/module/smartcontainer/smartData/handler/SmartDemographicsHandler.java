@@ -13,45 +13,44 @@
  */
 package org.openmrs.module.smartcontainer.smartData.handler;
 
-import java.util.List;
-
 import org.openmrs.Patient;
 import org.openmrs.module.smartcontainer.smartData.SmartDemographics;
 import org.openmrs.module.smartcontainer.util.SmartDataHandlerUtil;
 
+import java.util.List;
+
 /**
  * Default Handler Implementation for SMART Demographics
- * 
  */
 public class SmartDemographicsHandler implements
-		SmartDataHandler<SmartDemographics> {
+        SmartDataHandler<SmartDemographics> {
 
-	/**
-	 * @see org.openmrs.module.smartcontainer.smartData.handler.SmartDataHandler#getForPatient(org.openmrs.Patient)
-	 * @should return SmartDemographics
-	 */
-	public SmartDemographics getForPatient(Patient patient) {
-		SmartDemographics demographics = new SmartDemographics();
-		demographics.setFamilyName(patient.getFamilyName()); // Free text
-		demographics.setGivenName(patient.getGivenName()); // Free text
-		if (patient.getGender() != null) // avoid null
-			demographics.setGender(patient.getGender().equals("M") ? "male"
-					: "female"); // 'male' or 'female'
-		if (patient.getBirthdate() != null) // avoid null
-			demographics.setBirthDate(SmartDataHandlerUtil.date(patient
-					.getBirthdate())); // ISO-8601 string
-		if (patient.getPersonAddress() != null)
-			demographics.setZipCode(patient.getPersonAddress().getPostalCode()); // Free
-																					// text
-		return demographics;
-	}
+    /**
+     * @should return SmartDemographics
+     * @see org.openmrs.module.smartcontainer.smartData.handler.SmartDataHandler#getForPatient(org.openmrs.Patient)
+     */
+    public SmartDemographics getForPatient(Patient patient) {
+        SmartDemographics demographics = new SmartDemographics();
+        demographics.setFamilyName(patient.getFamilyName()); // Free text
+        demographics.setGivenName(patient.getGivenName()); // Free text
+        if (patient.getGender() != null) // avoid null
+            demographics.setGender(patient.getGender().equals("M") ? "male"
+                    : "female"); // 'male' or 'female'
+        if (patient.getBirthdate() != null) // avoid null
+            demographics.setBirthDate(SmartDataHandlerUtil.date(patient
+                    .getBirthdate())); // ISO-8601 string
+        if (patient.getPersonAddress() != null)
+            demographics.setZipCode(patient.getPersonAddress().getPostalCode()); // Free
+        // text
+        return demographics;
+    }
 
-	/**
-	 * No need to implements this
-	 * 
-	 * @see org.openmrs.module.smartcontainer.smartData.handler.SmartDataHandler#getAllForPatient(org.openmrs.Patient)
-	 */
-	public List<SmartDemographics> getAllForPatient(Patient patient) {
-		return null;
-	}
+    /**
+     * No need to implements this
+     *
+     * @see org.openmrs.module.smartcontainer.smartData.handler.SmartDataHandler#getAllForPatient(org.openmrs.Patient)
+     */
+    public List<SmartDemographics> getAllForPatient(Patient patient) {
+        return null;
+    }
 }

@@ -1,0 +1,444 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+    <location location_id="1" name="Test Location" creator="1" date_created="2005-01-01 00:00:00.0" retired="false"
+              uuid="ef93c695-ac43-450a-93f8-4b2b4d50a3c8"/>
+    <patient patient_id="2" creator="1" date_created="2005-01-01 00:00:00.0" voided="false"/>
+    <patient_identifier patient_identifier_id="1" patient_id="2" identifier="1234" identifier_type="1" preferred="1"
+                        location_id="1" creator="1" date_created="2005-01-01 00:00:00.0" voided="false"
+                        uuid="1ac98ec8-e9d9-4626-998c-c795c2f0aa9f"/>
+    <patient_identifier_type patient_identifier_type_id="1" name="Test Identifier Type" description="Test description"
+                             check_digit="false" creator="1" date_created="2005-01-01 00:00:00.0" required="false"
+                             retired="false" uuid="0cbecb62-7249-4f91-8edf-d0206ecceb63"/>
+    <person person_id="2" uuid="5631b434-78aa-102b-91a0-001e378eb67e" gender="M" birthdate="1950-04-01" dead="false"
+            creator="1" date_created="2005-01-01 00:00:00.0" voided="false"/>
+    <person_name person_name_id="2" preferred="true" person_id="2" given_name="John" middle_name=" " family_name="Doe"
+                 creator="1" date_created="2005-01-01 00:00:00.0" voided="false"
+                 uuid="0f1f7d08-076b-4fc6-acac-4bb91515141e"/>
+    <person_address person_address_id="1" person_id="3" preferred="1" address1="555 Johnson Rd." address2="Apt. 555"
+                    city_village="Indianapolis" state_province="IN"
+                    postal_code="46202" country="USA" latitude="394700" longitude="860900" creator="1"
+                    date_created="2005-09-22 00:00:00" voided="0" uuid="6bdb8e10-bb77-11e0-9815-001d723850fa"/>
+    <!-- Obs -->
+    <obs obs_id="1" person_id="2" concept_id="1" obs_datetime="2006-02-09 00:00:00.0" location_id="1"
+         value_numeric="1.0" creator="1" date_created="2006-02-10 15:57:35.0" voided="false"
+         uuid="be3a4d7a-f9ab-47bb-aaad-bc0b452fcda4"/>
+    <obs obs_id="2" person_id="2" concept_id="1" obs_datetime="2006-02-10 00:00:00.0" location_id="1"
+         value_numeric="2.0" creator="1" date_created="2006-02-11 15:57:35.0" voided="false"
+         uuid="b5499df2-b17c-4b39-88a6-44591c165569"/>
+    <obs obs_id="3" person_id="2" concept_id="1" obs_datetime="2006-02-11 00:00:00.0" location_id="1"
+         value_numeric="3.0" creator="1" date_created="2006-02-12 15:57:35.0" voided="false"
+         uuid="efbba621-51ca-428b-8671-4f4eede10b4b"/>
+    <obs obs_id="4" person_id="2" concept_id="1" obs_datetime="2006-02-12 00:00:00.0" location_id="1"
+         value_numeric="4.0" creator="1" date_created="2006-02-13 15:57:35.0" voided="false"
+         uuid="144cb55d-69ab-4009-8256-f4750e8770ee"/>
+    <obs obs_id="5" person_id="2" concept_id="1" obs_datetime="2006-02-13 01:00:00.0" location_id="1"
+         value_numeric="5.0" creator="1" date_created="2006-02-14 15:57:35.0" voided="false"
+         uuid="6e76c1f1-6886-49bb-9dc0-f3b304936100"/>
+    <obs obs_id="6" person_id="2" concept_id="1" obs_datetime="2006-02-14 00:00:00.0" location_id="1"
+         value_numeric="6.0" creator="1" date_created="2006-02-15 15:57:35.0" voided="false"
+         uuid="14d3b79b-1f8f-4bb3-93c2-3eac710dc053"/>
+    <obs obs_id="7" person_id="2" concept_id="1" obs_datetime="2006-02-15 00:00:00.0" location_id="1"
+         value_numeric="7.0" creator="1" date_created="2006-02-16 15:57:35.0" voided="false"
+         uuid="adf212b7-05bd-4114-908a-b04cb058afa4"/>
+    <obs obs_id="8" person_id="2" concept_id="1" obs_datetime="2006-02-16 00:00:00.0" location_id="1"
+         value_numeric="8.0" creator="1" date_created="2006-02-17 15:57:35.0" voided="false"
+         uuid="0ee1248e-08aa-4a2c-9f38-fb3875f605e0"/>
+    <obs obs_id="9" person_id="2" concept_id="1" obs_datetime="2004-01-01 00:00:00.0" location_id="1"
+         value_numeric="9.0" obs_group_id="2" creator="1" date_created="2006-02-17 15:57:35.0" voided="false"
+         uuid="0ee1248e-08aa-4a2c-9f38-fb3875f605e1"/>
+    <obs obs_id="10" person_id="2" concept_id="1" obs_datetime="2009-01-01 00:00:00.0" location_id="1"
+         value_numeric="10.0" obs_group_id="2" creator="1" date_created="2006-02-17 15:57:35.0" voided="true"
+         void_reason="testing" voided_by="1" date_voided="2006-03-17 15:57:35.0"
+         uuid="0ee1248e-08aa-4a2c-9f38-fb3875f605e2"/>
+    <obs obs_id="11" person_id="2" concept_id="21" obs_datetime="2009-01-01 00:00:00.0" location_id="1" value_coded="7"
+         creator="1" date_created="2006-02-17 15:57:35.0" voided="false" uuid="0ee1248e-08aa-4a2c-9f38-fb3875f605e3"/>
+    <!-- concept classes  -->
+    <concept_class concept_class_id="1" name="Test" description="Acq. during patient encounter (vitals, labs, etc.)"
+                   creator="1" date_created="2004-02-02 00:00:00.0" uuid="3d727800-26fe-102b-80cb-0017a47871b2"
+                   retired="false"/>
+    <concept_class concept_class_id="2" name="Procedure" description="Describes a clinical procedure" creator="1"
+                   date_created="2004-03-02 00:00:00.0" uuid="3d727db4-26fe-102b-80cb-0017a47871b2" retired="false"/>
+    <concept_class concept_class_id="3" name="Drug" description="Drug" creator="1" date_created="2004-02-02 00:00:00.0"
+                   uuid="3d727f76-26fe-102b-80cb-0017a47871b2" retired="false"/>
+    <!-- concept data types -->
+    <concept_datatype concept_datatype_id="1" name="Numeric" hl7_abbreviation="NM"
+                      description="Numeric value, including integer or float (e.g., creatinine, weight)" creator="1"
+                      date_created="2004-02-02 00:00:00.0" uuid="3d8aa16e-26fe-102b-80cb-0017a47871b2" retired="false"/>
+    <concept_datatype concept_datatype_id="2" name="Coded" hl7_abbreviation="CWE"
+                      description="Value determined by term dictionary lookup (i.e., term identifier)" creator="1"
+                      date_created="2004-02-02 00:00:00.0" uuid="3d8aa420-26fe-102b-80cb-0017a47871b2" retired="false"/>
+    <concept_datatype concept_datatype_id="3" name="Text" hl7_abbreviation="ST" description="Free text" creator="1"
+                      date_created="2004-02-02 00:00:00.0" uuid="3d8aa5ec-26fe-102b-80cb-0017a47871b2" retired="false"/>
+    <!-- concepts -->
+    <concept_name concept_name_id="22" concept_id="21" name="HEMOGLOBIN" locale="en" creator="2"
+                  date_created="2004-01-01 00:00:00.0" uuid="3e09b800-26fe-102b-80cb-0017a47871b2" voided="false"
+                  concept_name_type="" locale_preferred="0"/>
+    <concept_name concept_name_id="312" concept_id="300" name="BLOOD TYPING" locale="en" creator="2"
+                  date_created="2004-01-01 00:00:00.0" uuid="3e0cca4a-26fe-102b-80cb-0017a47871b2" voided="false"
+                  concept_name_type="" locale_preferred="0"/>
+    <concept_name concept_name_id="671" concept_id="657" name="CD4 PANEL" locale="en" creator="2"
+                  date_created="2004-01-01 00:00:00.0" uuid="3e1046e8-26fe-102b-80cb-0017a47871b2" voided="false"
+                  concept_name_type="" locale_preferred="0"/>
+    <concept_name concept_name_id="692" concept_id="678" name="WHITE BLOOD CELLS" locale="en" creator="2"
+                  date_created="2004-01-01 00:00:00.0" uuid="3e10f142-26fe-102b-80cb-0017a47871b2" voided="false"
+                  concept_name_type="" locale_preferred="0"/>
+    <concept_name concept_name_id="693" concept_id="679" name="RED BLOOD CELLS" locale="en" creator="2"
+                  date_created="2004-01-01 00:00:00.0" uuid="3e10f2be-26fe-102b-80cb-0017a47871b2" voided="false"
+                  concept_name_type="" locale_preferred="0"/>
+    <concept_name concept_name_id="744" concept_id="729" name="PLATELETS" locale="en" creator="2"
+                  date_created="2004-01-01 00:00:00.0" uuid="3e115786-26fe-102b-80cb-0017a47871b2" voided="false"
+                  concept_name_type="" locale_preferred="0"/>
+    <concept_name concept_name_id="745" concept_id="729" name="PLAQUETTES" locale="fr" creator="6"
+                  date_created="2007-05-12 11:53:21.0" uuid="3e115e66-26fe-102b-80cb-0017a47871b2" voided="false"
+                  concept_name_type="" locale_preferred="0"/>
+    <concept_name concept_name_id="746" concept_id="730" name="CD4%" locale="en" creator="4"
+                  date_created="2004-04-08 00:00:00.0" uuid="3e116082-26fe-102b-80cb-0017a47871b2" voided="false"
+                  concept_name_type="" locale_preferred="0"/>
+    <concept_name concept_name_id="843" concept_id="825" name="HEPATOSPLENOMEGALY" locale="en" creator="2"
+                  date_created="2004-05-04 00:00:00.0" uuid="3e123142-26fe-102b-80cb-0017a47871b2" voided="false"
+                  concept_name_type="" locale_preferred="0"/>
+    <concept_name concept_name_id="870" concept_id="851" name="MEAN CORPUSCULAR VOLUME" locale="en" creator="2"
+                  date_created="2004-05-05 00:00:00.0" uuid="3e1290d8-26fe-102b-80cb-0017a47871b2" voided="false"
+                  concept_name_type="" locale_preferred="0"/>
+    <concept_name concept_name_id="1051" concept_id="1015" name="HEMATOCRIT" locale="en" creator="2"
+                  date_created="2004-12-02 00:00:00.0" uuid="3e148d20-26fe-102b-80cb-0017a47871b2" voided="false"
+                  concept_name_type="" locale_preferred="0"/>
+    <concept_name concept_name_id="1052" concept_id="1016" name="RED CELL DISTRIBUTION WIDTH" locale="en" creator="2"
+                  date_created="2004-12-02 00:00:00.0" uuid="3e148e9c-26fe-102b-80cb-0017a47871b2" voided="false"
+                  concept_name_type="" locale_preferred="0"/>
+    <concept_name concept_name_id="1053" concept_id="1017" name="MEAN CELL HEMOGLOBIN CONCENTRATION" locale="en"
+                  creator="2" date_created="2004-12-02 00:00:00.0" uuid="3e14900e-26fe-102b-80cb-0017a47871b2"
+                  voided="false" concept_name_type="" locale_preferred="0"/>
+    <concept_name concept_name_id="1054" concept_id="1018" name="MEAN CORPUSCULAR HEMOGLOBIN" locale="en" creator="4"
+                  date_created="2004-12-02 00:00:00.0" uuid="3e149180-26fe-102b-80cb-0017a47871b2" voided="false"
+                  concept_name_type="" locale_preferred="0"/>
+    <concept_name concept_name_id="1055" concept_id="1019" name="COMPLETE BLOOD COUNT" locale="en" creator="4"
+                  date_created="2004-12-02 00:00:00.0" uuid="3e14931a-26fe-102b-80cb-0017a47871b2" voided="false"
+                  concept_name_type="" locale_preferred="0"/>
+    <concept_name concept_name_id="1057" concept_id="1021" name="LYMPHOCYTES" locale="en" creator="4"
+                  date_created="2004-12-02 00:00:00.0" uuid="3e149626-26fe-102b-80cb-0017a47871b2" voided="false"
+                  concept_name_type="" locale_preferred="0"/>
+    <concept_name concept_name_id="4443" concept_id="3059" name="GRANULOCYTE" locale="en" creator="1128"
+                  date_created="2008-04-23 21:00:38.0" uuid="851c987a-b089-4906-8da9-5ddca806746e" voided="false"
+                  concept_name_type="" locale_preferred="0"/>
+    <concept_name concept_name_id="4444" concept_id="3060" name="GRANULOCYTE PERCENT" locale="en" creator="1128"
+                  date_created="2008-04-23 21:00:43.0" uuid="ebd5e798-006f-495d-abfe-168477128ce8" voided="false"
+                  concept_name_type="" locale_preferred="0"/>
+    <concept_name concept_name_id="3617" concept_id="5497" name="CD4 COUNT" locale="en" creator="2"
+                  date_created="2004-08-12 00:00:00.0" uuid="3e3f6df6-26fe-102b-80cb-0017a47871b2" voided="false"
+                  concept_name_type="" locale_preferred="0"/>
+    <concept_name concept_name_id="561" concept_id="21" name="HB" locale="en" creator="4"
+                  date_created="2004-10-20 00:00:00.0" uuid="3fc9de68-26fe-102b-80cb-0017a47871b2" voided="false"
+                  concept_name_type="" locale_preferred="0"/>
+    <concept_name concept_name_id="585" concept_id="21" name="HGB" locale="en" creator="4"
+                  date_created="2004-10-20 00:00:00.0" uuid="3fca0d2a-26fe-102b-80cb-0017a47871b2" voided="false"
+                  concept_name_type="" locale_preferred="0"/>
+    <concept_name concept_name_id="196" concept_id="300" name="BLOOD GROUP" locale="en" creator="2"
+                  date_created="2005-02-16 17:41:16.0" uuid="3fc5c576-26fe-102b-80cb-0017a47871b2" voided="false"
+                  concept_name_type="" locale_preferred="0"/>
+    <concept_name concept_name_id="741" concept_id="657" name="LYMPHOCYTE SUBSET PANEL" locale="en" creator="2"
+                  date_created="2004-12-02 00:00:00.0" uuid="3fcc218c-26fe-102b-80cb-0017a47871b2" voided="false"
+                  concept_name_type="" locale_preferred="0"/>
+    <concept_name concept_name_id="528" concept_id="678" name="GB" locale="fr" creator="6"
+                  date_created="2007-05-12 11:51:42.0" uuid="3fc99c64-26fe-102b-80cb-0017a47871b2" voided="false"
+                  concept_name_type="" locale_preferred="0"/>
+    <concept_name concept_name_id="718" concept_id="678" name="LEUKOCYTE COUNT" locale="en" creator="2"
+                  date_created="2004-12-02 00:00:00.0" uuid="3fcb7a84-26fe-102b-80cb-0017a47871b2" voided="false"
+                  concept_name_type="" locale_preferred="0"/>
+    <concept_name concept_name_id="986" concept_id="678" name="PUS CELLS" locale="en" creator="4"
+                  date_created="2004-10-20 00:00:00.0" uuid="3fcee08e-26fe-102b-80cb-0017a47871b2" voided="false"
+                  concept_name_type="" locale_preferred="0"/>
+    <concept_name concept_name_id="1318" concept_id="678" name="WBC" locale="en" creator="4"
+                  date_created="2004-10-20 00:00:00.0" uuid="3fd2cce4-26fe-102b-80cb-0017a47871b2" voided="false"
+                  concept_name_type="" locale_preferred="0"/>
+    <concept_name concept_name_id="1321" concept_id="678" name="WHITE CELLS" locale="en" creator="4"
+                  date_created="2004-10-20 00:00:00.0" uuid="3fd2d496-26fe-102b-80cb-0017a47871b2" voided="false"
+                  concept_name_type="" locale_preferred="0"/>
+    <concept_name concept_name_id="998" concept_id="679" name="RB CELLS" locale="en" creator="4"
+                  date_created="2004-10-20 00:00:00.0" uuid="3fcef2b8-26fe-102b-80cb-0017a47871b2" voided="false"
+                  concept_name_type="" locale_preferred="0"/>
+    <concept_name concept_name_id="999" concept_id="679" name="RBCs" locale="en" creator="4"
+                  date_created="2004-10-20 00:00:00.0" uuid="3fcef434-26fe-102b-80cb-0017a47871b2" voided="false"
+                  concept_name_type="" locale_preferred="0"/>
+    <concept_name concept_name_id="197" concept_id="729" name="BLOOD PLATELET" locale="en" creator="2"
+                  date_created="2004-12-02 00:00:00.0" uuid="3fc5c6e8-26fe-102b-80cb-0017a47871b2" voided="false"
+                  concept_name_type="" locale_preferred="0"/>
+    <concept_name concept_name_id="932" concept_id="729" name="PLTS" locale="en" creator="4"
+                  date_created="2004-10-20 00:00:00.0" uuid="3fce8684-26fe-102b-80cb-0017a47871b2" voided="false"
+                  concept_name_type="" locale_preferred="0"/>
+    <concept_name concept_name_id="1207" concept_id="729" name="THROMBOCYTE" locale="en" creator="2"
+                  date_created="2004-12-02 00:00:00.0" uuid="3fd17c04-26fe-102b-80cb-0017a47871b2" voided="false"
+                  concept_name_type="" locale_preferred="0"/>
+    <concept_name concept_name_id="234" concept_id="730" name="CD4 PERCENT" locale="en" creator="2"
+                  date_created="2005-02-23 18:14:05.0" uuid="3fc5fdf2-26fe-102b-80cb-0017a47871b2" voided="false"
+                  concept_name_type="" locale_preferred="0"/>
+    <concept_name concept_name_id="628" concept_id="825" name="HSM" locale="en" creator="2"
+                  date_created="2005-02-18 14:19:03.0" uuid="3fcaeb46-26fe-102b-80cb-0017a47871b2" voided="false"
+                  concept_name_type="" locale_preferred="0"/>
+    <concept_name concept_name_id="756" concept_id="851" name="MCV" locale="en" creator="2"
+                  date_created="2004-12-02 00:00:00.0" uuid="3fcc66e2-26fe-102b-80cb-0017a47871b2" voided="false"
+                  concept_name_type="" locale_preferred="0"/>
+    <concept_name concept_name_id="315" concept_id="1015" name="CRIT" locale="en" creator="2"
+                  date_created="2004-12-02 00:00:00.0" uuid="3fc7209c-26fe-102b-80cb-0017a47871b2" voided="false"
+                  concept_name_type="" locale_preferred="0"/>
+    <concept_name concept_name_id="563" concept_id="1015" name="HCT" locale="en" creator="2"
+                  date_created="2004-12-02 00:00:00.0" uuid="3fc9e14c-26fe-102b-80cb-0017a47871b2" voided="false"
+                  concept_name_type="" locale_preferred="0"/>
+    <concept_name concept_name_id="880" concept_id="1015" name="PACKED CELL VOLUME" locale="en" creator="2"
+                  date_created="2004-12-02 00:00:00.0" uuid="3fcdb0ec-26fe-102b-80cb-0017a47871b2" voided="false"
+                  concept_name_type="" locale_preferred="0"/>
+    <concept_name concept_name_id="905" concept_id="1015" name="PCV" locale="en" creator="2"
+                  date_created="2004-12-02 00:00:00.0" uuid="3fcdda2c-26fe-102b-80cb-0017a47871b2" voided="false"
+                  concept_name_type="" locale_preferred="0"/>
+    <concept_name concept_name_id="1000" concept_id="1016" name="RDW" locale="en" creator="2"
+                  date_created="2004-12-02 00:00:00.0" uuid="3fcef5ba-26fe-102b-80cb-0017a47871b2" voided="false"
+                  concept_name_type="" locale_preferred="0"/>
+    <concept_name concept_name_id="755" concept_id="1017" name="MCHC" locale="en" creator="2"
+                  date_created="2004-12-02 00:00:00.0" uuid="3fcc5ad0-26fe-102b-80cb-0017a47871b2" voided="false"
+                  concept_name_type="" locale_preferred="0"/>
+    <concept_name concept_name_id="754" concept_id="1018" name="MCH" locale="en" creator="2"
+                  date_created="2004-12-02 00:00:00.0" uuid="3fcc55ee-26fe-102b-80cb-0017a47871b2" voided="false"
+                  concept_name_type="" locale_preferred="0"/>
+    <concept_name concept_name_id="230" concept_id="1019" name="CBC" locale="en" creator="2"
+                  date_created="2004-12-02 00:00:00.0" uuid="3fc5f82a-26fe-102b-80cb-0017a47871b2" voided="false"
+                  concept_name_type="" locale_preferred="0"/>
+    <concept_name concept_name_id="488" concept_id="1019" name="FHG" locale="en" creator="2"
+                  date_created="2006-02-13 13:54:55.0" uuid="3fc8ea76-26fe-102b-80cb-0017a47871b2" voided="false"
+                  concept_name_type="" locale_preferred="0"/>
+    <concept_name concept_name_id="511" concept_id="1019" name="FULL HEMOGRAM" locale="en" creator="2"
+                  date_created="2004-12-02 00:00:00.0" uuid="3fc982b0-26fe-102b-80cb-0017a47871b2" voided="false"
+                  concept_name_type="" locale_preferred="0"/>
+    <concept_name concept_name_id="573" concept_id="1019" name="HEMOGRAM" locale="en" creator="2"
+                  date_created="2004-12-02 00:00:00.0" uuid="3fc9f39e-26fe-102b-80cb-0017a47871b2" voided="false"
+                  concept_name_type="" locale_preferred="0"/>
+    <concept_name concept_name_id="586" concept_id="1019" name="HGM" locale="en" creator="2"
+                  date_created="2004-12-02 00:00:00.0" uuid="3fca0f8c-26fe-102b-80cb-0017a47871b2" voided="false"
+                  concept_name_type="" locale_preferred="0"/>
+    <concept_name concept_name_id="740" concept_id="1021" name="LYMPH CELLS" locale="en" creator="2"
+                  date_created="2004-12-02 00:00:00.0" uuid="3fcc19a8-26fe-102b-80cb-0017a47871b2" voided="false"
+                  concept_name_type="" locale_preferred="0"/>
+    <concept_name concept_name_id="743" concept_id="1021" name="LYMPHS" locale="en" creator="2"
+                  date_created="2004-12-02 00:00:00.0" uuid="3fcc247a-26fe-102b-80cb-0017a47871b2" voided="false"
+                  concept_name_type="" locale_preferred="0"/>
+    <concept_name concept_name_id="1461" concept_id="3060" name="PGRANULOCYTE" locale="en" creator="1128"
+                  date_created="2008-04-23 21:00:43.0" uuid="5aa31cb2-b429-4b3d-8bdf-3d496ec1411d" voided="false"
+                  concept_name_type="" locale_preferred="0"/>
+    <concept_name concept_name_id="232" concept_id="5089" name="WEIGHT" locale="en" creator="2"
+                  date_created="2004-12-02 00:00:00.0" uuid="1fc2fc80-26fe-102b-80cb-0017a47871b2" voided="false"
+                  concept_name_type="" locale_preferred="0"/>
+    <concept_name concept_name_id="233" concept_id="5497" name="CD4" locale="en" creator="2"
+                  date_created="2004-12-02 00:00:00.0" uuid="3fc5fc80-26fe-102b-80cb-0017a47871b2" voided="false"
+                  concept_name_type="" locale_preferred="0"/>
+    <!--concept numeric -->
+    <concept_numeric concept_id="21" units="" precise="true"/>
+    <concept_numeric concept_id="678" units="mm3" precise="true"/>
+    <!--Drugs -->
+    <drug drug_id="2" concept_id="792" name="Triomune-30" combination="true" dose_strength="1.0" units="tab(s)"
+          creator="2" date_created="2005-02-24 00:00:00.0" retired="false" uuid="42f00b94-26fe-102b-80cb-0017a47871b2"/>
+    <drug drug_id="3" concept_id="792" name="Triomune-40" combination="true" dose_strength="1.0" units="tab(s)"
+          creator="2" date_created="2005-02-24 00:00:00.0" retired="false" uuid="42f00efa-26fe-102b-80cb-0017a47871b2"/>
+    <drug drug_id="5" concept_id="625" name="d4T 30" combination="false" dose_strength="30.0" units="mg" creator="2"
+          date_created="2005-02-24 00:00:00.0" retired="false" uuid="42f010f8-26fe-102b-80cb-0017a47871b2"/>
+    <drug drug_id="6" concept_id="625" name="d4T 40" combination="false" dose_strength="40.0" units="mg" creator="2"
+          date_created="2005-02-24 00:00:00.0" retired="false" uuid="42f012d8-26fe-102b-80cb-0017a47871b2"/>
+    <drug drug_id="9" concept_id="796" name="DDI 125" combination="false" units="mg" creator="2"
+          date_created="2005-02-24 00:00:00.0" retired="false" uuid="42f014b8-26fe-102b-80cb-0017a47871b2"/>
+    <drug drug_id="10" concept_id="796" name="DDI 200" combination="false" units="mg" creator="2"
+          date_created="2005-02-24 00:00:00.0" retired="false" uuid="42f0168e-26fe-102b-80cb-0017a47871b2"/>
+    <drug drug_id="11" concept_id="633" name="EFV 600" combination="false" dose_strength="600.0" units="mg" creator="7"
+          date_created="2006-08-09 11:53:33.0" retired="false" uuid="42f0186e-26fe-102b-80cb-0017a47871b2"/>
+    <drug drug_id="14" concept_id="802" name="TFV 300" combination="false" dose_strength="300.0" units="mg" creator="7"
+          date_created="2006-08-10 14:37:07.0" retired="false" uuid="42f01a4e-26fe-102b-80cb-0017a47871b2"/>
+    <drug drug_id="15" concept_id="438" name="SM" combination="false" dose_strength="1.0" maximum_daily_dose="3000.0"
+          minimum_daily_dose="100.0" units="g" creator="7" date_created="2006-08-10 14:38:33.0" retired="false"
+          uuid="42f01c24-26fe-102b-80cb-0017a47871b2"/>
+    <drug drug_id="16" concept_id="767" name="RIF 300" combination="false" dose_strength="300.0"
+          maximum_daily_dose="1000.0" minimum_daily_dose="50.0" units="mg" creator="7"
+          date_created="2006-08-10 14:47:33.0" retired="false" uuid="42f01e0e-26fe-102b-80cb-0017a47871b2"/>
+    <drug drug_id="17" concept_id="768" name="RHZ" combination="true" dose_strength="1.0" units="tab(s)" creator="7"
+          date_created="2006-08-10 14:48:24.0" retired="false" uuid="42f01ff8-26fe-102b-80cb-0017a47871b2"/>
+    <drug drug_id="18" concept_id="1131" name="RHEZ" combination="false" dose_strength="1.0" units="tab(s)" creator="7"
+          date_created="2006-08-10 14:48:57.0" retired="false" uuid="42f021d8-26fe-102b-80cb-0017a47871b2"/>
+    <drug drug_id="19" concept_id="1194" name="RH" combination="true" dose_strength="1.0" units="tab(s)" creator="7"
+          date_created="2006-08-10 14:49:37.0" retired="false" uuid="42f023ae-26fe-102b-80cb-0017a47871b2"/>
+    <drug drug_id="20" concept_id="5829" name="PZA 500" combination="false" dose_strength="500.0"
+          maximum_daily_dose="2000.0" minimum_daily_dose="100.0" units="mg" creator="7"
+          date_created="2006-08-10 14:51:55.0" retired="false" uuid="42f02598-26fe-102b-80cb-0017a47871b2"/>
+    <drug drug_id="21" concept_id="631" name="NVP Susp" combination="false" dose_strength="100.0" units="ml" creator="7"
+          date_created="2006-08-10 14:53:14.0" retired="false" uuid="42f02778-26fe-102b-80cb-0017a47871b2"/>
+    <drug drug_id="22" concept_id="631" name="NVP" combination="false" dose_strength="200.0" units="mg" creator="7"
+          date_created="2006-08-10 14:55:16.0" retired="false" uuid="42f02958-26fe-102b-80cb-0017a47871b2"/>
+    <drug drug_id="23" concept_id="794" name="LPV/r (Kaletra)" combination="true" dose_strength="166.0" units="mg"
+          creator="7" date_created="2006-08-10 14:57:49.0" retired="false" uuid="42f02b2e-26fe-102b-80cb-0017a47871b2"/>
+    <drug drug_id="24" concept_id="656" name="INH 100" combination="false" dose_strength="100.0"
+          maximum_daily_dose="500.0" minimum_daily_dose="50.0" units="mg" creator="7"
+          date_created="2006-08-10 15:01:54.0" retired="false" uuid="42f02d04-26fe-102b-80cb-0017a47871b2"/>
+    <drug drug_id="25" concept_id="747" name="FCZ 150" combination="false" dose_strength="150.0" units="mg" creator="7"
+          date_created="2006-08-10 15:05:26.0" retired="false" uuid="42f02eee-26fe-102b-80cb-0017a47871b2"/>
+    <drug drug_id="26" concept_id="747" name="FCZ 200" combination="false" dose_strength="200.0" units="mg" creator="7"
+          date_created="2006-08-10 15:06:17.0" retired="false" uuid="42f03100-26fe-102b-80cb-0017a47871b2"/>
+    <drug drug_id="27" concept_id="745" name="EMB 400" combination="false" dose_strength="400.0"
+          maximum_daily_dose="2000.0" minimum_daily_dose="50.0" units="mg" creator="7"
+          date_created="2006-08-10 15:07:28.0" retired="false" uuid="42f032d6-26fe-102b-80cb-0017a47871b2"/>
+    <drug drug_id="28" concept_id="633" name="EFV 100" combination="false" dose_strength="100.0" units="mg" creator="7"
+          date_created="2006-08-10 15:13:24.0" retired="false" uuid="42f04654-26fe-102b-80cb-0017a47871b2"/>
+    <drug drug_id="29" concept_id="633" name="EFV 50" combination="false" dose_strength="50.0" units="mg" creator="7"
+          date_created="2006-08-10 15:13:54.0" retired="false" uuid="42f0482a-26fe-102b-80cb-0017a47871b2"/>
+    <drug drug_id="30" concept_id="633" name="EFV 200" combination="false" dose_strength="200.0" units="mg" creator="7"
+          date_created="2006-08-10 15:14:35.0" retired="false" uuid="42f04a0a-26fe-102b-80cb-0017a47871b2"/>
+    <drug drug_id="31" concept_id="625" name="d4T 20" combination="false" dose_strength="200.0" units="mg" creator="7"
+          date_created="2006-08-10 15:16:05.0" retired="false" uuid="42f04be0-26fe-102b-80cb-0017a47871b2"/>
+    <drug drug_id="32" concept_id="625" name="d4T 15" combination="false" dose_strength="15.0" units="mg" creator="7"
+          date_created="2006-08-10 15:16:29.0" retired="false" uuid="42f04db6-26fe-102b-80cb-0017a47871b2"/>
+    <drug drug_id="33" concept_id="916" name="TMP/SMX 800/160" combination="true" dose_strength="1.0"
+          maximum_daily_dose="4.0" minimum_daily_dose="0.25" units="tab(s)" creator="7"
+          date_created="2006-08-10 15:19:42.0" retired="false" uuid="42f04f8c-26fe-102b-80cb-0017a47871b2"/>
+    <drug drug_id="34" concept_id="916" name="TMP/SMX 400/80" combination="true" dose_strength="1.0" units="tab(s)"
+          creator="7" date_created="2006-08-10 15:37:56.0" retired="false" uuid="42f05176-26fe-102b-80cb-0017a47871b2"/>
+    <drug drug_id="35" concept_id="916" name="TMP/SMX 200/40" combination="true" dose_strength="1.0" units="tab(s)"
+          creator="7" date_created="2006-08-10 15:39:35.0" retired="false" uuid="42f0534c-26fe-102b-80cb-0017a47871b2"/>
+    <drug drug_id="36" concept_id="797" name="AZT Sirop" combination="false" dose_strength="100.0" units="ml"
+          creator="7" date_created="2006-08-10 15:41:28.0" retired="false" uuid="42f05522-26fe-102b-80cb-0017a47871b2"/>
+    <drug drug_id="37" concept_id="797" name="AZT 100" combination="false" dose_strength="100.0" units="mg" creator="7"
+          date_created="2006-08-10 15:41:51.0" retired="false" uuid="42f05734-26fe-102b-80cb-0017a47871b2"/>
+    <drug drug_id="38" concept_id="797" name="AZT 300" combination="false" dose_strength="300.0" units="mg" creator="7"
+          date_created="2006-08-10 15:42:22.0" retired="false" uuid="42f0590a-26fe-102b-80cb-0017a47871b2"/>
+    <drug drug_id="39" concept_id="630" name="AZT+3TC (Duovir)" combination="true" dose_strength="1.0" units="tab(s)"
+          creator="7" date_created="2006-08-10 15:43:32.0" retired="false" uuid="42f05ae0-26fe-102b-80cb-0017a47871b2"/>
+    <drug drug_id="40" concept_id="814" name="ABC 300" combination="false" dose_strength="300.0" units="mg" creator="7"
+          date_created="2006-08-10 15:44:45.0" retired="false" uuid="42f05cc0-26fe-102b-80cb-0017a47871b2"/>
+    <drug drug_id="41" concept_id="628" name="3TC Susp" combination="false" dose_strength="100.0" units="ml" creator="7"
+          date_created="2006-08-10 16:04:40.0" retired="false" uuid="42f05e96-26fe-102b-80cb-0017a47871b2"/>
+    <drug drug_id="42" concept_id="628" name="3TC 150" combination="false" dose_strength="150.0" units="mg" creator="7"
+          date_created="2006-08-10 16:05:32.0" retired="false" uuid="42f0606c-26fe-102b-80cb-0017a47871b2"/>
+    <drug drug_id="43" concept_id="656" name="Isoniazid (H)" combination="false" units="mg" creator="1128"
+          date_created="2007-09-04 11:39:55.0" retired="false" uuid="42f06242-26fe-102b-80cb-0017a47871b2"/>
+    <drug drug_id="44" concept_id="767" name="Rifampicin (R)" combination="false" units="mg" creator="1128"
+          date_created="2007-09-04 11:39:55.0" retired="false" uuid="42f06418-26fe-102b-80cb-0017a47871b2"/>
+    <drug drug_id="45" concept_id="745" name="Ethambutol (E)" combination="false" units="mg" creator="1128"
+          date_created="2007-09-04 11:39:55.0" retired="false" uuid="42f065ee-26fe-102b-80cb-0017a47871b2"/>
+    <drug drug_id="46" concept_id="5829" name="Pyrazinamide (Z)" combination="false" units="mg" creator="1128"
+          date_created="2007-09-04 11:39:55.0" retired="false" uuid="42f067c4-26fe-102b-80cb-0017a47871b2"/>
+    <drug drug_id="47" concept_id="438" name="Streptomycin (S)" combination="false" units="mg" creator="1128"
+          date_created="2007-09-04 11:39:55.0" retired="false" uuid="42f0699a-26fe-102b-80cb-0017a47871b2"/>
+    <drug drug_id="48" concept_id="1417" name="Kanamycin (Km)" combination="false" units="mg" creator="1128"
+          date_created="2007-09-04 11:39:55.0" retired="false" uuid="42f06b70-26fe-102b-80cb-0017a47871b2"/>
+    <drug drug_id="49" concept_id="1406" name="Amikacin (Am)" combination="false" units="mg" creator="1128"
+          date_created="2007-09-04 11:39:55.0" retired="false" uuid="42f07e6c-26fe-102b-80cb-0017a47871b2"/>
+    <drug drug_id="50" concept_id="1411" name="Capreomicin (Cm)" combination="false" units="mg" creator="1128"
+          date_created="2007-09-04 11:39:55.0" retired="false" uuid="42f0804c-26fe-102b-80cb-0017a47871b2"/>
+    <drug drug_id="51" concept_id="2457" name="Viomycin (Vi)" combination="false" units="mg" creator="1128"
+          date_created="2007-09-04 11:39:55.0" retired="false" uuid="42f08222-26fe-102b-80cb-0017a47871b2"/>
+    <drug drug_id="52" concept_id="740" name="Ciprofloxacin (Cfx)" combination="false" units="mg" creator="1128"
+          date_created="2007-09-04 11:39:55.0" retired="false" uuid="42f083f8-26fe-102b-80cb-0017a47871b2"/>
+    <drug drug_id="53" concept_id="1418" name="Ofloxacin (Ofx)" combination="false" units="mg" creator="1128"
+          date_created="2007-09-04 11:39:55.0" retired="false" uuid="42f085ce-26fe-102b-80cb-0017a47871b2"/>
+    <drug drug_id="54" concept_id="755" name="Levofloxacin (Lfx)" combination="false" units="mg" creator="1128"
+          date_created="2007-09-04 11:39:55.0" retired="false" uuid="42f087a4-26fe-102b-80cb-0017a47871b2"/>
+    <drug drug_id="55" concept_id="955" name="Moxifloxacin (Mfx)" combination="false" units="mg" creator="1128"
+          date_created="2007-09-04 11:39:55.0" retired="false" uuid="42f08970-26fe-102b-80cb-0017a47871b2"/>
+    <drug drug_id="56" concept_id="1416" name="Gatifloxacin (Gfx)" combination="false" units="mg" creator="1128"
+          date_created="2007-09-04 11:39:55.0" retired="false" uuid="42f08b46-26fe-102b-80cb-0017a47871b2"/>
+    <drug drug_id="57" concept_id="1414" name="Ethionamide (Eto)" combination="false" units="mg" creator="1128"
+          date_created="2007-09-04 11:39:55.0" retired="false" uuid="42f08d1c-26fe-102b-80cb-0017a47871b2"/>
+    <drug drug_id="58" concept_id="1413" name="Cycloserine (Cs)" combination="false" units="mg" creator="1128"
+          date_created="2007-09-04 11:39:55.0" retired="false" uuid="42f08ef2-26fe-102b-80cb-0017a47871b2"/>
+    <drug drug_id="59" concept_id="1415" name="Prothionamide (Pto)" combination="false" units="mg" creator="1128"
+          date_created="2007-09-04 11:39:55.0" retired="false" uuid="42f090c8-26fe-102b-80cb-0017a47871b2"/>
+    <drug drug_id="60" concept_id="1634" name="Terizidone (Trd)" combination="false" units="mg" creator="1128"
+          date_created="2007-09-04 11:39:55.0" retired="false" uuid="42f0929e-26fe-102b-80cb-0017a47871b2"/>
+    <drug drug_id="61" concept_id="1419" name="P-aminosalyicylic acid (PAS)" combination="false" units="mg"
+          creator="1128" date_created="2007-09-04 11:39:55.0" retired="false"
+          uuid="42f09474-26fe-102b-80cb-0017a47871b2"/>
+    <drug drug_id="62" concept_id="1412" name="Clofazimine (Cfz)" combination="false" units="mg" creator="1128"
+          date_created="2007-09-04 11:39:55.0" retired="false" uuid="42f0964a-26fe-102b-80cb-0017a47871b2"/>
+    <drug drug_id="63" concept_id="450" name="Amoxicillin/Clavulantic Acid (Amx/Clv)" combination="false" units="mg"
+          creator="1128" date_created="2007-09-04 11:39:55.0" retired="false"
+          uuid="42f09816-26fe-102b-80cb-0017a47871b2"/>
+    <drug drug_id="64" concept_id="2459" name="Clarithromycin (Clr)" combination="false" units="mg" creator="1128"
+          date_created="2007-09-04 11:39:55.0" retired="false" uuid="42f099ec-26fe-102b-80cb-0017a47871b2"/>
+    <drug drug_id="65" concept_id="2460" name="Rifabutine (Rfb)" combination="false" units="mg" creator="1128"
+          date_created="2007-09-04 11:39:55.0" retired="false" uuid="42f09d02-26fe-102b-80cb-0017a47871b2"/>
+    <drug drug_id="66" concept_id="766" name="Pyridoxine / B6" combination="false" units="mg" creator="1128"
+          date_created="2007-09-04 11:39:55.0" retired="false" uuid="42f09eec-26fe-102b-80cb-0017a47871b2"/>
+    <drug drug_id="67" concept_id="802" name="TDF 300" combination="false" dose_strength="300.0" units="mg"
+          creator="18407" date_created="2008-08-06 08:42:58.0" retired="false"
+          uuid="d7731a91-eb11-471d-82d1-25d18aa8bceb"/>
+    <drug drug_id="68" concept_id="2833" name="Coviro-30" combination="false" dose_strength="1.0" units="tab(s)"
+          creator="18407" date_created="2008-08-06 09:06:04.0" retired="false"
+          uuid="e5042c69-0709-465f-83f0-0ae3e891acfd"/>
+    <drug drug_id="69" concept_id="2833" name="Coviro-40" combination="false" dose_strength="1.0" units="tab(s)"
+          creator="18407" date_created="2008-08-06 09:06:27.0" retired="false"
+          uuid="5f9bac2e-05d0-4359-b0d5-60899a34f86a"/>
+    <drug drug_id="70" concept_id="630" name="Zidolam" combination="false" dose_strength="1.0" units="tab(s)"
+          creator="18407" date_created="2008-08-06 09:08:00.0" retired="false"
+          uuid="5b916b0d-fc5d-47a2-bf56-de2e4afbb8e0"/>
+    <drug drug_id="71" concept_id="1614" name="RHE" combination="false" dose_strength="1.0" units="tab(s)"
+          creator="18407" date_created="2008-08-06 09:08:45.0" retired="false"
+          uuid="90654dd4-02ef-41bf-bc74-c3711df66866"/>
+    <location location_id="1" name="Unknown Location" description="Unknown location" address1="Moi University Campus"
+              address2="" city_village="Eldoret" state_province="" postal_code="" country="Kenya" latitude=""
+              longitude="" creator="2" date_created="2005-09-22 00:00:00.0" uuid="a2e17e84-26fe-102b-80cb-0017a47871b2"
+              retired="false"/>
+    <location location_id="25" name="Nyarubuye" creator="6" date_created="2006-09-27 21:24:40.0"
+              uuid="a2e181c2-26fe-102b-80cb-0017a47871b2" retired="false"/>
+    <location location_id="26" name="Rwinkwavu" creator="6" date_created="2006-09-27 21:24:40.0"
+              uuid="a2e183d4-26fe-102b-80cb-0017a47871b2" retired="false"/>
+    <location location_id="27" name="Mulindi" creator="6" date_created="2006-09-27 21:24:40.0"
+              uuid="a2e185c8-26fe-102b-80cb-0017a47871b2" retired="false"/>
+    <location location_id="28" name="Rukira" creator="6" date_created="2006-09-27 21:24:40.0"
+              uuid="a2e187f8-26fe-102b-80cb-0017a47871b2" retired="false"/>
+    <location location_id="29" name="Kirehe" creator="6" date_created="2006-09-27 21:24:40.0"
+              uuid="a2e189e2-26fe-102b-80cb-0017a47871b2" retired="false"/>
+    <location location_id="30" name="Rusumo" creator="6" date_created="2006-09-27 21:24:40.0"
+              uuid="a2e19072-26fe-102b-80cb-0017a47871b2" retired="false"/>
+    <location location_id="31" name="Rwanda" description="The country of Rwanda" city_village="" state_province=""
+              creator="6" date_created="2006-10-10 09:55:32.0" county_district=""
+              uuid="a2e1925c-26fe-102b-80cb-0017a47871b2" retired="false"/>
+    <location location_id="32" name="Ruhengeri" description="Ruhengeri Hospital" address1="KIGOMBE"
+              city_village="KIGOMBE" state_province="NORTH" creator="15887" date_created="2007-06-17 12:13:16.0"
+              county_district="KIGOMBE" address3="KIGOMBE" uuid="a2e1946e-26fe-102b-80cb-0017a47871b2" retired="false"/>
+    <location location_id="33" name="Rwaza" description="Rwaza is one of Ruhengeri ART sites." address1=""
+              city_village="" state_province="NORTH" creator="15887" date_created="2007-06-17 12:27:11.0"
+              county_district="RWAZA" uuid="a2e1968a-26fe-102b-80cb-0017a47871b2" retired="false"/>
+    <location location_id="36" name="Gasiza" description="Gasiza is one of Ruhengeri ART sites." address1=""
+              city_village="" state_province="NORTH" creator="15887" date_created="2007-06-17 12:28:39.0"
+              county_district="" uuid="a2e19892-26fe-102b-80cb-0017a47871b2" retired="false"/>
+    <location location_id="37" name="Ndego" description="Ndego - the new site near Rwinkwavu and Mulindi" address1=""
+              city_village="" state_province="" creator="1128" date_created="2008-01-18 17:29:57.0" county_district=""
+              uuid="a2e19a9a-26fe-102b-80cb-0017a47871b2" retired="false"/>
+    <location location_id="38" name="Burera" description="ART site in Nothern Rwanda" address1="" city_village="Butaro"
+              state_province="North" creator="15887" date_created="2008-02-19 15:01:11.0" county_district="Burera"
+              uuid="e43f9620-3362-4134-adcd-cab15afad649" retired="false"/>
+    <order_type order_type_id="1" name="Drug Order" description="Drug information captured from patient historically"
+                creator="2" date_created="2005-08-08 07:06:12.0" uuid="bcf7f8c8-2700-102b-80cb-0017a47871b2"
+                retired="false"/>
+    <order_type order_type_id="2" name="Drug" description="New drug order" creator="2"
+                date_created="2005-08-08 07:07:20.0" uuid="bcf7fb8e-2700-102b-80cb-0017a47871b2" retired="false"/>
+    <order_type order_type_id="3" name="Test" description="New test order" creator="2"
+                date_created="2005-08-08 07:07:53.0" uuid="bcf7fd8c-2700-102b-80cb-0017a47871b2" retired="false"/>
+    <order_type order_type_id="4" name="Lab Order" description="Lab Order" creator="8"
+                date_created="2009-02-15 20:17:46.0" retired="false"/>
+    <!--Oders -->
+    <orders order_id="13031" order_type_id="4" concept_id="9" orderer="8" encounter_id="86653"
+            start_date="2009-02-14 00:00:00.0" discontinued="false" creator="8" date_created="2009-02-15 20:40:50.0"
+            voided="false" patient_id="13731" accession_number="354"/>
+    <orders order_id="13032" order_type_id="4" concept_id="9" orderer="8" encounter_id="86654"
+            start_date="2009-02-14 00:00:00.0" discontinued="false" creator="8" date_created="2009-02-15 20:41:30.0"
+            voided="false" patient_id="13731" accession_number="423"/>
+    <orders order_id="13033" order_type_id="4" concept_id="1019" orderer="8" encounter_id="86655"
+            start_date="2009-02-14 00:00:00.0" discontinued="false" creator="8" date_created="2009-02-15 20:45:50.0"
+            voided="false" patient_id="13731" accession_number="566"/>
+    <!-- Encounters -->
+    <encounter encounter_id="20808" encounter_type="2" patient_id="7" provider_id="1130" location_id="26" form_id="28"
+               encounter_datetime="2006-12-07 00:00:00.0" creator="1959" date_created="2006-12-07 16:09:18.0"
+               voided="false" uuid="4a903934-26fe-102b-80cb-0017a47871b2"/>
+    <encounter encounter_id="14943" encounter_type="2" patient_id="14493" provider_id="1" location_id="26" form_id="1"
+               encounter_datetime="2006-05-30 00:00:00.0" creator="1138" date_created="2006-09-08 00:00:00.0"
+               voided="false" uuid="49c5cc24-26fe-102b-80cb-0017a47871b2"/>
+    <encounter encounter_id="20807" encounter_type="2" patient_id="20447" provider_id="1130" location_id="26"
+               form_id="28" encounter_datetime="2006-12-07 00:00:00.0" creator="1959"
+               date_created="2006-12-07 16:09:18.0" voided="false" uuid="4a903234-26fe-102b-80cb-0017a47871b2"/>
+
+
+</dataset>

@@ -13,12 +13,6 @@
  */
 package org.openmrs.module.smartcontainer.web.controller;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.User;
@@ -27,25 +21,29 @@ import org.openmrs.module.smartcontainer.SmartUserService;
 import org.openmrs.module.smartcontainer.app.App;
 import org.openmrs.web.controller.PortletController;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
+import java.util.Set;
+
 /**
  *
  */
 public class SmartcontainerPortletController extends PortletController {
-	
-	public Log log = LogFactory.getLog(getClass());
-	
-	/**
-	 * @see org.openmrs.web.controller.PortletController#populateModel(javax.servlet.http.HttpServletRequest,
-	 *      java.util.Map)
-	 */
-	@Override
-	protected void populateModel(HttpServletRequest request, Map<String, Object> model) {
-		
-		User user = Context.getAuthenticatedUser();
-		model.put("currentUser", user);
-		Set<App> apps = (Set<App>) Context.getService(SmartUserService.class).getUserByName(user.getSystemId()).getApps();
-		model.put("list", apps);
-		
-	}
-	
+
+    public Log log = LogFactory.getLog(getClass());
+
+    /**
+     * @see org.openmrs.web.controller.PortletController#populateModel(javax.servlet.http.HttpServletRequest,
+     *      java.util.Map)
+     */
+    @Override
+    protected void populateModel(HttpServletRequest request, Map<String, Object> model) {
+
+        User user = Context.getAuthenticatedUser();
+        model.put("currentUser", user);
+        Set<App> apps = (Set<App>) Context.getService(SmartUserService.class).getUserByName(user.getSystemId()).getApps();
+        model.put("list", apps);
+
+    }
+
 }

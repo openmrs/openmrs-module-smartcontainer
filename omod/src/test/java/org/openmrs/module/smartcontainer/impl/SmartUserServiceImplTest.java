@@ -4,24 +4,27 @@
  */
 package org.openmrs.module.smartcontainer.impl;
 
-import java.util.Collection;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.openmrs.api.context.Context;
-import static org.junit.Assert.*;
 import org.openmrs.module.smartcontainer.SmartUser;
 import org.openmrs.module.smartcontainer.SmartUserService;
 import org.openmrs.test.BaseModuleContextSensitiveTest;
 
+import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+
 /**
- *
  * @author aja
  */
 public class SmartUserServiceImplTest extends BaseModuleContextSensitiveTest {
-    private  SmartUserService userService;
+    private SmartUserService userService;
+
     public SmartUserServiceImplTest() {
     }
 
@@ -32,9 +35,9 @@ public class SmartUserServiceImplTest extends BaseModuleContextSensitiveTest {
         } catch (Exception ex) {
             Logger.getLogger(SmartUserServiceImplTest.class.getName()).log(Level.SEVERE, null, ex);
         }
-        userService=Context.getService(SmartUserService.class);
+        userService = Context.getService(SmartUserService.class);
     }
-    
+
     @After
     public void tearDown() {
     }
@@ -44,12 +47,12 @@ public class SmartUserServiceImplTest extends BaseModuleContextSensitiveTest {
      */
     @Test
     public void testGetUserByName() {
-       
+
         String name = "admin";
         String expResult = name;
         SmartUser result = userService.getUserByName(name);
         assertEquals(expResult, result.getOpenMRSUser().getSystemId());
-       
+
     }
 
     /**
@@ -66,13 +69,13 @@ public class SmartUserServiceImplTest extends BaseModuleContextSensitiveTest {
      */
     @Test
     public void testSaveUser() {
-        SmartUser savedUser=null;
+        SmartUser savedUser = null;
         SmartUser user = userService.getUserByName("admin");
         user.getOpenMRSUser().setSystemId("root");
         userService.saveUser(user);
-        
-        savedUser=userService.getUserByName("root");
+
+        savedUser = userService.getUserByName("root");
         assertEquals(user.getsMARTAppUserId(), savedUser.getsMARTAppUserId());
-        
+
     }
 }

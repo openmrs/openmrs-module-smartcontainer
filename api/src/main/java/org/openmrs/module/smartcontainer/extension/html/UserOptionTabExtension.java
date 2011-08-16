@@ -14,50 +14,48 @@
 package org.openmrs.module.smartcontainer.extension.html;
 
 import org.openmrs.module.Extension;
-import org.openmrs.module.Extension.MEDIA_TYPE;
 
 
 /**
  * This class defines a horizontal tab that will appear on the user option page
- * 
  */
 public class UserOptionTabExtension extends Extension {
-	/**
-	 * @see org.openmrs.module.web.extension.UserOptionExtension#getPortletUrl()
-	 */
-	public String getPortletUrl() {
+    /**
+     * @see org.openmrs.module.web.extension.UserOptionExtension#getPortletUrl()
+     */
+    public String getPortletUrl() {
 
-		return "userOptionTab";
-	}
+        return "userOptionTab";
+    }
 
-	/**
-	 * @see org.openmrs.module.web.extension.UserOptionExtension#getRequiredPrivilege()
-	 */
-	public String getRequiredPrivilege() {
+    /**
+     * @see org.openmrs.module.web.extension.UserOptionExtension#getRequiredPrivilege()
+     */
+    public String getRequiredPrivilege() {
 
-		return "View Patients";
-	}
+        return "View Patients";
+    }
 
-	/**
-	 * @see org.openmrs.module.web.extension.UserOptionExtension#getTabId()
-	 */
-	public String getTabId() {
+    /**
+     * @see org.openmrs.module.web.extension.UserOptionExtension#getTabId()
+     */
+    public String getTabId() {
 
-		return "smartcontainerId";
-	}
+        return "smartcontainerId";
+    }
 
-	/**
-	 * @see org.openmrs.module.web.extension.UserOptionExtension#getTabName()
-	 */
-	public String getTabName() {
+    /**
+     * @see org.openmrs.module.web.extension.UserOptionExtension#getTabName()
+     */
+    public String getTabName() {
 
-		return "manage SMART Apps";
-	}
+        return "manage SMART Apps";
+    }
 
-	
-	public MEDIA_TYPE getMediaType() {
 
-		return Extension.MEDIA_TYPE.html;
-	}
+    public MEDIA_TYPE getMediaType() {
+
+        return Extension.MEDIA_TYPE.html;
+    }
 
 }

@@ -13,80 +13,80 @@
  */
 package org.openmrs.module.smartcontainer.impl;
 
-import java.util.Collection;
-import java.util.List;
-
 import org.openmrs.User;
 import org.openmrs.api.APIException;
 import org.openmrs.module.smartcontainer.SmartAppService;
 import org.openmrs.module.smartcontainer.app.App;
 import org.openmrs.module.smartcontainer.db.AppDAO;
 
+import java.util.Collection;
+import java.util.List;
+
 /**
  * Implementation of App Service
  */
 public class SmartAppServiceImpl implements SmartAppService {
 
-	private AppDAO dao;
+    private AppDAO dao;
 
-	/**
-	 * @see org.openmrs.module.smartcontainer.SmartAppService#setSMARTUserAppDao(org.openmrs.module.smartcontainer.db.AppDAO)
-	 */
-	public void setDao(AppDAO dao) throws APIException {
-		this.dao = dao;
+    /**
+     * @see org.openmrs.module.smartcontainer.SmartAppService#setSMARTUserAppDao(org.openmrs.module.smartcontainer.db.AppDAO)
+     */
+    public void setDao(AppDAO dao) throws APIException {
+        this.dao = dao;
 
-	}
+    }
 
-	/**
-	 * @see org.openmrs.module.smartcontainer.SmartAppService#getSMARTAppUserByName(java.lang.String)
-	 * @should get App by name
-	 */
-	public App getAppByName(String name) throws APIException {
-		return dao.getAppByName(name);
-	}
+    /**
+     * @should get App by name
+     * @see org.openmrs.module.smartcontainer.SmartAppService#getSMARTAppUserByName(java.lang.String)
+     */
+    public App getAppByName(String name) throws APIException {
+        return dao.getAppByName(name);
+    }
 
-	/**
-	 * @see org.openmrs.module.smartcontainer.SmartAppService#getAllSMARTAppUsers()
-	 * @should get all apps
-	 */
-	public List<App> getAllApps() throws APIException {
-		return dao.getAllApps();
-	}
+    /**
+     * @should get all apps
+     * @see org.openmrs.module.smartcontainer.SmartAppService#getAllSMARTAppUsers()
+     */
+    public List<App> getAllApps() throws APIException {
+        return dao.getAllApps();
+    }
 
-	/**
-	 * @see org.openmrs.module.smartcontainer.SmartAppService#DeleteApp(org.openmrs.module.smartcontainer.app.App)
-	 * @should delete selected app
-	 */
-	public void deleteApp(App app) throws APIException {
-		app.setRetire(true);
-		saveApp(app);
+    /**
+     * @should delete selected app
+     * @see org.openmrs.module.smartcontainer.SmartAppService#DeleteApp(org.openmrs.module.smartcontainer.app.App)
+     */
+    public void deleteApp(App app) throws APIException {
+        app.setRetire(true);
+        saveApp(app);
 
-	}
+    }
 
-	/**
-	 * @see org.openmrs.module.smartcontainer.SmartAppService#getAppById(java.lang.Integer)
-	 * @should give app by id
-	 */
-	public App getAppById(Integer id) {
-		return dao.getAppById(id);
-	}
+    /**
+     * @should give app by id
+     * @see org.openmrs.module.smartcontainer.SmartAppService#getAppById(java.lang.Integer)
+     */
+    public App getAppById(Integer id) {
+        return dao.getAppById(id);
+    }
 
-	/**
-	 * @see org.openmrs.module.smartcontainer.SmartAppService#saveApp(org.openmrs.module.smartcontainer.app.App)
-	 * @should save an app
-	 */
-	public void saveApp(App newApp) {
-		dao.save(newApp);
+    /**
+     * @should save an app
+     * @see org.openmrs.module.smartcontainer.SmartAppService#saveApp(org.openmrs.module.smartcontainer.app.App)
+     */
+    public void saveApp(App newApp) {
+        dao.save(newApp);
 
-	}
+    }
 
-	/**
-	 * @see org.openmrs.module.smartcontainer.SmartAppService#getAppsByUserName(org.openmrs.User)
-	 * @should give all app assigned to a user
-	 */
-	public Collection<App> getAppsByUserName(User user) {
+    /**
+     * @should give all app assigned to a user
+     * @see org.openmrs.module.smartcontainer.SmartAppService#getAppsByUserName(org.openmrs.User)
+     */
+    public Collection<App> getAppsByUserName(User user) {
 
-		return dao.getAppsByUserName(user);
-	}
+        return dao.getAppsByUserName(user);
+    }
 
 }

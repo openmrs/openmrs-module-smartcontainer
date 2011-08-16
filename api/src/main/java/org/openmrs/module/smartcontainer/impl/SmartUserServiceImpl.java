@@ -13,57 +13,57 @@
  */
 package org.openmrs.module.smartcontainer.impl;
 
-import java.util.Collection;
-
 import org.openmrs.api.APIException;
 import org.openmrs.module.smartcontainer.SmartUser;
 import org.openmrs.module.smartcontainer.SmartUserService;
 import org.openmrs.module.smartcontainer.db.UserDAO;
 
+import java.util.Collection;
+
 /**
  * Implementation of User service
  */
 public class SmartUserServiceImpl implements SmartUserService {
-	
-	private UserDAO userDAO;
-	
-	/**
-	 * @return the userDAO
-	 */
-	public UserDAO getUserDAO() {
-		return userDAO;
-	}
-	
-	/**
-	 * @param userDAO the userDAO to set
-	 */
-	public void setUserDAO(UserDAO userDAO) {
-		this.userDAO = userDAO;
-	}
-	
-	/**
-	 * @see org.openmrs.module.smartcontainer.SmartUserService#getUserByName(java.lang.String)
-	 */
-	public SmartUser getUserByName(String name) throws APIException {
-		
-		return userDAO.getUserByName(name);
-	}
-	
-	/**
-	 * @see org.openmrs.module.smartcontainer.SmartUserService#getAllUsers()
-	 */
-	public Collection<SmartUser> getAllUsers() throws APIException {
-		
-		return userDAO.getAllUsers();
-	}
-	
-	/**
-	 * @see org.openmrs.module.smartcontainer.SmartUserService#saveUser(org.openmrs.module.smartcontainer.SmartUser)
-	 */
-	public void saveUser(SmartUser user) throws APIException {
-		userDAO.saveUser(user);
-		
-	}
 
-	
+    private UserDAO userDAO;
+
+    /**
+     * @return the userDAO
+     */
+    public UserDAO getUserDAO() {
+        return userDAO;
+    }
+
+    /**
+     * @param userDAO the userDAO to set
+     */
+    public void setUserDAO(UserDAO userDAO) {
+        this.userDAO = userDAO;
+    }
+
+    /**
+     * @see org.openmrs.module.smartcontainer.SmartUserService#getUserByName(java.lang.String)
+     */
+    public SmartUser getUserByName(String name) throws APIException {
+
+        return userDAO.getUserByName(name);
+    }
+
+    /**
+     * @see org.openmrs.module.smartcontainer.SmartUserService#getAllUsers()
+     */
+    public Collection<SmartUser> getAllUsers() throws APIException {
+
+        return userDAO.getAllUsers();
+    }
+
+    /**
+     * @see org.openmrs.module.smartcontainer.SmartUserService#saveUser(org.openmrs.module.smartcontainer.SmartUser)
+     */
+    public void saveUser(SmartUser user) throws APIException {
+        userDAO.saveUser(user);
+
+    }
+
+
 }

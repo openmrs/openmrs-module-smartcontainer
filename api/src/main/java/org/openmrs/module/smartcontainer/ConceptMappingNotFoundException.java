@@ -16,43 +16,42 @@ package org.openmrs.module.smartcontainer;
 /**
  * The Exception thrown when the SMARTConceptMap is not able to find appropriate
  * mapped concept code
- * 
  */
 public class ConceptMappingNotFoundException extends Exception {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	/**
-	 * No arg constructor
-	 */
-	public ConceptMappingNotFoundException() {
-		super();
+    /**
+     * No arg constructor
+     */
+    public ConceptMappingNotFoundException() {
+        super();
 
-	}
+    }
 
-	/**
-	 * @param message
-	 * @param cause
-	 */
-	public ConceptMappingNotFoundException(String message, Throwable cause) {
-		super(message, cause);
+    /**
+     * @param message
+     * @param cause
+     */
+    public ConceptMappingNotFoundException(String message, Throwable cause) {
+        super(message, cause);
 
-	}
+    }
 
-	/**
-	 * @param message
-	 */
-	public ConceptMappingNotFoundException(String message) {
-		super(message);
+    /**
+     * @param message
+     */
+    public ConceptMappingNotFoundException(String message) {
+        super(message);
 
-	}
+    }
 
-	/**
-	 * @param cause
-	 */
-	public ConceptMappingNotFoundException(Throwable cause) {
-		super(cause);
+    /**
+     * @param cause
+     */
+    public ConceptMappingNotFoundException(Throwable cause) {
+        super(cause);
 
-	}
+    }
 
 }

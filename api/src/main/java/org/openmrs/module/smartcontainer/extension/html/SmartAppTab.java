@@ -20,40 +20,40 @@ import org.openmrs.module.web.extension.PatientDashboardTabExt;
  */
 public class SmartAppTab extends PatientDashboardTabExt {
 
-	/**
-	 * @see org.openmrs.module.web.extension.PatientDashboardTabExt#getPortletUrl()
-	 */
-	@Override
-	public String getPortletUrl() {
+    /**
+     * @see org.openmrs.module.web.extension.PatientDashboardTabExt#getPortletUrl()
+     */
+    @Override
+    public String getPortletUrl() {
 
-		return "smartAppForm";
-	}
+        return "smartAppForm";
+    }
 
-	/**
-	 * @see org.openmrs.module.web.extension.PatientDashboardTabExt#getRequiredPrivilege()
-	 */
-	@Override
-	public String getRequiredPrivilege() {
+    /**
+     * @see org.openmrs.module.web.extension.PatientDashboardTabExt#getRequiredPrivilege()
+     */
+    @Override
+    public String getRequiredPrivilege() {
 
-		return "View Patients";
-	}
+        return "View Patients";
+    }
 
-	/**
-	 * @see org.openmrs.module.web.extension.PatientDashboardTabExt#getTabId()
-	 */
-	@Override
-	public String getTabId() {
+    /**
+     * @see org.openmrs.module.web.extension.PatientDashboardTabExt#getTabId()
+     */
+    @Override
+    public String getTabId() {
 
-		return "smartcontainerId";
-	}
+        return "smartcontainerId";
+    }
 
-	/**
-	 * @see org.openmrs.module.web.extension.PatientDashboardTabExt#getTabName()
-	 */
-	@Override
-	public String getTabName() {
+    /**
+     * @see org.openmrs.module.web.extension.PatientDashboardTabExt#getTabName()
+     */
+    @Override
+    public String getTabName() {
 
-		return "SMART App";
-	}
+        return "SMART App";
+    }
 
 }

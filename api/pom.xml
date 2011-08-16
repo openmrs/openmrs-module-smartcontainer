@@ -1,72 +1,78 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>org.openmrs.module</groupId>
-		<artifactId>smartcontainer-parent</artifactId>
-		<version>0.1-SNAPSHOT</version>
-	</parent>
-	<groupId>org.openmrs.module</groupId>
-	<artifactId>smartcontainer-api</artifactId>
-	<packaging>jar</packaging>
-	<name>SMART Container API</name>
-	<description>API project for SMART Container</description>
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.openmrs.module</groupId>
+        <artifactId>smartcontainer-parent</artifactId>
+        <version>0.1-SNAPSHOT</version>
+    </parent>
+    <groupId>org.openmrs.module</groupId>
+    <artifactId>smartcontainer-api</artifactId>
+    <packaging>jar</packaging>
+    <name>SMART Container API</name>
+    <description>API project for SMART Container</description>
 
-	<dependencies>
-		<!-- Add other dependencies from lib: <dependency> <groupId>org.other.library</groupId> 
-			<artifactId>library-name</artifactId> </dependency> -->
+    <dependencies>
+        <!-- Add other dependencies from lib: <dependency> <groupId>org.other.library</groupId>
+              <artifactId>library-name</artifactId> </dependency> -->
 
-		<dependency>
-			<groupId>org.openmrs.api</groupId>
-			<artifactId>openmrs-api</artifactId>
-			<type>jar</type>
-		</dependency>
-		<dependency>
-			<groupId>org.openmrs.api</groupId>
-			<artifactId>openmrs-api</artifactId>
-			<type>test-jar</type>
-		</dependency>
-		<dependency>
-			<groupId>org.openmrs.web</groupId>
-			<artifactId>openmrs-web</artifactId>
-			<type>jar</type>
-		</dependency>
-		<dependency>
-			<groupId>org.openmrs.web</groupId>
-			<artifactId>openmrs-web</artifactId>
-			<type>test-jar</type>
-		</dependency>
-		<dependency>
-			<groupId>org.openmrs.test</groupId>
-			<artifactId>openmrs-test</artifactId>
-			<type>pom</type>
-		</dependency>
-		<dependency>
-			<groupId>com.googlecode.json-simple</groupId>
-			<artifactId>json-simple</artifactId>
-			<version>1.1</version>
-			<type>jar</type>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.sdicons.jsontools</groupId>
-			<artifactId>jsontools-core</artifactId>
-			<version>1.7</version>
-			<type>jar</type>
-			<scope>compile</scope>
-		</dependency>
+        <dependency>
+            <groupId>org.openmrs.api</groupId>
+            <artifactId>openmrs-api</artifactId>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>org.openmrs.api</groupId>
+            <artifactId>openmrs-api</artifactId>
+            <type>test-jar</type>
+        </dependency>
+        <dependency>
+            <groupId>org.openmrs.web</groupId>
+            <artifactId>openmrs-web</artifactId>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>org.openmrs.web</groupId>
+            <artifactId>openmrs-web</artifactId>
+            <type>test-jar</type>
+        </dependency>
+        <dependency>
+            <groupId>org.openmrs.test</groupId>
+            <artifactId>openmrs-test</artifactId>
+            <type>pom</type>
+        </dependency>
+        <dependency>
+            <groupId>com.googlecode.json-simple</groupId>
+            <artifactId>json-simple</artifactId>
+            <version>1.1</version>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.sdicons.jsontools</groupId>
+            <artifactId>jsontools-core</artifactId>
+            <version>1.7</version>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
 
 
-		<dependency>
-			<groupId>org.openrdf</groupId>
-			<artifactId>openrdf-model</artifactId>
-			<version>1.2.7</version>
-		</dependency>
-		<dependency>
-			<groupId>org.openrdf</groupId>
-			<artifactId>rio</artifactId>
-			<version>1.0.10</version>
-		</dependency>
-	</dependencies>
-
+        <dependency>
+            <groupId>org.openrdf.sesame</groupId>
+            <artifactId>sesame-model</artifactId>
+            <version>2.4.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openrdf.sesame</groupId>
+            <artifactId>sesame-rio-rdfxml</artifactId>
+            <version>2.4.2</version>
+        </dependency>
+    </dependencies>
+    <repositories>
+        <repository>
+            <id>sesame-repo</id>
+            <name>sesame Nexus Repository</name>
+            <url>http://repo.aduna-software.org/maven2/releases</url>
+        </repository>
+    </repositories>
 </project>

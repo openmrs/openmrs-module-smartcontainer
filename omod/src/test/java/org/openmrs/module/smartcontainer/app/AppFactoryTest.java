@@ -4,30 +4,19 @@
  */
 package org.openmrs.module.smartcontainer.app;
 
+import org.junit.*;
+
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.Scanner;
 import java.io.InputStream;
-import java.io.DataInputStream;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.openmrs.module.smartcontainer.app.App;
-import org.openmrs.module.smartcontainer.app.AppFactory;
-import org.openmrs.util.OpenmrsUtil;
+import java.net.MalformedURLException;
+
 import static org.junit.Assert.*;
 
 /**
- *
  * @author aja
  */
 public class AppFactoryTest {
-    
+
     public AppFactoryTest() {
     }
 
@@ -38,11 +27,11 @@ public class AppFactoryTest {
     @AfterClass
     public static void tearDownClass() throws Exception {
     }
-    
+
     @Before
     public void setUp() {
     }
-    
+
     @After
     public void tearDown() {
     }
@@ -52,7 +41,7 @@ public class AppFactoryTest {
      */
     @Test
     public void testgetAppFromLocalFile() {
-      InputStream manifest=getClass().getClassLoader().getResourceAsStream("smart_manifest.json");
+        InputStream manifest = getClass().getClassLoader().getResourceAsStream("smart_manifest.json");
         assertNotNull(manifest);
         App result = AppFactory.getAppFromLocalFile(manifest);
         assertNotNull(result.getName());
@@ -60,6 +49,7 @@ public class AppFactoryTest {
         assertNotNull(result.getAuthor());
         assertNotNull(result.getIcon());
     }
+
     /**
      * Test of getApp method, of class AppFactory.
      */
@@ -77,6 +67,7 @@ public class AppFactoryTest {
             fail(ex.getMessage());
         }
     }
+
     /**
      * Test of getApp method, of class AppFactory.
      */
