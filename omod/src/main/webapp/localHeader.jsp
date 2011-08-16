@@ -10,12 +10,16 @@
 				<spring:message code="smartcontainer.admin.manage"/>
 			</a>
 		</li>
-	</openmrs:hasPrivilege>
-	<openmrs:hasPrivilege privilege="Manage SMART Apps">
 		<li <c:if test='<%= request.getRequestURI().contains("addAppUserLevel") %>'>class="active"</c:if>>
 			<a href="${pageContext.request.contextPath}/module/smartcontainer/manageUserAppLink.form">
 				<spring:message code="smartcontainer.admin.manage.user"/>
 			</a>
 		</li>
+		<li <c:if test='<%= request.getRequestURI().contains("problemsetup") %>'>class="active"</c:if>>
+			<a href="${pageContext.request.contextPath}/module/smartcontainer/problemsetup.form">
+				<spring:message code="smartcontainer.admin.problemsetup"/>
+			</a>
+		</li>
 	</openmrs:hasPrivilege>
+	
 </ul>

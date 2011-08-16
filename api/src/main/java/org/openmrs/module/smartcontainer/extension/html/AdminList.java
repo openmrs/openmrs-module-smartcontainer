@@ -47,6 +47,7 @@ public class AdminList extends AdministrationSectionExt {
 		
 		map.put("module/smartcontainer/smartcontainerLink.form", "smartcontainer.admin.manage");
 		map.put("module/smartcontainer/manageUserAppLink.form", "smartcontainer.admin.manage.user");
+		map.put("module/smartcontainer/problemsetup.form", "smartcontainer.admin.problemsetup");
 		
 		return map;
 	}
