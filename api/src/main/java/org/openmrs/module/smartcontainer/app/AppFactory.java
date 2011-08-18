@@ -67,8 +67,9 @@ public class AppFactory {
 	 * 
 	 * @param maniFile
 	 * @return
+	 * @throws IOException
 	 */
-	public static App getAppFromLocalFile(InputStream maniFileAsStream) {
+	public static App getAppFromLocalFile(InputStream maniFileAsStream) throws IOException {
 		String maniFile = new Scanner(maniFileAsStream).useDelimiter("\\A").next();
 		App app = new App();
 		pa = new ManifestParser();

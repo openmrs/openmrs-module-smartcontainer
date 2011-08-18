@@ -40,7 +40,7 @@ public class AppFactoryTest {
      * Test of getApp method, of class AppFactory.
      */
     @Test
-    public void testgetAppFromLocalFile() {
+    public void testgetAppFromLocalFile() throws Exception {
         InputStream manifest = getClass().getClassLoader().getResourceAsStream("smart_manifest.json");
         assertNotNull(manifest);
         App result = AppFactory.getAppFromLocalFile(manifest);

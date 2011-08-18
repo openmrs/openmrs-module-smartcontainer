@@ -13,6 +13,7 @@
  */
 package org.openmrs.module.smartcontainer.app;
 
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -53,9 +54,10 @@ public class ManifestParser {
 	 * 
 	 * @param file
 	 * @return
+	 * @throws IOException
 	 * @should parse a manifest file given as a String
 	 */
-	public Boolean parseFile(String file) {
+	public Boolean parseFile(String file) throws IOException {
 		String jsonText = null;
 		
 		jsonText = (file);
@@ -68,9 +70,10 @@ public class ManifestParser {
 	 * 
 	 * @param jsonText
 	 * @return
+	 * @throws IOException
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public Boolean parse(String jsonText) {
+	public Boolean parse(String jsonText) throws IOException {
 		try {
 			
 			JSONParser parser = new JSONParser();
@@ -97,6 +100,10 @@ public class ManifestParser {
 		catch (Exception e) {
 			log.info(e.getCause());
 		}
+		
+		if (json == null)
+			throw new IOException("An Invalid manifest file was found");
+		
 		Iterator iter = json.entrySet().iterator();
 		log.info("==iterate result==");
 		while (iter.hasNext()) {

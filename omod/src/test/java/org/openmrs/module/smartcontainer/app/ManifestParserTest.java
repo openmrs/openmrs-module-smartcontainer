@@ -36,7 +36,7 @@ public class ManifestParserTest {
      * Test of parse method, of class ManifestParser.
      */
     @Test
-    public void testParse() {
+    public void testParse() throws Exception {
         InputStream manifest = getClass().getClassLoader().getResourceAsStream("smart_manifest.json");
         assertNotNull(manifest);
         String maniFile = new Scanner(manifest).useDelimiter("\\A").next();
