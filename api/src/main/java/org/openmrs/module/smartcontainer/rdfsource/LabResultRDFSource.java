@@ -85,7 +85,7 @@ public class LabResultRDFSource extends RdfSource {
                 */
 
             if (l.getQuantitativeResult().getNormalRange() == null
-                    && l.getQuantitativeResult().getNonCriticalRange() == null) {
+                    ) {
 
                 BNode quantitativeResultNode = factory.createBNode();
                 URI quantitativeResult = factory.createURI(sp,

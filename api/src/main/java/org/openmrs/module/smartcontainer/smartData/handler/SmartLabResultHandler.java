@@ -60,9 +60,6 @@ public class SmartLabResultHandler implements SmartDataHandler<SmartLabResult> {
                     quantity.setNormalRange(SmartDataHandlerUtil
                             .rangeHelper(cn.getHiNormal(),
                                     cn.getLowNormal(), cn.getUnits()));
-                    quantity.setNonCriticalRange(SmartDataHandlerUtil
-                            .rangeHelper(cn.getHiCritical(),
-                                    cn.getLowCritical(), cn.getUnits()));
 
                     result.setQuantitativeResult(quantity);
 
