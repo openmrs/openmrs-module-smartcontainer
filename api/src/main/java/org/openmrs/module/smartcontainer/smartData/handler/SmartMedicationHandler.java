@@ -24,6 +24,9 @@ public class SmartMedicationHandler implements SmartDataHandler<SmartMedication>
 	private SmartConceptMap map;
 	
 	private static final Map<String, String> openmrsToSmartFrequencyMap;
+	
+	private static final String NOT_SPECIFIED = "Not-Specified";
+	
 	//creates a static final unmodifiable map
 	static {
 		Map newMap = new HashMap<String, String>();
@@ -57,25 +60,35 @@ public class SmartMedicationHandler implements SmartDataHandler<SmartMedication>
 			
 			// for frequency
 			if (StringUtils.isNotBlank(d.getFrequency())) {
-				boolean isValidFrequency = false;
+				boolean validFrequencyOrValue = false;
 				String[] valueAndFrequency = d.getFrequency().trim().split("/");
-				if (valueAndFrequency.length == 2) {
+				if (valueAndFrequency.length <= 2) {
 					try {
-						String frequency = valueAndFrequency[1].toLowerCase();
-						if (openmrsToSmartFrequencyMap.keySet().contains(frequency)) {
-							medication.setFrequency(SmartDataHandlerUtil.valueAndUnitHelper(
-							    Integer.valueOf(valueAndFrequency[0]), openmrsToSmartFrequencyMap.get(frequency)));
-							isValidFrequency = true;
+						Integer value = Integer.valueOf(valueAndFrequency[0].trim());
+						//default value
+						String frequency = "{" + NOT_SPECIFIED + "}";
+						if (valueAndFrequency.length == 2) {
+							frequency = valueAndFrequency[1].trim().toLowerCase();
+							if (openmrsToSmartFrequencyMap.keySet().contains(frequency)) {
+								frequency = openmrsToSmartFrequencyMap.get(frequency);
+							} else {
+								//set it either to the unstructured(i) value from the DB
+								frequency = "{" + frequency + "}";
+							}
 						}
+						
+						medication.setFrequency(SmartDataHandlerUtil.valueAndUnitHelper(value, frequency));
+						validFrequencyOrValue = true;
 					}
 					catch (NumberFormatException e) {
-						// will handle this below
+						// will handle this below since validFrequencyOrValue will be false
 					}
-					
 				}
 				
-				if (!isValidFrequency)
-					log.warn("Invalid frequency format was found for drug order with id:" + d.getOrderId());
+				if (!validFrequencyOrValue) {
+					//the specified value or units were invalid
+					log.warn("Invalid frequency or frequency value was found for drug order with id:" + d.getOrderId());
+				}
 			}
 			
 			// TODO:if the instruction is not present generate one
