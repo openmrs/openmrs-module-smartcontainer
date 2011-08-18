@@ -21,15 +21,7 @@
         <module>api</module>
         <module>omod</module>
     </modules>
-
-    <dependencies>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.8.2</version>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
+    
     <dependencyManagement>
         <dependencies>
             <!-- Libraries from lib to add as dependencies with compile or runtime
