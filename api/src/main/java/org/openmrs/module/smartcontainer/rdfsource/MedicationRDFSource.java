@@ -55,6 +55,14 @@ public class MedicationRDFSource extends RdfSource {
 				graph.handleStatement(factory.createStatement(medicationNode, startDate, startDateVal));
 			}
 			/*
+			 * Add child node <sp:endDate>2007-03-14</sp:endDate>
+			 */
+			if (med.getEndDate() != null) {
+				URI endDate = factory.createURI(sp, "endDate");
+				Value endDateVal = factory.createLiteral(med.getEndDate());
+				graph.handleStatement(factory.createStatement(medicationNode, endDate, endDateVal));
+			}
+			/*
 			    * Add child node <sp:instructions>Take two tablets twice daily as
 			    * needed for pain</sp:instructions>
 			    */
