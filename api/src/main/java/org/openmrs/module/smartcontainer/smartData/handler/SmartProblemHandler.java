@@ -27,40 +27,44 @@ import org.openmrs.module.smartcontainer.SmartConceptMap;
 import org.openmrs.module.smartcontainer.smartData.SmartProblem;
 import org.openmrs.module.smartcontainer.util.SmartConstants;
 import org.openmrs.module.smartcontainer.util.SmartDataHandlerUtil;
+import org.openmrs.util.OpenmrsUtil;
 
 public class SmartProblemHandler implements SmartDataHandler<SmartProblem> {
-
+	
 	private static final Log log = LogFactory.getLog(SmartProblemHandler.class);
-
+	
 	private SmartConceptMap map;
-
+	
 	public SmartConceptMap getMap() {
 		return map;
 	}
-
+	
 	public void setMap(SmartConceptMap map) {
 		this.map = map;
 	}
-
+	
 	public SmartProblem getForPatient(Patient patient) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
+	/**
+	 * @see org.openmrs.module.smartcontainer.smartData.handler.SmartDataHandler#getAllForPatient(org.openmrs.Patient)
+	 * @should get all the patient smart problems
+	 * @should get all the patient smart problems using observations
+	 * @should set the resolution date for resolved problems when getting smart problems
+	 */
 	public List<SmartProblem> getAllForPatient(Patient patient) {
 		List<SmartProblem> smartProblems = new ArrayList<SmartProblem>();
-
+		
 		if (SmartDataHandlerUtil.useProblemObject()) {
-			List<Problem> openmrsProblems = Context.getPatientService()
-					.getProblems(patient);
+			List<Problem> openmrsProblems = Context.getPatientService().getProblems(patient);
 			for (Problem p : openmrsProblems) {
 				SmartProblem problem = new SmartProblem();
-				problem.setProblemName(SmartDataHandlerUtil.codedValueHelper(
-						p.getProblem(), map));// coded value
+				problem.setProblemName(SmartDataHandlerUtil.codedValueHelper(p.getProblem(), map));// coded value
 				problem.setOnset(SmartDataHandlerUtil.date(p.getStartDate()));
 				if (p.getEndDate() != null) {
-					problem.setResolution(SmartDataHandlerUtil.date(p
-							.getEndDate()));
+					problem.setResolution(SmartDataHandlerUtil.date(p.getEndDate()));
 				}
 				smartProblems.add(problem);
 			}
@@ -68,22 +72,17 @@ public class SmartProblemHandler implements SmartDataHandler<SmartProblem> {
 		
 		// look in the obs table for problems added/resolved
 		if (SmartDataHandlerUtil.useObsForProblems()) {
-			String addedConceptId = Context.getAdministrationService()
-					.getGlobalProperty(SmartConstants.GP_PROBLEM_ADDED_CONCEPT,
-							"");
-			String resolvedConceptId = Context.getAdministrationService()
-					.getGlobalProperty(
-							SmartConstants.GP_PROBLEM_RESOLVED_CONCEPT, "");
-
-			Concept addedConcept = Context.getConceptService().getConcept(
-					addedConceptId);
-			Concept resolvedConcept = Context.getConceptService().getConcept(
-					resolvedConceptId);
-
+			String addedConceptId = Context.getAdministrationService().getGlobalProperty(
+			    SmartConstants.GP_PROBLEM_ADDED_CONCEPT, "");
+			String resolvedConceptId = Context.getAdministrationService().getGlobalProperty(
+			    SmartConstants.GP_PROBLEM_RESOLVED_CONCEPT, "");
+			
+			Concept addedConcept = Context.getConceptService().getConcept(addedConceptId);
+			Concept resolvedConcept = Context.getConceptService().getConcept(resolvedConceptId);
+			
 			if (addedConcept == null || resolvedConcept == null) {
 				log.error("Unable to use observations for the problem added/resolved because concepts were not defined correctly.  See the Problem Setup admin page for help setting the global properties");
-			}
-			else {
+			} else {
 				// we have valid concepts.  look up the observations
 				
 				// these obs should be sorted from most recent to oldest
@@ -98,11 +97,11 @@ public class SmartProblemHandler implements SmartDataHandler<SmartProblem> {
 					Obs theFoundObs = null;
 					
 					for (Obs resolvedObs : resolvedObss) {
-						
 						// if the concepts match and the problem was added before the problem was resolved, 
 						// then we have an end date
-						if (addedObs.getConcept().equals(resolvedObs.getConcept()) &&
-							addedObs.getObsDatetime().before(resolvedObs.getObsDatetime())) {
+						if (OpenmrsUtil.nullSafeEquals(addedObs.getValueCoded(), resolvedObs.getValueCoded())
+						        && (addedObs.getObsDatetime() != null && resolvedObs.getObsDatetime() != null && addedObs
+						                .getObsDatetime().before(resolvedObs.getObsDatetime()))) {
 							theFoundObs = resolvedObs;
 							foundMatchingResolvedObs = true;
 							break;
@@ -125,8 +124,8 @@ public class SmartProblemHandler implements SmartDataHandler<SmartProblem> {
 				}
 			}
 		}
-
+		
 		return smartProblems;
 	}
-
+	
 }

@@ -57,6 +57,10 @@ public class SmartVitalSignsHandler implements SmartDataHandler<SmartVitalSigns>
 		this.snomedMap = snomedMap;
 	}
 	
+	/**
+	 * @see org.openmrs.module.smartcontainer.smartData.handler.SmartDataHandler#getAllForPatient(org.openmrs.Patient)
+	 * @should get all the patient vital signs
+	 */
 	public List<SmartVitalSigns> getAllForPatient(Patient patient) {
 		List<Encounter> encounters = Context.getEncounterService().getEncountersByPatient(patient);
 		List<SmartVitalSigns> smartVitalSigns = new ArrayList<SmartVitalSigns>();
@@ -213,7 +217,7 @@ public class SmartVitalSignsHandler implements SmartDataHandler<SmartVitalSigns>
 	@SuppressWarnings("rawtypes")
 	private static Method getVisitMethod(String methodName, Class clazz) {
 		for (Method method : clazz.getMethods()) {
-			if (method.getName().equals(methodName)) {
+			if (method.getName().equals(methodName) && method.getParameterTypes().length == 0) {
 				return method;
 			}
 		}

@@ -39,6 +39,10 @@ public class SmartMedicationHandler implements SmartDataHandler<SmartMedication>
 		openmrsToSmartFrequencyMap = Collections.unmodifiableMap(newMap);
 	}
 	
+	/**
+	 * @see org.openmrs.module.smartcontainer.smartData.handler.SmartDataHandler#getAllForPatient(org.openmrs.Patient)
+	 * @should get all the patient smart medications
+	 */
 	public List<SmartMedication> getAllForPatient(Patient patient) {
 		List<DrugOrder> drugs = Context.getOrderService().getDrugOrdersByPatient(patient);
 		List<SmartMedication> medications = new ArrayList<SmartMedication>();

@@ -11,4 +11,11 @@
  	<concept_map concept_map_id="101" source="100" source_code="TRIMUNE_454545" comment="no comment" creator="1" date_created="2004-08-12 00:00:00.0" concept_id="792"/>
  	<concept_map concept_map_id="102" source="101" source_code="WEIGHT_454545" comment="no comment" creator="1" date_created="2004-08-12 00:00:00.0" concept_id="5089"/>
   	<concept_map concept_map_id="103" source="101" source_code="CD4_454545" comment="no comment" creator="1" date_created="2004-08-12 00:00:00.0" concept_id="5497"/>
+  	<concept_map concept_map_id="104" source="2" source_code="CIVIL_STATUS_454545" comment="no comment" creator="1" date_created="2004-08-12 00:00:00.0" concept_id="4"/>
+  	<obs obs_id="100" person_id="7" concept_id="4" encounter_id="4" obs_datetime="2008-08-15 00:00:00.0" value_coded="5" location_id="1" creator="1" date_created="2008-08-19 12:32:59.0" voided="false" uuid="38a531be-ca8a-11e0-ae8d-00248140a5eb"/>
+  	<obs obs_id="101" person_id="7" concept_id="17" encounter_id="4" obs_datetime="2008-08-17 00:00:00.0" value_coded="5" location_id="1" creator="1" date_created="2008-08-19 12:32:59.0" voided="false" uuid="4411ac3a-ca8a-11e0-ae8d-00248140a5eb"/>
+    <global_property property="smartcontainer.problem.useProblemObject" property_value="true" uuid="fc23ccba-ca88-11e0-ae8d-00248140a5eb" />
+  	<global_property property="smartcontainer.problem.useObsForProblem" property_value="true" uuid="fe5c68b6-ca88-11e0-ae8d-00248140a5eb" />
+  	<global_property property="smartcontainer.problem.addedConcept" property_value="4" uuid="05003f76-ca89-11e0-ae8d-00248140a5eb" />
+  	<global_property property="smartcontainer.problem.resolvedConcept" property_value="17" uuid="0ad2106e-ca89-11e0-ae8d-00248140a5eb" />
 </dataset>
