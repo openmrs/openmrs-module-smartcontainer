@@ -31,8 +31,11 @@ public class SmartMedicationHandler implements SmartDataHandler<SmartMedication>
 	static {
 		Map newMap = new HashMap<String, String>();
 		newMap.put("daily", "/d");
+		newMap.put("day", "/d");
 		newMap.put("weekly", "/wk");
+		newMap.put("week", "/wk");
 		newMap.put("monthly", "/mo");
+		newMap.put("month", "/mo");
 		openmrsToSmartFrequencyMap = Collections.unmodifiableMap(newMap);
 	}
 	
@@ -50,7 +53,7 @@ public class SmartMedicationHandler implements SmartDataHandler<SmartMedication>
 				medication.setStartDate(SmartDataHandlerUtil.date(d.getStartDate()));
 			
 			//if the medication is already discontinued, use the date when it was discontinued
-			if (d.getDiscontinued())
+			if (d.getDiscontinued() && d.getDiscontinuedDate() != null)
 				medication.setEndDate(SmartDataHandlerUtil.date(d.getDiscontinuedDate()));
 			else if (d.getAutoExpireDate() != null)
 				medication.setEndDate(SmartDataHandlerUtil.date(d.getAutoExpireDate()));
@@ -63,37 +66,38 @@ public class SmartMedicationHandler implements SmartDataHandler<SmartMedication>
 			if (StringUtils.isNotBlank(d.getFrequency())) {
 				boolean validFrequencyOrValue = false;
 				String[] valueAndFrequency = d.getFrequency().trim().split("/");
-				if (valueAndFrequency.length <= 2) {
-					try {
-						Integer value = Integer.valueOf(valueAndFrequency[0].trim());
-						//default value
-						String frequency = "{" + NOT_SPECIFIED + "}";
-						if (valueAndFrequency.length == 2) {
-							frequency = valueAndFrequency[1].trim().toLowerCase();
-							if (openmrsToSmartFrequencyMap.keySet().contains(frequency)) {
-								frequency = openmrsToSmartFrequencyMap.get(frequency);
-							} else {
-								//set it either to the unstructured(i) value from the DB
-								frequency = "{" + frequency + "}";
-							}
+				try {
+					Integer value = Integer.valueOf(valueAndFrequency[0].trim());
+					//default value
+					String frequency = "{" + NOT_SPECIFIED + "}";
+					if (valueAndFrequency.length > 1) {
+						frequency = d.getFrequency().trim();
+						//use the entire string after the first occurrence if a '/'
+						frequency = frequency.substring(frequency.indexOf("/") + 1).toLowerCase();
+						if (openmrsToSmartFrequencyMap.keySet().contains(frequency)) {
+							frequency = openmrsToSmartFrequencyMap.get(frequency);
+						} else {
+							//set it either to the unstructured(i) value from the DB
+							frequency = "{" + frequency + "}";
 						}
-						
-						medication.setFrequency(SmartDataHandlerUtil.valueAndUnitHelper(value, frequency));
-						validFrequencyOrValue = true;
 					}
-					catch (NumberFormatException e) {
-						// will handle this below since validFrequencyOrValue will be false
-					}
+					
+					medication.setFrequency(SmartDataHandlerUtil.valueAndUnitHelper(value, frequency));
+					validFrequencyOrValue = true;
+				}
+				catch (NumberFormatException e) {
+					// will handle this below since validFrequencyOrValue will be false
 				}
 				
 				if (!validFrequencyOrValue) {
 					//the specified value or units were invalid
-					log.warn("Invalid frequency or frequency value was found for drug order with id:" + d.getOrderId());
+					log.warn("Invalid frequency value was found for drug order with id:" + d.getOrderId());
 				}
 			}
 			
 			// TODO:if the instruction is not present generate one
-			medication.setInstructions(d.getInstructions());
+			if (d.getInstructions() != null)
+				medication.setInstructions(d.getInstructions());
 			//
 			medications.add(medication);
 			
