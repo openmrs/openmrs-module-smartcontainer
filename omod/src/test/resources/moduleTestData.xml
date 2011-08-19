@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+	<active_list_type active_list_type_id="2" name="Problem" description="Massive" date_created="2010-05-25 12:00:00" creator="1" retired="0" uuid="1234567890"/>
+  	<active_list active_list_id="1" voided="0" active_list_type_id="2" concept_id="5089" person_id="2" creator="1" date_created="2010-05-25 12:00:00" start_date="2010-05-25 12:00:00"/>
+  	<active_list active_list_id="2" voided="0" active_list_type_id="2" concept_id="5497" person_id="2" creator="1" date_created="2010-05-25 12:00:00" start_date="2010-05-25 12:00:00"/>
+  	<active_list_problem active_list_id="1" sort_weight="1"/>
+  	<active_list_problem active_list_id="2" sort_weight="2"/>
+  	<concept_source concept_source_id="100" name="RxNORM" description="description1" hl7_code="RxNORM_CODE" creator="1" date_created="2005-02-24 00:00:00.0" uuid="00001827-639f-4cb4-961f-1e025bf80001" retired="false"/>
+  	<concept_source concept_source_id="101" name="LOINC" description="description2" hl7_code="LOINC_CODE" creator="1" date_created="2005-02-24 00:00:00.0" uuid="00001827-639f-4cb4-961f-1e025bf80002" retired="false"/>
+  	<concept_map concept_map_id="100" source="100" source_code="ASPIRIN_766554" comment="no comment" creator="1" date_created="2004-08-12 00:00:00.0" concept_id="88"/>
+ 	<concept_map concept_map_id="101" source="100" source_code="TRIMUNE_454545" comment="no comment" creator="1" date_created="2004-08-12 00:00:00.0" concept_id="792"/>
+ 	<concept_map concept_map_id="102" source="101" source_code="WEIGHT_454545" comment="no comment" creator="1" date_created="2004-08-12 00:00:00.0" concept_id="5089"/>
+  	<concept_map concept_map_id="103" source="101" source_code="CD4_454545" comment="no comment" creator="1" date_created="2004-08-12 00:00:00.0" concept_id="5497"/>
+</dataset>

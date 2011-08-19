@@ -56,7 +56,8 @@ public class SmartMedicationHandler implements SmartDataHandler<SmartMedication>
 				medication.setEndDate(SmartDataHandlerUtil.date(d.getAutoExpireDate()));
 			
 			// for quantity
-			medication.setQuantity(SmartDataHandlerUtil.valueAndUnitHelper(d.getQuantity(), d.getUnits()));
+			if (d.getQuantity() != null)
+				medication.setQuantity(SmartDataHandlerUtil.valueAndUnitHelper(d.getQuantity(), d.getUnits()));
 			
 			// for frequency
 			if (StringUtils.isNotBlank(d.getFrequency())) {

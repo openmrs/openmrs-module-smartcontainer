@@ -81,12 +81,11 @@ public class SmartVitalSignsHandler implements SmartDataHandler<SmartVitalSigns>
 	}
 	
 	private void setDates(SmartEncounter encounter, Encounter e) {
-		Method getVisit = null;
+		Method getVisit = getVisitMethod("getVisit", e.getClass());
 		Date start = null;
 		Date stop = null;
 		Object[] args = new Object[0];
 		try {
-			getVisit = e.getClass().getDeclaredMethod("getVisit", new Class[0]);
 			if (getVisit != null) {
 				// we're in 1.9+ openmrs, so there is an Encounter.getVisit method
 				Object visit = getVisit.invoke(e, args);
@@ -204,4 +203,21 @@ public class SmartVitalSignsHandler implements SmartDataHandler<SmartVitalSigns>
 		return null;
 	}
 	
+	/**
+	 * Convenience method that checks of the specified class has the specified method
+	 * 
+	 * @param methodName
+	 * @param clazz
+	 * @return the method if found otherwise null
+	 */
+	@SuppressWarnings("rawtypes")
+	private static Method getVisitMethod(String methodName, Class clazz) {
+		for (Method method : clazz.getMethods()) {
+			if (method.getName().equals(methodName)) {
+				return method;
+			}
+		}
+		
+		return null;
+	}
 }
