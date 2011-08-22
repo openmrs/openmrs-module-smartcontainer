@@ -20,6 +20,11 @@
 				<spring:message code="smartcontainer.admin.problemsetup"/>
 			</a>
 		</li>
+		<li <c:if test='<%= request.getRequestURI().contains("conceptMapping") %>'>class="active"</c:if>>
+			<a href="${pageContext.request.contextPath}/module/smartcontainer/conceptMapping.form">
+				<spring:message code="smartcontainer.admin.conceptMapping"/>
+			</a>
+		</li>
 	</openmrs:hasPrivilege>
 	
 </ul>

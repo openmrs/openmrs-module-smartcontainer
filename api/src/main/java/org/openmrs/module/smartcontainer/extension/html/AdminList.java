@@ -13,43 +13,43 @@
  */
 package org.openmrs.module.smartcontainer.extension.html;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 import org.openmrs.module.Extension;
 import org.openmrs.module.web.extension.AdministrationSectionExt;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * This class defines the links that will appear on the administration page under the
  */
 public class AdminList extends AdministrationSectionExt {
-	
-	/**
-	 * @see org.openmrs.module.web.extension.AdministrationSectionExt#getMediaType()
-	 */
-	public Extension.MEDIA_TYPE getMediaType() {
-		return Extension.MEDIA_TYPE.html;
-	}
-	
-	/**
-	 * @see org.openmrs.module.web.extension.AdministrationSectionExt#getTitle()
-	 */
-	public String getTitle() {
-		return "smartcontainer.title";
-	}
-	
-	/**
-	 * @see org.openmrs.module.web.extension.AdministrationSectionExt#getLinks()
-	 */
-	public Map<String, String> getLinks() {
-		
-		Map<String, String> map = new LinkedHashMap<String, String>();
-		
-		map.put("module/smartcontainer/smartcontainerLink.form", "smartcontainer.admin.manage");
-		map.put("module/smartcontainer/manageUserAppLink.form", "smartcontainer.admin.manage.user");
-		map.put("module/smartcontainer/problemsetup.form", "smartcontainer.admin.problemsetup");
-		
-		return map;
-	}
-	
+
+    /**
+     * @see org.openmrs.module.web.extension.AdministrationSectionExt#getMediaType()
+     */
+    public Extension.MEDIA_TYPE getMediaType() {
+        return Extension.MEDIA_TYPE.html;
+    }
+
+    /**
+     * @see org.openmrs.module.web.extension.AdministrationSectionExt#getTitle()
+     */
+    public String getTitle() {
+        return "smartcontainer.title";
+    }
+
+    /**
+     * @see org.openmrs.module.web.extension.AdministrationSectionExt#getLinks()
+     */
+    public Map<String, String> getLinks() {
+
+        Map<String, String> map = new LinkedHashMap<String, String>();
+
+        map.put("module/smartcontainer/smartcontainerLink.form", "smartcontainer.admin.manage");
+        map.put("module/smartcontainer/manageUserAppLink.form", "smartcontainer.admin.manage.user");
+        map.put("module/smartcontainer/problemsetup.form", "smartcontainer.admin.problemsetup");
+        map.put("module/smartcontainer/conceptMapping.form", "smartcontainer.admin.conceptMapping");
+        return map;
+    }
+
 }
