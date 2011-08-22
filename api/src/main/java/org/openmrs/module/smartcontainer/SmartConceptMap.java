@@ -102,7 +102,7 @@ public class SmartConceptMap {
 			// TODO there should be better way of indicating the failure of
 			// finding mapped concept code.
 			throw new ConceptMappingNotFoundException(
-					"Can not find Concept mapping for concept " + concept + " with source: " + getConceptSourceName());
+					"Cannot find concept mapping to source " + getConceptSourceName() + " on concept " + concept);
 		}
 
 	}
