@@ -54,4 +54,11 @@ public class SmartConstants {
 	 */
 	public static String GP_PROBLEM_RESOLVED_CONCEPT = "smartcontainer.problem.resolvedConcept";
 
+	/**
+	 * The name of the global property to store the true/false value of whether
+	 * this instance wants to use the ActiveList/Allergy table and object to
+	 * manage the patient's problems
+	 */
+	public static final String GP_USE_ALLERGY_OBJECT = "smartcontainer.allergy.useAllergyObject";
+
 }

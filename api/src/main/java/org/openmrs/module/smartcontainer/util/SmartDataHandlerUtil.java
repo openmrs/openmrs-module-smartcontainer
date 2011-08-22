@@ -37,11 +37,24 @@ public class SmartDataHandlerUtil {
 	 */
 	public static CodedValue codedValueHelper(Concept concept,
 			SmartConceptMap map) {
-		CodedValue code = new CodedValue();
-		code.setTitle(codedValueNameHelper(concept));
-		code.setCode(codedValueCodeHelper(concept, map));
-		code.setCodeBaseURL(map.getBaseURL());
+		CodedValue code = codedValueHelper(codedValueNameHelper(concept), codedValueCodeHelper(concept, map), map);
 		code.setCodeProvenance(codedValueProvenanceHelper(concept, map));
+		return code;
+	}
+	
+	/**
+	 * Also see {@link #codedValueCodeHelper(Concept, SmartConceptMap)}
+	 * 
+	 * @param title
+	 * @param codedValue
+	 * @param map
+	 * @return
+	 */
+	public static CodedValue codedValueHelper(String title, String codedValue, SmartConceptMap map) {
+		CodedValue code = new CodedValue();
+		code.setTitle(title);
+		code.setCode(codedValue);
+		code.setCodeBaseURL(map.getBaseURL());
 		return code;
 	}
 
@@ -173,7 +186,7 @@ public class SmartDataHandlerUtil {
 	 * @see SmartConstants#GP_USE_PROBLEM_OBJECT_NAME
 	 */
 	public static boolean useProblemObject() {
-		String useProblemObjectGP = Context.getAdministrationService().getGlobalProperty(SmartConstants.GP_USE_PROBLEM_OBJECT_NAME, "false");
+		String useProblemObjectGP = Context.getAdministrationService().getGlobalProperty(SmartConstants.GP_USE_PROBLEM_OBJECT_NAME, "true");
 		return Boolean.parseBoolean(useProblemObjectGP);
 	}
 	
@@ -184,5 +197,14 @@ public class SmartDataHandlerUtil {
 	public static boolean useObsForProblems() {
 		String useObsForProblems = Context.getAdministrationService().getGlobalProperty(SmartConstants.GP_USE_OBS_FOR_PROBLEM, "false");
 		return Boolean.parseBoolean(useObsForProblems);
+	}
+
+	/**
+	 * @return true or false based on the global property object for whether to use the allergy activelist object/table 
+	 * @see SmartConstants#GP_USE_ALLERGY_OBJECT
+	 */
+	public static boolean useAllergyObject() {
+		String useAllergyObjectGP = Context.getAdministrationService().getGlobalProperty(SmartConstants.GP_USE_ALLERGY_OBJECT, "true");
+		return Boolean.parseBoolean(useAllergyObjectGP);
 	}
 }

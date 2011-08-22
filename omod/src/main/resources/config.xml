@@ -39,11 +39,49 @@
     </privilege>
 
 
-    <!-- Required Global Properties <globalProperty> <property>@MODULE_ID@.someProperty</property>
-         <defaultValue></defaultValue> <description> A description of the global property
-         goes here. The description should explain enough for administrators to understand
-         the purpose and possible values for the global property. </description> </globalProperty>
-         /Required Global Properties -->
+    <!-- Required Global Properties -->
+     <globalProperty>
+		<property>smartcontainer.problem.useProblemObject</property>
+		<defaultValue>true</defaultValue>
+		<description>
+			The name of the global property to store the true/false value of whether
+	 		this instance wants to use the ActiveList/Problem table and object to
+	 		manage the patient's problems
+	 	</description>
+	</globalProperty>
+	<globalProperty>
+		<property>smartcontainer.problem.useObsForProblem</property>
+		<defaultValue>false</defaultValue>
+		<description>
+			The name of the global property to store the true/false of whether this
+			instance wants to use the obs table to look up a patient's problems
+	 	</description>
+	</globalProperty>
+	<globalProperty>
+		<property>smartcontainer.problem.addedConcept</property>
+		<defaultValue></defaultValue>
+		<description>
+			The name of the global property to store the concept id of the "Problem Added" concept 
+			used in forms.  This can be used in place or in addition to the problem object
+	 	</description>
+	</globalProperty>
+	<globalProperty>
+		<property>smartcontainer.problem.resolvedConcept</property>
+		<defaultValue></defaultValue>
+		<description>
+			The name of the global property to store the concept id of the "Problem Resolved" concept 
+			used in forms.  This can be used in place or in addition to the problem object
+	 	</description>
+	</globalProperty>
+	<globalProperty>
+		<property>smartcontainer.allergy.useAllergyObject</property>
+		<defaultValue>true</defaultValue>
+		<description>
+			The name of the global property to store the true/false value of whether
+	 		this instance wants to use the ActiveList/Allergy table and object to
+	 		manage the patient's problems
+	 	</description>
+	</globalProperty>
 
     <!-- Internationalization -->
     <!-- All message codes should start with @MODULE_ID@.* -->
