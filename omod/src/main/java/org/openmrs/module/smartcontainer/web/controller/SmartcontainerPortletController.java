@@ -44,7 +44,7 @@ public class SmartcontainerPortletController extends PortletController {
 		model.put("currentUser", user);
 		Set<App> apps = (Set<App>) Context.getService(SmartUserService.class).getUserByName(user.getSystemId()).getApps();
 		model.put("list", apps);
-		
+		model.put("userAppTokenMap", ManageAppUserlevelController.getUserAppAccessTokenMap());
 	}
 	
 }

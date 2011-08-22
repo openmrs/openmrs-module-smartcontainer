@@ -65,6 +65,8 @@
 <script type="text/javascript">
 	var SMART_HELPER = {};
 	var already_running = {};
+	var selectedAppId;
+	var userAppIdAccessTokenMap = new Object();
 
 	SMART_HELPER.handle_record_info = function(app, callback) {
 		callback({
@@ -128,10 +130,13 @@
 			var array = api_call.func.split("/");
 			var pid = array[2].valueOf();
 			var type = array[3];
+			if (!activity.params)
+				activity.params = {};
+			//send the name of the param as the authorization header value
+			var userAndAppId = "${model.currentUser.userId}-" + selectedAppId;
+			activity.params['userAndAppId'] = userAndAppId;
+			activity.params['accessToken'] = userAppIdAccessTokenMap[userAndAppId];
 			$j.ajax({
-				beforeSend : function(xhr) {
-					xhr.setRequestHeader("Authorization", " ");
-				},
 				dataType : "text",
 				url : "${pageContext.request.contextPath}"
 						+ "/ws/smartcontainer/api" +api_call.func,
@@ -149,8 +154,8 @@
 
 	SMART = new SMART_CONTAINER(SMART_HELPER);
 
-	var appSelected = function(app_id, url) {
-
+	var appSelected = function(app_id, url, containerAppId) {
+		selectedAppId = containerAppId;
 		if (already_running[app_id] == null) {
 
 			appURL = url
@@ -169,11 +174,16 @@
 <table>
 	<tbody>
 		<c:forEach items="${model.list}" var="app" varStatus="status">
-			<tr onclick="appSelected('${app.sMARTAppId}','${app.activity.activityURL}')">
+			<tr onclick="appSelected('${app.sMARTAppId}','${app.activity.activityURL}', '${app.appId}')">
 				<td><input type="image" src="${app.icon}" /></td>
 				<td><a>${app.name}</a></td>
 			</tr>
+			<c:set var="tokenKey" value="${model.currentUser.userId}-${app.appId}" scope="page" />
+			<script type="text/javascript">
+				userAppIdAccessTokenMap['${tokenKey}'] = '${model.userAppTokenMap[tokenKey]}';
+			</script>
 		</c:forEach>
+		<c:remove var="tokenKey" scope="page" />
 		<c:if test="${fn:length(model.list) == 0}">
 			<tr><td><spring:message code="smartcontainer.noappsinstalledforusertochoose"/></td></tr>
 		</c:if>

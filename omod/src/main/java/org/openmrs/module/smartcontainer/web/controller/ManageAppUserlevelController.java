@@ -2,12 +2,17 @@ package org.openmrs.module.smartcontainer.web.controller;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.openmrs.User;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.smartcontainer.SmartAppService;
 import org.openmrs.module.smartcontainer.SmartUser;
@@ -30,6 +35,12 @@ public class ManageAppUserlevelController {
 	private SmartAppService service;
 	
 	private final String SUCCESS_FORM_VIEW = "/module/smartcontainer/addAppUserLevel";
+	
+	/**
+	 * Map for user id-app-ids and a their access tokens. Map entries are of the form Map<String
+	 * userId-appId, String token>
+	 */
+	private static Map<String, String> userAppAccessTokensMap = null;
 	
 	/**
 	 * Initially called after the formBackingObject method to get the landing form name
@@ -66,6 +77,9 @@ public class ManageAppUserlevelController {
 				for (App a : allApps) {
 					if (a.getName().equals(app)) {
 						userApps.add(a);
+						//register an access token for the started app
+						userAppAccessTokensMap.put(Context.getAuthenticatedUser().getUserId() + "-" + a.getAppId(),
+						    generateRandomAccessToken());
 					}
 				}
 				
@@ -76,6 +90,8 @@ public class ManageAppUserlevelController {
 				for (App a : allApps) {
 					if (a.getName().equals(app)) {
 						userApps.remove(a);
+						//remove the token for the removed app
+						userAppAccessTokensMap.remove(Context.getAuthenticatedUser().getUserId() + "-" + a.getAppId());
 					}
 				}
 				
@@ -121,5 +137,34 @@ public class ManageAppUserlevelController {
 		//request.setAttribute("userApps", userApps);
 		request.setAttribute("allApps", allApps);
 		return userApps;
+	}
+	
+	/**
+	 * Returns an unmodifiable map of the user apps and their access tokens
+	 * 
+	 * @return
+	 */
+	public static Map<String, String> getUserAppAccessTokenMap() {
+		if (userAppAccessTokensMap == null) {
+			userAppAccessTokensMap = new HashMap<String, String>();
+			//Grant access to all apps already started for the current user
+			User user = Context.getAuthenticatedUser();
+			Set<App> apps = (Set<App>) Context.getService(SmartUserService.class).getUserByName(user.getSystemId())
+			        .getApps();
+			for (App app : apps) {
+				userAppAccessTokensMap.put(user.getUserId() + "-" + app.getAppId(), generateRandomAccessToken());
+			}
+		}
+		//we don't want callers to make changes to the map
+		return Collections.unmodifiableMap(userAppAccessTokensMap);
+	}
+	
+	/**
+	 * Utility method that generates access tokens randomly consisting of 9 characters
+	 * 
+	 * @return
+	 */
+	private static String generateRandomAccessToken() {
+		return RandomStringUtils.randomAlphanumeric(9);
 	}
 }

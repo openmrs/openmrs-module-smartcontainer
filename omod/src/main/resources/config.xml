@@ -30,7 +30,17 @@
      <point>org.openmrs.userOptionExtension</point>
      <class>@MODULE_PACKAGE@.extension.html.UserOptionTabExtension</class>
      </extension>-->
-
+     
+     <!-- Filters -->
+     <filter>
+		<filter-name>SMART REST AuthorizationFilter</filter-name>
+		<filter-class>org.openmrs.module.smartcontainer.web.filter.AuthorizationFilter</filter-class>
+	</filter>
+	
+	<filter-mapping>
+		<filter-name>SMART REST AuthorizationFilter</filter-name>
+		<url-pattern>/ws/smartcontainer/*</url-pattern>
+	</filter-mapping>
 
     <!-- Required Privileges -->
     <privilege>
