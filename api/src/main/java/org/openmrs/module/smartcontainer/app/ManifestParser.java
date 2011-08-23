@@ -55,9 +55,10 @@ public class ManifestParser {
 	 * @param file
 	 * @return
 	 * @throws IOException
+	 * @throws ParseException
 	 * @should parse a manifest file given as a String
 	 */
-	public Boolean parseFile(String file) throws IOException {
+	public Boolean parseFile(String file) throws IOException, ParseException {
 		String jsonText = null;
 		
 		jsonText = (file);
@@ -71,35 +72,24 @@ public class ManifestParser {
 	 * @param jsonText
 	 * @return
 	 * @throws IOException
+	 * @throws ParseException
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public Boolean parse(String jsonText) throws IOException {
-		try {
+	public Boolean parse(String jsonText) throws IOException, ParseException {
+		JSONParser parser = new JSONParser();
+		ContainerFactory containerFactory = new ContainerFactory() {
 			
-			JSONParser parser = new JSONParser();
-			ContainerFactory containerFactory = new ContainerFactory() {
-				
-				public List creatArrayContainer() {
-					return new LinkedList();
-				}
-				
-				public Map createObjectContainer() {
-					return new LinkedHashMap();
-				}
-				
-			};
+			public List creatArrayContainer() {
+				return new LinkedList();
+			}
 			
-			try {
-				json = (Map) parser.parse(jsonText, containerFactory);
-				
+			public Map createObjectContainer() {
+				return new LinkedHashMap();
 			}
-			catch (ParseException pe) {
-				log.info(pe.getCause());
-			}
-		}
-		catch (Exception e) {
-			log.info(e.getCause());
-		}
+			
+		};
+		
+		json = (Map) parser.parse(jsonText, containerFactory);
 		
 		if (json == null)
 			throw new IOException("An Invalid manifest file was found");

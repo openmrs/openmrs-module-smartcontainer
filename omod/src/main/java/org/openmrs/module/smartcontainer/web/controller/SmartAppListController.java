@@ -13,8 +13,18 @@
  */
 package org.openmrs.module.smartcontainer.web.controller;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.json.simple.parser.ParseException;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.smartcontainer.SmartAppService;
 import org.openmrs.module.smartcontainer.SmartUser;
@@ -33,146 +43,146 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
-
 /**
  *
  */
 @Controller
 @RequestMapping(value = "module/smartcontainer/smartcontainerLink.form")
 public class SmartAppListController {
+	
+	/**
+	 * Logger for this class and subclasses
+	 */
+	protected final Log log = LogFactory.getLog(getClass());
+	
+	/**
+	 * Success form view name
+	 */
+	private final String SUCCESS_FORM_VIEW = "/module/smartcontainer/smartcontainerForm";
+	
+	/**
+	 * Initially called after the formBackingObject method to get the landing form name
+	 * 
+	 * @return String form view name
+	 */
+	@RequestMapping(method = RequestMethod.GET)
+	public String showForm() {
+		return SUCCESS_FORM_VIEW;
+		
+	}
+	
+	/**
+	 * All the parameters are optional based on the necessity
+	 * 
+	 * @param action
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(method = RequestMethod.POST)
+	public ModelAndView deleteApp(@RequestParam("action") String action, HttpServletRequest request) {
+		
+		ModelAndView modelAndView = new ModelAndView();
+		SmartAppService appService = Context.getService(SmartAppService.class);
+		SmartUserService userService = Context.getService(SmartUserService.class);
+		Boolean isUploadFromURL = ServletRequestUtils.getBooleanParameter(request, "updateFromURL", false);
+		HttpSession httpSession = request.getSession();
+		//
+		if ("removeApp".equals(action)) {
+			Integer appId = null;
+			try {
+				appId = ServletRequestUtils.getIntParameter(request, "appId");
+			}
+			catch (ServletRequestBindingException e) {
+				
+				log.error("Unable to get appId parameter from request", e);
+			}
+			
+			App app = appService.getAppById(appId);
+			Set<App> userApps = null;
+			for (SmartUser user : userService.getAllUsers()) {
+				
+				userApps = user.getApps();
+				userApps.remove(app);
+				user.setApps(null);
+				user.setApps(userApps);
+				userService.saveUser(user);
+				
+			}
+			appService.deleteApp(app);
+			
+		} else if ("upload".equals(action)) {
+			App newApp = null;
+			if (isUploadFromURL) {
+				String app = null;
+				String url = ServletRequestUtils.getStringParameter(request, "manifestURL", "");
+				log.info("URL stirng :" + url);
+				
+				try {
+					newApp = AppFactory.getAppFromUrl(url);
+					log.info("APP  :" + newApp);
+					List<App> apps = (List<App>) appService.getAllApps();
+					if (!apps.contains(newApp)) {
+						newApp.setRetire(false);
+						appService.saveApp(newApp);
+					}
+				}
+				catch (MalformedURLException e) {
+					httpSession.setAttribute(WebConstants.OPENMRS_ERROR_ATTR, "Malformed URL");
+					log.error("Malformed URL", e);
+				}
+				catch (ParseException e) {
+					httpSession.setAttribute(WebConstants.OPENMRS_ERROR_ATTR, "smartcontainer.upload.invalidFile");
+					log.error("The manifest file you uploaded appears to be invalid", e);
+				}
+				catch (IOException e) {
+					httpSession.setAttribute(WebConstants.OPENMRS_ERROR_ATTR, "Malformed Manifest file");
+					log.error("Malformed Manifest file", e);
+				}
+				
+			} else {
+				MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+				MultipartFile multipartFile = multipartRequest.getFile("moduleFile");
+				
+				try {
+					newApp = AppFactory.getAppFromLocalFile(multipartFile.getInputStream());
+					List<App> apps = (List<App>) appService.getAllApps();
+					if (!apps.contains(newApp)) {
+						newApp.setRetire(false);
+						appService.saveApp(newApp);
+					} else {
 
-    /**
-     * Logger for this class and subclasses
-     */
-    protected final Log log = LogFactory.getLog(getClass());
-
-    /**
-     * Success form view name
-     */
-    private final String SUCCESS_FORM_VIEW = "/module/smartcontainer/smartcontainerForm";
-
-    /**
-     * Initially called after the formBackingObject method to get the landing form name
-     *
-     * @return String form view name
-     */
-    @RequestMapping(method = RequestMethod.GET)
-    public String showForm() {
-        return SUCCESS_FORM_VIEW;
-
-    }
-
-    /**
-     * All the parameters are optional based on the necessity
-     *
-     * @param action
-     * @param request
-     * @return
-     */
-    @RequestMapping(method = RequestMethod.POST)
-    public ModelAndView deleteApp(@RequestParam("action") String action, HttpServletRequest request) {
-
-        ModelAndView modelAndView = new ModelAndView();
-        SmartAppService appService = Context.getService(SmartAppService.class);
-        SmartUserService userService = Context.getService(SmartUserService.class);
-        Boolean isUploadFromURL = ServletRequestUtils.getBooleanParameter(request, "updateFromURL", false);
-        HttpSession httpSession = request.getSession();
-        //
-        if ("removeApp".equals(action)) {
-            Integer appId = null;
-            try {
-                appId = ServletRequestUtils.getIntParameter(request, "appId");
-            } catch (ServletRequestBindingException e) {
-
-                log.error("Unable to get appId parameter from request", e);
-            }
-
-
-            App app = appService.getAppById(appId);
-            Set<App> userApps = null;
-            for (SmartUser user : userService.getAllUsers()) {
-
-                userApps = user.getApps();
-                userApps.remove(app);
-                user.setApps(null);
-                user.setApps(userApps);
-                userService.saveUser(user);
-
-            }
-            appService.deleteApp(app);
-
-        } else if ("upload".equals(action)) {
-            App newApp = null;
-            if (isUploadFromURL) {
-                String app = null;
-                String url = ServletRequestUtils.getStringParameter(request, "manifestURL", "");
-                log.info("URL stirng :" + url);
-
-                try {
-                    newApp = AppFactory.getAppFromUrl(url);
-                    log.info("APP  :" + newApp);
-                    List<App> apps = (List<App>) appService.getAllApps();
-                    if (!apps.contains(newApp)) {
-                        newApp.setRetire(false);
-                        appService.saveApp(newApp);
-                    }
-                } catch (MalformedURLException e) {
-                    httpSession.setAttribute(WebConstants.OPENMRS_ERROR_ATTR, "Malformed URL");
-                    log.error("Malformed URL", e);
-                } catch (IOException e) {
-                    httpSession.setAttribute(WebConstants.OPENMRS_ERROR_ATTR, "Malformed Manifest file");
-                    log.error("Malformed Manifest file", e);
-                }
-
-
-            } else {
-                MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
-                MultipartFile multipartFile = multipartRequest.getFile("moduleFile");
-
-                String text = null;
-                try {
-                    newApp = AppFactory.getAppFromLocalFile(multipartFile.getInputStream());
-                    List<App> apps = (List<App>) appService.getAllApps();
-                    if (!apps.contains(newApp)) {
-                        newApp.setRetire(false);
-                        appService.saveApp(newApp);
-                    } else {
-
-                    }
-                } catch (IOException e1) {
-                    httpSession.setAttribute(WebConstants.OPENMRS_ERROR_ATTR, "Malformed Manifest file");
-                    log.error("Malformed Manifest file", e1);
-                }
-
-
-            }
-        }
-        //
-        Collection<App> apps = Context.getService(SmartAppService.class).getAllApps();
-        modelAndView.setViewName(SUCCESS_FORM_VIEW);
-        modelAndView.addObject("appList", apps);
-        return modelAndView;
-    }
-
-    /**
-     * This class returns the form backing object. This can be a string, a boolean, or a normal java
-     * pojo. The bean name defined in the ModelAttribute annotation and the type can be just defined
-     * by the return type of this method
-     */
-    @ModelAttribute("appList")
-    protected Collection<App> formBackingObject(HttpServletRequest request) throws Exception {
-
-        Collection<App> apps = Context.getService(SmartAppService.class).getAllApps();
-        // Context.getService(UserService.class).saveUser(new SMARTAppUser());
-
-        return apps;
-    }
-
+					}
+				}
+				catch (ParseException e) {
+					httpSession.setAttribute(WebConstants.OPENMRS_ERROR_ATTR, "smartcontainer.upload.invalidFile");
+					log.error("The manifest file you uploaded appears to be invalid", e);
+				}
+				catch (IOException e1) {
+					httpSession.setAttribute(WebConstants.OPENMRS_ERROR_ATTR, "Malformed Manifest file");
+					log.error("Malformed Manifest file", e1);
+				}
+				
+			}
+		}
+		//
+		Collection<App> apps = Context.getService(SmartAppService.class).getAllApps();
+		modelAndView.setViewName(SUCCESS_FORM_VIEW);
+		modelAndView.addObject("appList", apps);
+		return modelAndView;
+	}
+	
+	/**
+	 * This class returns the form backing object. This can be a string, a boolean, or a normal java
+	 * pojo. The bean name defined in the ModelAttribute annotation and the type can be just defined
+	 * by the return type of this method
+	 */
+	@ModelAttribute("appList")
+	protected Collection<App> formBackingObject(HttpServletRequest request) throws Exception {
+		
+		Collection<App> apps = Context.getService(SmartAppService.class).getAllApps();
+		// Context.getService(UserService.class).saveUser(new SMARTAppUser());
+		
+		return apps;
+	}
+	
 }

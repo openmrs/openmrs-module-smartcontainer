@@ -22,6 +22,7 @@ import java.util.Scanner;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.json.simple.parser.ParseException;
 
 /**
  * Used to construct a SMART App from its manifest file
@@ -68,8 +69,9 @@ public class AppFactory {
 	 * @param maniFile
 	 * @return
 	 * @throws IOException
+	 * @throws ParseException
 	 */
-	public static App getAppFromLocalFile(InputStream maniFileAsStream) throws IOException {
+	public static App getAppFromLocalFile(InputStream maniFileAsStream) throws ParseException, IOException {
 		String maniFile = new Scanner(maniFileAsStream).useDelimiter("\\A").next();
 		App app = new App();
 		pa = new ManifestParser();
@@ -83,8 +85,9 @@ public class AppFactory {
 	 * 
 	 * @param maniFile
 	 * @return
+	 * @throws ParseException
 	 */
-	public static App getAppFromUrl(String url) throws MalformedURLException, IOException {
+	public static App getAppFromUrl(String url) throws MalformedURLException, IOException, ParseException {
 		URL appURL = new URL(url);
 		App app = new App();
 		String maniFile = null;
