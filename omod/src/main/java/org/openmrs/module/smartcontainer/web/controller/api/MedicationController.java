@@ -1,4 +1,4 @@
-package org.openmrs.module.smartcontainer.web.controller.API;
+package org.openmrs.module.smartcontainer.web.controller.api;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

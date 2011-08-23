@@ -144,6 +144,7 @@
         <addPrimaryKey columnNames="smartcontainer_app_id, smartcontainer_user_id"
                        tableName="smartcontainer_user_app"/>
     </changeSet>
+    
     <changeSet id="smartcontainer-2011-05-23-18:50" author="ajanthan">
         <addForeignKeyConstraint baseColumnNames="smartcontainer_app_id"
                                  baseTableName="smartcontainer_user_app" constraintName="app_relation"
@@ -151,6 +152,7 @@
                                  referencedColumnNames="smartcontainer_app_id"
                                  referencedTableName="smartcontainer_app"/>
     </changeSet>
+    
     <changeSet id="smartcontainer-2011-05-24-19:50" author="ajanthan">
         <addForeignKeyConstraint baseColumnNames="smartcontainer_user_id"
                                  baseTableName="smartcontainer_user_app" constraintName="user_app"
@@ -158,12 +160,16 @@
                                  referencedColumnNames="smartcontainer_user_id"
                                  referencedTableName="smartcontainer_user"/>
     </changeSet>
+    
     <changeSet author="ajanthan" id="smartcontainer-2011-07-24-19:50">
+    	<validCheckSum>bff0e022d9c32d775139bb81ec9efcd</validCheckSum>
+    	<validCheckSum>a2fb56cb922a4d332dfe8bc22f280b4</validCheckSum>
         <sql>
             INSERT INTO smartcontainer_user(user_id)
             SELECT user_id FROM users;
         </sql>
     </changeSet>
+    
     <changeSet author="ajanthan" id="smartcontainer-2011-07-25-19:50">
         <addColumn tableName="smartcontainer_app">
             <column name="retire" type="int(1)" defaultValueBoolean="false">

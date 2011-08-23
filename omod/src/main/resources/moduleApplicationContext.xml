@@ -207,29 +207,29 @@
 
     </bean>
     <bean id="allergyController"
-          class="org.openmrs.module.smartcontainer.web.controller.API.AllergyController">
+          class="org.openmrs.module.smartcontainer.web.controller.api.AllergyController">
         <property name="resource">
         	<bean id="allergyRDF" class="org.openmrs.module.smartcontainer.rdfsource.AllergyRDFSource"/>
         </property>
     </bean>
     <bean id="problemController"
-          class="org.openmrs.module.smartcontainer.web.controller.API.ProblemController">
+          class="org.openmrs.module.smartcontainer.web.controller.api.ProblemController">
         <property name="resource" ref="problemRDF"/>
     </bean>
     <bean id="medicationController"
-          class="org.openmrs.module.smartcontainer.web.controller.API.MedicationController">
+          class="org.openmrs.module.smartcontainer.web.controller.api.MedicationController">
         <property name="resource" ref="medicationRDF"/>
     </bean>
     <bean id="demographicsController"
-          class="org.openmrs.module.smartcontainer.web.controller.API.DemographicsController">
+          class="org.openmrs.module.smartcontainer.web.controller.api.DemographicsController">
         <property name="resource" ref="demographicsRDF"/>
     </bean>
     <bean id="labResultController"
-          class="org.openmrs.module.smartcontainer.web.controller.API.LabResultController">
+          class="org.openmrs.module.smartcontainer.web.controller.api.LabResultController">
         <property name="resource" ref="labResultRDF"/>
     </bean>
     <bean id="vitalSignController"
-          class="org.openmrs.module.smartcontainer.web.controller.API.VitalSignController">
+          class="org.openmrs.module.smartcontainer.web.controller.api.VitalSignController">
         <property name="resource" ref="vitalSignRDF"/>
     </bean>
 

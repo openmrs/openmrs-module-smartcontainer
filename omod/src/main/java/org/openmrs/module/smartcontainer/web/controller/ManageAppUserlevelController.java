@@ -24,15 +24,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
- * @author aja
+ * Lets users choose which apps they see on their homepage
  */
 @Controller
 @RequestMapping(value = "module/smartcontainer/manageUserAppLink.form")
 public class ManageAppUserlevelController {
 	
 	Log log = LogFactory.getLog(getClass());
-	
-	private SmartAppService service;
 	
 	private final String SUCCESS_FORM_VIEW = "/module/smartcontainer/addAppUserLevel";
 	
@@ -63,7 +61,7 @@ public class ManageAppUserlevelController {
 	public String deleteApp(HttpServletRequest request) {
 		SmartUser smartUser = Context.getService(SmartUserService.class).getUserByName(
 		    Context.getAuthenticatedUser().getSystemId());
-		Collection<App> allApps = service.getAllApps();
+		Collection<App> allApps = getSmartService().getAllApps();
 		Collection<App> userApps = smartUser.getApps();
 		if (userApps == null) {
 			userApps = new ArrayList<App>();
@@ -113,7 +111,7 @@ public class ManageAppUserlevelController {
 	 */
 	@ModelAttribute("userApps")
 	protected Collection<App> formBackingObject(HttpServletRequest request) throws Exception {
-		service = Context.getService(SmartAppService.class);
+		SmartAppService service = getSmartService();
 		SmartUser smartUser = null;
 		Collection<App> allApps = service.getAllApps();
 		Collection<App> userApps = null;
@@ -139,6 +137,10 @@ public class ManageAppUserlevelController {
 		return userApps;
 	}
 	
+	private SmartAppService getSmartService() {
+		return Context.getService(SmartAppService.class);
+	}
+
 	/**
 	 * Returns an unmodifiable map of the user apps and their access tokens
 	 * 

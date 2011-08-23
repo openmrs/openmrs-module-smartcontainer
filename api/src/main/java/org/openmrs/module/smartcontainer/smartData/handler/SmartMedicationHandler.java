@@ -16,7 +16,6 @@ import org.openmrs.module.smartcontainer.SmartConceptMap;
 import org.openmrs.module.smartcontainer.smartData.SmartMedication;
 import org.openmrs.module.smartcontainer.util.SmartDataHandlerUtil;
 
-@SuppressWarnings({ "unchecked", "rawtypes" })
 public class SmartMedicationHandler implements SmartDataHandler<SmartMedication> {
 	
 	private static final Log log = LogFactory.getLog(SmartMedicationHandler.class);
@@ -29,7 +28,7 @@ public class SmartMedicationHandler implements SmartDataHandler<SmartMedication>
 	
 	//creates a static final unmodifiable map
 	static {
-		Map newMap = new HashMap<String, String>();
+		Map<String, String> newMap = new HashMap<String, String>();
 		newMap.put("daily", "/d");
 		newMap.put("day", "/d");
 		newMap.put("weekly", "/wk");

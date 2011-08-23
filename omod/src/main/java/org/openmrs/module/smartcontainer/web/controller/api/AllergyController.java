@@ -11,7 +11,7 @@
  *
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
-package org.openmrs.module.smartcontainer.web.controller.API;
+package org.openmrs.module.smartcontainer.web.controller.api;
 
 import java.io.IOException;
 import java.io.Writer;

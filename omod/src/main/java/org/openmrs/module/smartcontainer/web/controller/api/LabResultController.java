@@ -1,12 +1,12 @@
-package org.openmrs.module.smartcontainer.web.controller.API;
+package org.openmrs.module.smartcontainer.web.controller.api;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.smartcontainer.SmartDataService;
-import org.openmrs.module.smartcontainer.rdfsource.ProblemRDFSource;
-import org.openmrs.module.smartcontainer.smartData.SmartProblem;
+import org.openmrs.module.smartcontainer.rdfsource.LabResultRDFSource;
+import org.openmrs.module.smartcontainer.smartData.SmartLabResult;
 import org.openrdf.rio.RDFHandlerException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,39 +20,37 @@ import java.io.Writer;
 import java.util.List;
 
 @Controller
-@RequestMapping(method = RequestMethod.GET, value = "/smartcontainer/api/")
-public class ProblemController {
-
+@RequestMapping(value = "/smartcontainer/api/")
+public class LabResultController {
     Log log = LogFactory.getLog(getClass());
+    private LabResultRDFSource resource;
 
-    private ProblemRDFSource resource;
-
-    public ProblemRDFSource getResource() {
+    public LabResultRDFSource getResource() {
         return resource;
     }
 
-    public void setResource(ProblemRDFSource resource) {
+    public void setResource(LabResultRDFSource resource) {
         this.resource = resource;
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "records/{pid}/problems/")
+    @RequestMapping(method = RequestMethod.GET, value = "records/{pid}/lab_results")
     public ModelAndView handle(@PathVariable("pid") Patient patient,
                                HttpServletResponse resp) {
-        log.info("In Problem Controller");
+        log.info("In the LabResult Controller");
         resp.setContentType("text/xml"); // actually I use a constant
         Writer writer;
         try {
             writer = resp.getWriter();
-            List<SmartProblem> props = Context.getService(
+            List<SmartLabResult> labs = Context.getService(
                     SmartDataService.class).getAllForPatient(patient,
-                    SmartProblem.class);
-            writer.write(resource.getRDF(props)); // get the object
-
+                    SmartLabResult.class);
+            writer.write(resource.getRDF(labs));
             writer.close();
         } catch (IOException e) {
-            log.error("Unable to write out Problem for pid: " + patient.getId(), e);
+
+            log.error("Unable to write out LabResult for pid: " + patient.getId(), e);
         } catch (RDFHandlerException e) {
-            log.error("Unable to write out Problem for pid: " + patient.getId(), e);
+            log.error("Unable to write out LabResult for pid: " + patient.getId(), e);
         }
         return null; // indicates this controller did all necessary processing
 

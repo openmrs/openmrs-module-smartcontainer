@@ -116,7 +116,8 @@ public class LabResultRDFSource extends RdfSource {
                 graph.handleStatement(factory.createStatement(labResultNode, externalID, externalIDVal));
 
             }
-
+            
+            // TODO: What about "SmartLabResult.comments" ?
         }
         graph.endRDF();
         return sWriter.toString();
