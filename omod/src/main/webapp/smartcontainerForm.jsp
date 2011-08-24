@@ -34,11 +34,20 @@
 
 <h2><spring:message code="smartcontainer.admin.manage" /></h2>
 
+<c:if test="${fn:length(appList) == 0}">
+	<spring:message code="smartcontainer.manage.help.none"/>
+</c:if>
+<spring:message code="smartcontainer.manage.help"/>
+
+<br />
 <br />
 <div id="buttonPanel">
 <div style="float: left"><input type="button"
 	id="addUpgradeButton"
 	value="<spring:message code="smartcontainer.addOrUpgrade" javaScriptEscape="true"/>" />
+	
+
+
 <div id="addUpgradePopup"><b class="boxHeader"><spring:message
 	code="smartcontainer.add" /></b>
 <div class="box">
@@ -48,8 +57,6 @@
 	value='<spring:message code="smartcontainer.upload"/>' /></form>
 </div>
 <br />
-
-
 
 <div id="findModule"><b class="boxHeader"><spring:message
 	code="smartcontainer.findAndDownload" /></b>
