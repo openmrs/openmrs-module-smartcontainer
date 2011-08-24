@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+	<concept concept_id="2011" datatype_id="2" class_id="7" is_set="false" creator="1" date_created="2008-08-15 15:27:51.0" retired="false" uuid="7128dc1e-cdca-11e0-9c47-00248140a5eb"/>
+	<concept concept_id="2012" datatype_id="4" class_id="5" is_set="false" creator="1" date_created="2008-08-15 15:27:51.0" retired="false" uuid="3a8b3ed4-cdd1-11e0-9c47-00248140a5eb"/>
+	<concept concept_id="2013" datatype_id="4" class_id="5" is_set="false" creator="1" date_created="2008-08-15 15:27:51.0" retired="false" uuid="4020ef24-cdd1-11e0-9c47-00248140a5eb"/>
+  	<concept_name concept_name_id="20011" concept_id="2011" name="Smart Allergy Exception" locale="en" creator="1" date_created="2004-08-12 00:00:00.0" concept_name_type="FULLY_SPECIFIED" locale_preferred="1" voided="false" uuid="48eba7bc-cdd0-11e0-9c47-00248140a5eb"/>
+  	<concept_name concept_name_id="20012" concept_id="2012" name="No known allergies" locale="en" creator="1" date_created="2004-08-12 00:00:00.0" concept_name_type="FULLY_SPECIFIED" locale_preferred="1" voided="false" uuid="d9867724-cdd1-11e0-9c47-00248140a5eb"/>
+  	<concept_name concept_name_id="20013" concept_id="2013" name="No known food allergy" locale="en" creator="1" date_created="2004-08-12 00:00:00.0" concept_name_type="FULLY_SPECIFIED" locale_preferred="1" voided="false" uuid="e0c222f4-cdd1-11e0-9c47-00248140a5eb"/>
+  	<concept_map concept_map_id="200" source="2" concept_id="2012" source_code="NO_KNOWN_CODE" comment="no comment" creator="1" date_created="2004-08-12 00:00:00.0"/>
+ 	<concept_map concept_map_id="201" source="2" concept_id="2013" source_code="NO_KNOWN_FOOD_CODE" comment="no comment" creator="1" date_created="2004-08-12 00:00:00.0"/>
+  	<obs obs_id="200" person_id="7" concept_id="2011" encounter_id="4" obs_datetime="2008-08-15 00:00:00.0" value_coded="2012" location_id="1" creator="1" date_created="2008-08-19 12:32:59.0" voided="false" uuid="9f3f3642-cdd0-11e0-9c47-00248140a5eb"/>
+  	<obs obs_id="201" person_id="7" concept_id="2011" encounter_id="4" obs_datetime="2008-08-17 00:00:00.0" value_coded="2013" location_id="1" creator="1" date_created="2008-08-19 12:32:59.0" voided="false" uuid="a4b283ea-cdd0-11e0-9c47-00248140a5eb"/>
+  	<global_property property="smartcontainer.allergyExceptionConcept" property_value="2011" uuid="6c7cbfbc-ce03-11e0-9c47-00248140a5eb" />
+</dataset>

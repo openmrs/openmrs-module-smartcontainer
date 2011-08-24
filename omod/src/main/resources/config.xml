@@ -92,6 +92,13 @@
 	 		manage the patient's problems
 	 	</description>
 	</globalProperty>
+	<globalProperty>
+		<property>smartcontainer.allergyExceptionConcept</property>
+		<defaultValue></defaultValue>
+		<description>
+			The concept id of the Smart Allergy Exception concept used in forms
+	 	</description>
+	</globalProperty>
 
     <!-- Internationalization -->
     <!-- All message codes should start with @MODULE_ID@.* -->

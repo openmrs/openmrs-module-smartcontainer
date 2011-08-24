@@ -157,6 +157,11 @@
             <ref bean="snomedCtMapping"/>
         </property>
     </bean>
+    <bean id="allergyExceptionHandler" class="org.openmrs.module.smartcontainer.smartData.handler.SmartAllergyExceptionHandler">
+        <property name="map">
+        	<ref bean="snomedCtMapping" />
+        </property>
+    </bean>
     <bean id="smartDataService"
           class="org.openmrs.module.smartcontainer.impl.SmartDataServiceImpl">
         <property name="handlers">
@@ -167,6 +172,7 @@
                 <entry key="SmartProblem" value-ref="problemHandler"/>
                 <entry key="SmartVitalSigns" value-ref="vitalSignsHandler"/>
                 <entry key="SmartAllergy" value-ref="allergyHandler"/>
+                <entry key="SmartAllergyException" value-ref="allergyExceptionHandler"/>
             </map>
         </property>
     </bean>
@@ -232,6 +238,10 @@
           class="org.openmrs.module.smartcontainer.web.controller.api.VitalSignController">
         <property name="resource" ref="vitalSignRDF"/>
     </bean>
-
-
+	<bean id="allergyExceptionController"
+          class="org.openmrs.module.smartcontainer.web.controller.api.AllergyExceptionController">
+        <property name="resource">
+        	<bean id="allergyExceptionRDF" class="org.openmrs.module.smartcontainer.rdfsource.AllergyExceptionRDFSource"/>
+        </property>
+    </bean>
 </beans>

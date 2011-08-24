@@ -41,7 +41,7 @@ public class SmartConstants {
 	 * 
 	 * @see #GP_USE_OBS_FOR_PROBLEM
 	 */
-	public static String GP_PROBLEM_ADDED_CONCEPT = "smartcontainer.problem.addedConcept";
+	public static final String GP_PROBLEM_ADDED_CONCEPT = "smartcontainer.problem.addedConcept";
 	
 	/**
 	 * The name of the global property to store the concept id of the "Problem Resolved" concept
@@ -49,12 +49,18 @@ public class SmartConstants {
 	 * 
 	 * @see #GP_USE_OBS_FOR_PROBLEM
 	 */
-	public static String GP_PROBLEM_RESOLVED_CONCEPT = "smartcontainer.problem.resolvedConcept";
+	public static final String GP_PROBLEM_RESOLVED_CONCEPT = "smartcontainer.problem.resolvedConcept";
 	
 	/**
 	 * The name of the global property to store the true/false value of whether this instance wants
 	 * to use the ActiveList/Allergy table and object to manage the patient's problems
 	 */
 	public static final String GP_USE_ALLERGY_OBJECT = "smartcontainer.allergy.useAllergyObject";
+	
+	/**
+	 * The name of the global property to store the concept id of the "Smart Allergy Exception"
+	 * concept used in forms.
+	 */
+	public static final String GP_ALLERGY_EXCEPTION_CONCEPT = "smartcontainer.allergyExceptionConcept";
 	
 }
