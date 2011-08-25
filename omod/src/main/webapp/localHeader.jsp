@@ -12,7 +12,7 @@ TD.smartOddRow{
 	border: 1px solid #CCCCCC;
 }
 .centerAligned{
-	text-align:center
+	text-align: center;
 }
 </style>
 

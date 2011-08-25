@@ -59,7 +59,7 @@ public class SmartAppListController {
 	protected final Log log = LogFactory.getLog(getClass());
 	
 	/**
-	 * Map for app-ids and a their access tokens. Map entries are of the form Map<String appId,
+	 * Map for app-ids and a their access tokens. Map entries are of the form Map<Integer appId,
 	 * String token>
 	 */
 	private static Map<Integer, String> appAccessTokenMap;
