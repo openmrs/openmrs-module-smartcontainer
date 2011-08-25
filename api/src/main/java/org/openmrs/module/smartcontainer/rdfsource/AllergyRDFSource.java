@@ -55,7 +55,7 @@ public class AllergyRDFSource extends RdfSource {
              */
             BNode allergyNode = factory.createBNode();
             URI allergy = factory.createURI(sp, "Allergy");
-            graph.handleStatement(factory.createStatement(allergyNode, RdfSource.type, allergy));
+            graph.handleStatement(factory.createStatement(allergyNode, type, allergy));
             
             
             // should be only one of "class" OR "substance"
@@ -82,8 +82,8 @@ public class AllergyRDFSource extends RdfSource {
     private URI addChildNode(String nodename, BNode parentNode,
 			RDFXMLWriter graph, CodedValue codedValue) throws RDFHandlerException, IOException {
     	URI childnode = factory.createURI(sp, nodename);
-        graph.handleStatement(factory.createStatement(parentNode, childnode,
-        		RdfUtil.codedValue(factory, graph, codedValue)));
+        Value value = RdfUtil.codedValue(factory, graph, codedValue);
+		graph.handleStatement(factory.createStatement(parentNode, childnode, value));
         return childnode;
 	}
     

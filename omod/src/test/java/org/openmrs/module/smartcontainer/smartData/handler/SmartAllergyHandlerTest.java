@@ -19,6 +19,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.smartcontainer.rdfsource.AllergyRDFSource;
 import org.openmrs.module.smartcontainer.smartData.SmartAllergy;
 import org.openmrs.test.BaseModuleContextSensitiveTest;
 
@@ -47,10 +48,20 @@ public class SmartAllergyHandlerTest extends BaseModuleContextSensitiveTest {
 		Assert.assertNotNull(smartAllergy);
 		Assert.assertNull(smartAllergy.getNotes());
 		// TODO figure out how to calculate this in the handler
-		Assert.assertEquals(null, smartAllergy.getClassOfAllergen().getCode());
+		Assert.assertEquals(null, smartAllergy.getClassOfAllergen());
 		Assert.assertEquals("HEADACHE_12345", smartAllergy.getReaction().getCode());
 		Assert.assertEquals("Severe", smartAllergy.getSeverity().getTitle());
 		Assert.assertEquals("24484000", smartAllergy.getSeverity().getCode());
 		Assert.assertEquals("12345", smartAllergy.getSubstance().getCode());
+	}
+	
+	@Test
+	public void getForPatient_shouldRetasurnSmartAllergies() throws Exception {
+		SmartAllergyHandler smartDataHandler = (SmartAllergyHandler) applicationContext.getBean("allergyHandler");
+		List<SmartAllergy> smartAllergies = smartDataHandler
+				.getAllForPatient(Context.getPatientService().getPatient(2));
+		
+		AllergyRDFSource source = new AllergyRDFSource();
+		System.out.println("allergies: " + source.getRDF(smartAllergies));
 	}
 }

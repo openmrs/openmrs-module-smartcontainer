@@ -68,7 +68,7 @@ public abstract class RdfSource {
     /**
      *
      */
-    public static URI type;
+    public static URI type = org.openrdf.model.vocabulary.RDF.TYPE;
 
     /**
      * No arg constructor for initializing modelGraph and factory
@@ -77,7 +77,6 @@ public abstract class RdfSource {
         super();
         modelGraph = new GraphImpl();
         factory = modelGraph.getValueFactory();
-        type = (org.openrdf.model.vocabulary.RDF.TYPE);
     }
 
     /**

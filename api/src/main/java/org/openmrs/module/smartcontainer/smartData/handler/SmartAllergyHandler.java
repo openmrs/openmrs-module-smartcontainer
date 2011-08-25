@@ -193,7 +193,7 @@ public class SmartAllergyHandler implements SmartDataHandler<SmartAllergy> {
 	private CodedValue convertAllergyTypeToClass(AllergyType allergyType) {
 		// TODO: I have no idea how to calculate this
 		// uses rxnorm mapping
-		return new CodedValue();
+		return null; //new CodedValue();
 	}
 
 	/**
