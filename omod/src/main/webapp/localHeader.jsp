@@ -1,5 +1,21 @@
 <%@ include file="/WEB-INF/template/include.jsp"%>
 <%@ include file="/WEB-INF/template/header.jsp"%>
+
+<style>
+TH.userAppRowHeader{
+	text-align: center; background-color: #CCCCCC;
+}
+TD.smartOddRow{
+	background-color: whitesmoke;
+}
+.userAppTable{
+	border: 1px solid #CCCCCC;
+}
+.centerAligned{
+	text-align:center
+}
+</style>
+
 <ul id="menu">
 	<li class="first">
 		<a href="${pageContext.request.contextPath}/admin"><spring:message code="admin.title.short"/></a>
@@ -10,8 +26,8 @@
 				<spring:message code="smartcontainer.admin.manage"/>
 			</a>
 		</li>
-		<li <c:if test='<%= request.getRequestURI().contains("addAppUserLevel") %>'>class="active"</c:if>>
-			<a href="${pageContext.request.contextPath}/module/smartcontainer/manageUserAppLink.form">
+		<li <c:if test='<%= request.getRequestURI().contains("smartUsers") %>'>class="active"</c:if>>
+			<a href="${pageContext.request.contextPath}/module/smartcontainer/smartUsers.list">
 				<spring:message code="smartcontainer.admin.manage.user"/>
 			</a>
 		</li>

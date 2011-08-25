@@ -15,7 +15,6 @@ package org.openmrs.module.smartcontainer;
 
 import java.util.Collection;
 
-import org.openmrs.User;
 import org.openmrs.api.APIException;
 import org.openmrs.module.smartcontainer.app.App;
 import org.openmrs.module.smartcontainer.db.AppDAO;
@@ -74,13 +73,4 @@ public interface SmartAppService {
 	 * @param newApp
 	 */
 	public void saveApp(App newApp);
-	
-	/**
-	 * Get all apps corresponding to a OpenMRS user
-	 * 
-	 * @param user
-	 * @return
-	 */
-	public Collection<App> getAppsByUserName(User user);
-	
 }

@@ -69,16 +69,16 @@
                          user_id="1"/>
     <smartcontainer_user smartcontainer_user_id="2"
                          user_id="2"/>
-    <!-- Table smartcontainer_user_app -->
-    <smartcontainer_user_app
+    <!-- Table smartcontainer_user_hidden_app -->
+    <smartcontainer_user_hidden_app
             smartcontainer_user_id="1" smartcontainer_app_id="1"/>
-    <smartcontainer_user_app
+    <smartcontainer_user_hidden_app
             smartcontainer_user_id="1" smartcontainer_app_id="2"/>
-    <smartcontainer_user_app
+    <smartcontainer_user_hidden_app
             smartcontainer_user_id="1" smartcontainer_app_id="3"/>
-    <smartcontainer_user_app
+    <smartcontainer_user_hidden_app
             smartcontainer_user_id="1" smartcontainer_app_id="4"/>
-    <smartcontainer_user_app
+    <smartcontainer_user_hidden_app
             smartcontainer_user_id="1" smartcontainer_app_id="5"/>
     <!-- Table smartcontainer_webhook -->
     <smartcontainer_webhook

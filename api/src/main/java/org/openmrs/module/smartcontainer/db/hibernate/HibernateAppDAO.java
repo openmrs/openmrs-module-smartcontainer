@@ -13,14 +13,12 @@
  */
 package org.openmrs.module.smartcontainer.db.hibernate;
 
-import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
-import org.openmrs.User;
 import org.openmrs.api.db.DAOException;
 import org.openmrs.module.smartcontainer.app.App;
 import org.openmrs.module.smartcontainer.db.AppDAO;
@@ -103,21 +101,4 @@ public class HibernateAppDAO implements AppDAO {
 		sessionFactory.getCurrentSession().saveOrUpdate(newApp);
 		
 	}
-	
-	public Collection<App> getAppsByUserName(User user) {
-		Query query = sessionFactory.getCurrentSession().createQuery(
-		    "select u.apps from SmartUser u where  u. openMRSUser.systemId = ?");
-		query.setString(0, user.getSystemId());
-		// query.setString(1, name);
-		@SuppressWarnings("unchecked")
-		List<App> apps = (List) query.list();
-		
-		if (apps == null || ((List<App>) apps).size() == 0) {
-			
-			return null;
-		}
-		
-		return (apps);
-	}
-	
 }

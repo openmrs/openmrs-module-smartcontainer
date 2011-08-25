@@ -13,10 +13,8 @@
  */
 package org.openmrs.module.smartcontainer.impl;
 
-import java.util.Collection;
 import java.util.List;
 
-import org.openmrs.User;
 import org.openmrs.api.APIException;
 import org.openmrs.module.smartcontainer.SmartAppService;
 import org.openmrs.module.smartcontainer.app.App;
@@ -79,14 +77,4 @@ public class SmartAppServiceImpl implements SmartAppService {
 		dao.save(newApp);
 		
 	}
-	
-	/**
-	 * @should give all app assigned to a user
-	 * @see org.openmrs.module.smartcontainer.SmartAppService#getAppsByUserName(org.openmrs.User)
-	 */
-	public Collection<App> getAppsByUserName(User user) {
-		
-		return dao.getAppsByUserName(user);
-	}
-	
 }

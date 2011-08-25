@@ -16,12 +16,15 @@ package org.openmrs.module.smartcontainer.web.controller;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.json.simple.parser.ParseException;
@@ -54,6 +57,12 @@ public class SmartAppListController {
 	 * Logger for this class and subclasses
 	 */
 	protected final Log log = LogFactory.getLog(getClass());
+	
+	/**
+	 * Map for app-ids and a their access tokens. Map entries are of the form Map<String appId,
+	 * String token>
+	 */
+	private static Map<Integer, String> appAccessTokenMap;
 	
 	/**
 	 * Success form view name
@@ -98,22 +107,23 @@ public class SmartAppListController {
 			}
 			
 			App app = appService.getAppById(appId);
-			Set<App> userApps = null;
+			Collection<App> userHiddenApps = null;
+			//delete all referencing rows in the user hidden app table
 			for (SmartUser user : userService.getAllUsers()) {
 				
-				userApps = user.getApps();
-				userApps.remove(app);
-				user.setApps(null);
-				user.setApps(userApps);
+				userHiddenApps = user.getHiddenApps();
+				userHiddenApps.remove(app);
 				userService.saveUser(user);
 				
 			}
+			
 			appService.deleteApp(app);
+			//remove this app's access token
+			appAccessTokenMap.remove(app.getAppId());
 			
 		} else if ("upload".equals(action)) {
 			App newApp = null;
 			if (isUploadFromURL) {
-				String app = null;
 				String url = ServletRequestUtils.getStringParameter(request, "manifestURL", "");
 				log.info("URL stirng :" + url);
 				
@@ -124,6 +134,8 @@ public class SmartAppListController {
 					if (!apps.contains(newApp)) {
 						newApp.setRetire(false);
 						appService.saveApp(newApp);
+						//generate an access token for this app
+						appAccessTokenMap.put(newApp.getAppId(), generateRandomAccessToken());
 					}
 				}
 				catch (MalformedURLException e) {
@@ -149,6 +161,8 @@ public class SmartAppListController {
 					if (!apps.contains(newApp)) {
 						newApp.setRetire(false);
 						appService.saveApp(newApp);
+						//generate an access token for this app
+						appAccessTokenMap.put(newApp.getAppId(), generateRandomAccessToken());
 					} else {
 
 					}
@@ -183,6 +197,34 @@ public class SmartAppListController {
 		// Context.getService(UserService.class).saveUser(new SMARTAppUser());
 		
 		return apps;
+	}
+	
+	/**
+	 * Returns an unmodifiable map of the user apps and their access tokens
+	 * 
+	 * @return
+	 */
+	public static Map<Integer, String> getAppAccessTokenMap() {
+		if (appAccessTokenMap == null) {
+			appAccessTokenMap = new HashMap<Integer, String>();
+			
+			Collection<App> allApps = Context.getService(SmartAppService.class).getAllApps();
+			//Grant access to all uploaded apps
+			for (App app : allApps) {
+				appAccessTokenMap.put(app.getAppId(), generateRandomAccessToken());
+			}
+		}
+		//we don't want callers to make changes to the map
+		return Collections.unmodifiableMap(appAccessTokenMap);
+	}
+	
+	/**
+	 * Utility method that generates access tokens randomly consisting of 12 characters
+	 * 
+	 * @return
+	 */
+	private static String generateRandomAccessToken() {
+		return RandomStringUtils.randomAlphanumeric(12);
 	}
 	
 }

@@ -13,10 +13,8 @@
  */
 package org.openmrs.module.smartcontainer.db;
 
-import java.util.Collection;
 import java.util.List;
 
-import org.openmrs.User;
 import org.openmrs.api.db.DAOException;
 import org.openmrs.module.smartcontainer.app.App;
 
@@ -56,12 +54,4 @@ public interface AppDAO {
 	 * @param newApp
 	 */
 	public void save(App newApp);
-	
-	/**
-	 * To get Collection of Apps corresponding to a OpenMRS user
-	 * 
-	 * @param user
-	 * @return
-	 */
-	public Collection<App> getAppsByUserName(User user);
 }

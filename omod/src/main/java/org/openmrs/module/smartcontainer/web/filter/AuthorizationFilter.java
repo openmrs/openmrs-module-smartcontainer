@@ -28,7 +28,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.smartcontainer.web.controller.ManageAppUserlevelController;
+import org.openmrs.module.smartcontainer.web.controller.SmartAppListController;
 import org.openmrs.util.OpenmrsUtil;
 import org.springframework.web.bind.ServletRequestUtils;
 
@@ -66,15 +66,15 @@ public class AuthorizationFilter implements Filter {
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException,
 	    ServletException {
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
-		//only allow requests from  smart apps installed in this container instance
+		//only allow requests from smart apps installed in this container instance
 		if (Context.isAuthenticated() && request.getRemoteAddr().equals(request.getLocalAddr())) {
 			try {
-				String userAndAppId = ServletRequestUtils.getRequiredStringParameter(httpRequest, "userAndAppId");
+				String appIdString = ServletRequestUtils.getRequiredStringParameter(httpRequest, "appId");
 				String accessToken = ServletRequestUtils.getRequiredStringParameter(httpRequest, "accessToken");
+				Integer appId = Integer.valueOf(appIdString);
 				//check if we know this combination
-				Map<String, String> credentials = ManageAppUserlevelController.getUserAppAccessTokenMap();
-				if (credentials.containsKey(userAndAppId)
-				        && OpenmrsUtil.nullSafeEquals(accessToken, credentials.get(userAndAppId))) {
+				Map<Integer, String> credentials = SmartAppListController.getAppAccessTokenMap();
+				if (credentials.containsKey(appId) && OpenmrsUtil.nullSafeEquals(accessToken, credentials.get(appId))) {
 					chain.doFilter(request, response);
 					return;
 				}

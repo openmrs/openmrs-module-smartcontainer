@@ -99,14 +99,4 @@ public class SmartAppServiceImplTest extends BaseModuleContextSensitiveTest {
 		appService.saveApp(newApp);
 		assertNotNull(appService.getAppByName("BpGraph"));
 	}
-	
-	/**
-	 * Test of getAppsByUserName method, of class SmartAppServiceImpl.
-	 */
-	@Test
-	public void testGetAppsByUserName() {
-		
-		Collection result = appService.getAppsByUserName(Context.getUserService().getUserByUsername("admin"));
-		assertFalse(result.isEmpty());
-	}
 }

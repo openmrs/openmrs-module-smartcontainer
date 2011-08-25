@@ -8,7 +8,7 @@
             unsaved-value="0">
             <generator class="native"/>
         </id>
-        <set name="apps" table="smartcontainer_user_app" lazy="false"
+        <set name="hiddenApps" table="smartcontainer_user_hidden_app" lazy="false"
              cascade="all">
             <key>
                 <column name="smartcontainer_user_id"/>

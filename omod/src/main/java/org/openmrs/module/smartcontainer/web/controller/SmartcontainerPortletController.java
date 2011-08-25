@@ -14,7 +14,6 @@
 package org.openmrs.module.smartcontainer.web.controller;
 
 import java.util.Map;
-import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -22,8 +21,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.User;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.smartcontainer.SmartAppService;
 import org.openmrs.module.smartcontainer.SmartUserService;
-import org.openmrs.module.smartcontainer.app.App;
 import org.openmrs.web.controller.PortletController;
 
 /**
@@ -42,9 +41,9 @@ public class SmartcontainerPortletController extends PortletController {
 		
 		User user = Context.getAuthenticatedUser();
 		model.put("currentUser", user);
-		Set<App> apps = (Set<App>) Context.getService(SmartUserService.class).getUserByName(user.getSystemId()).getApps();
-		model.put("list", apps);
-		model.put("userAppTokenMap", ManageAppUserlevelController.getUserAppAccessTokenMap());
+		model.put("list", Context.getService(SmartAppService.class).getAllApps());
+		model.put("hiddenApps", Context.getService(SmartUserService.class).getUserByName(user.getSystemId()).getHiddenApps());
+		model.put("appTokenMap", SmartAppListController.getAppAccessTokenMap());
 	}
 	
 }
