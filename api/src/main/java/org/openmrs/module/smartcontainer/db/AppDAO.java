@@ -13,55 +13,55 @@
  */
 package org.openmrs.module.smartcontainer.db;
 
+import java.util.Collection;
+import java.util.List;
+
 import org.openmrs.User;
 import org.openmrs.api.db.DAOException;
 import org.openmrs.module.smartcontainer.app.App;
-
-import java.util.Collection;
-import java.util.List;
 
 /**
  * DAO for App Service
  */
 public interface AppDAO {
-
-    /**
-     * to get App by name
-     *
-     * @param name
-     * @return
-     * @throws DAOException
-     */
-    public App getAppByName(String name) throws DAOException;
-
-    /**
-     * to get all Apps
-     *
-     * @return
-     * @throws DAOException
-     */
-    public List<App> getAllApps() throws DAOException;
-
-    /**
-     * Delete App by id
-     *
-     * @param id
-     */
-
-    public App getAppById(Integer id);
-
-    /**
-     * Auto generated method comment
-     *
-     * @param newApp
-     */
-    public void save(App newApp);
-
-    /**
-     * To get Collection of Apps corresponding to a OpenMRS user
-     *
-     * @param user
-     * @return
-     */
-    public Collection<App> getAppsByUserName(User user);
+	
+	/**
+	 * to get App by name
+	 * 
+	 * @param name
+	 * @return
+	 * @throws DAOException
+	 */
+	public App getAppByName(String name) throws DAOException;
+	
+	/**
+	 * to get all Apps
+	 * 
+	 * @return
+	 * @throws DAOException
+	 */
+	public List<App> getAllApps() throws DAOException;
+	
+	/**
+	 * Delete App by id
+	 * 
+	 * @param id
+	 */
+	
+	public App getAppById(Integer id);
+	
+	/**
+	 * Auto generated method comment
+	 * 
+	 * @param newApp
+	 */
+	public void save(App newApp);
+	
+	/**
+	 * To get Collection of Apps corresponding to a OpenMRS user
+	 * 
+	 * @param user
+	 * @return
+	 */
+	public Collection<App> getAppsByUserName(User user);
 }
