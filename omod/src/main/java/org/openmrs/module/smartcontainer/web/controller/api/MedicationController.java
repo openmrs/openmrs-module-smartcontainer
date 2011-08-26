@@ -2,6 +2,7 @@ package org.openmrs.module.smartcontainer.web.controller.api;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -24,7 +25,9 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping(value = "/smartcontainer/api/")
 public class MedicationController {
 	
-	Log log = LogFactory.getLog(getClass());
+	private static final Log log = LogFactory.getLog(MedicationController.class);
+	
+	private static final String MEDIA_TYPE = "text/xml";
 	
 	private MedicationRDFSource resource;
 	
@@ -38,8 +41,10 @@ public class MedicationController {
 	
 	@RequestMapping(method = RequestMethod.GET, value = "records/{pid}/medications/")
 	public ModelAndView handle(@PathVariable("pid") Patient patient, HttpServletResponse resp) {
-		log.info("In the Medication Controller");
-		resp.setContentType("text/xml"); // actually I use a constant
+		if (log.isDebugEnabled())
+			log.debug("In MedicationController to fetch patient medications");
+		
+		resp.setContentType(MEDIA_TYPE);
 		Writer writer;
 		try {
 			writer = resp.getWriter();
@@ -57,5 +62,34 @@ public class MedicationController {
 		}
 		return null; // indicates this controller did all necessary processing
 		
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "records/{pid}/medications/{uuid}")
+	public ModelAndView handle(@PathVariable("pid") Patient patient, @PathVariable("uuid") String uuid,
+	                           HttpServletResponse resp) {
+		if (log.isDebugEnabled())
+			log.debug("In MedicationController to fetch a single patient medication");
+		
+		resp.setContentType(MEDIA_TYPE);
+		Writer writer;
+		try {
+			writer = resp.getWriter();
+			SmartMedication medication = Context.getService(SmartDataService.class).getForPatient(patient,
+			    SmartMedication.class, uuid);
+			List<SmartMedication> meds = new ArrayList<SmartMedication>();
+			if (medication != null)
+				meds.add(medication);
+			writer.write(resource.getRDF(meds));
+			writer.close();
+		}
+		catch (IOException e) {
+			
+			log.error("Unable to write out Medication", e);
+		}
+		catch (RDFHandlerException e) {
+			log.error("Unable to write out Medication", e);
+		}
+		
+		return null;
 	}
 }
