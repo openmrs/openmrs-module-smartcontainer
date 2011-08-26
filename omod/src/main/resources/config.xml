@@ -47,7 +47,23 @@
         <name>Manage SMART Apps</name>
         <description>Allows user to install/uninstall SMART apps</description>
     </privilege>
+    
+    <!-- DWR -->
+    <dwr>
+		<allow>
+			<create creator="new" javascript="DWRSmartService">
+				<param name="class" value="@MODULE_PACKAGE@.web.dwr.DWRSmartService"/>
+				<include method="showOrHideSmartApp"/>
+			</create>
+		</allow>
 
+		<signatures>
+			<![CDATA[
+				import @MODULE_PACKAGE@.web.dwr.DWRSmartService;
+				DWRSmartService.showOrHideSmartApp(Integer appId, boolean hide, String systemId);
+			]]>
+		</signatures>	
+	</dwr>
 
     <!-- Required Global Properties -->
      <globalProperty>

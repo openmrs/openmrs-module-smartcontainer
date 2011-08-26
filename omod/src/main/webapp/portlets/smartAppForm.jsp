@@ -2,12 +2,11 @@
 
 <!--<script-->
 <!--	src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>-->
-<openmrs:htmlInclude
-	file="/moduleResources/smartcontainer/class.js" />
-<openmrs:htmlInclude
-	file="/moduleResources/smartcontainer/smart-api-container.js" />
-<openmrs:htmlInclude
-	file="/moduleResources/smartcontainer/jschannel.js" />
+<openmrs:htmlInclude file="/moduleResources/smartcontainer/class.js" />
+<openmrs:htmlInclude file="/moduleResources/smartcontainer/smart-api-container.js" />
+<openmrs:htmlInclude file="/moduleResources/smartcontainer/jschannel.js" />
+<openmrs:htmlInclude file="/moduleResources/smartcontainer/smart.css" />
+<openmrs:htmlInclude file="/dwr/interface/DWRSmartService.js" />
 
 <style type="text/css">
 #main {
@@ -61,12 +60,19 @@
 	height: 100%;
 	border: 0px;
 }
+.errorMsg{
+	display: none;
+}
+.faded{
+	opacity:0.5; filter:alpha(opacity=50);
+}
 </style>
 <script type="text/javascript">
 	var SMART_HELPER = {};
 	var already_running = {};
 	var selectedAppId;
 	var appIdAccessTokenMap = new Object();
+	var needToReload = false;
 
 	SMART_HELPER.handle_record_info = function(app, callback) {
 		callback({
@@ -166,27 +172,105 @@
 			$j("#" + already_running[app_id]).show();
 		}
 	};
-</script>
+	
+	$j(document).ready(function() {
+		$j("#hiddenApps").dialog({
+			autoOpen: false,
+			resizable: false,
+			width:500,
+			height:300,
+			modal: true,
+			beforeClose: function(event, ui){
+				//refresh the page to reflect the changes
+				if(needToReload)
+					location.reload();
+				
+				//hide the error message just in case it is visible due to a
+				//previous unsuccessful attempt to make a hidden app visible
+				$j('#errorMsg-show').hide();
+			}
+		});
+	});
 
+	function showOrHideSmartApp(appId, hide){
+		
+		DWRSmartService.showOrHideSmartApp(appId, hide, null, function(success) {
+			if(success && hide){
+				location.reload();
+			}else if(success && !hide){
+				//set to true so that on closing the dialog, we trigger a page refresh
+				needToReload = true;
+				//hide the row for the app that has been made visible
+				$j('#'+appId+'-row').hide();
+			}
+			else if(!success){
+				var id = (hide)?"#errorMsg-hide":"#errorMsg-show";
+				$j(id).show();
+			}
+		});
+	}
+</script>
+<c:if test="${fn:length(model.visibleApps) == 0}">
+	<spring:message code="smartcontainer.noappsinstalledOrshowHidden"/>
+</c:if>
 <div id="main">
 <div id="app_selector" style="float: left">
+<span id="errorMsg-hide" class="error errorMsg"><spring:message code="smartcontainer.failedToSaveChanges"/></span>
+
+<c:if test="${fn:length(model.hiddenApps) > 0}">
+<input class="smallButton" type="button" value='<spring:message code="smartcontainer.manageHiddenApps" />' 
+	onclick="javascript:$j('#hiddenApps').dialog('open')" /><br /><br />
+</c:if>
 <table>
 	<tbody>
-		<c:forEach items="${model.list}" var="app" varStatus="status">
-			<tr onclick="appSelected('${app.sMARTAppId}','${app.activity.activityURL}', '${app.appId}')">
-				<td><input type="image" src="${app.icon}" /></td>
-				<td><a>${app.name}</a></td>
+		<c:forEach items="${model.visibleApps}" var="app" varStatus="status">
+			<tr>
+				<td onclick="appSelected('${app.sMARTAppId}','${app.activity.activityURL}', '${app.appId}')">
+					<input type="image" src="${app.icon}" />
+				</td>
+				<td onclick="appSelected('${app.sMARTAppId}','${app.activity.activityURL}', '${app.appId}')">
+					<a>${app.name}</a>
+				</td>
+				<td>
+					<input class="faded" type="image" src="images/trash.gif" title="<spring:message code="smartcontainer.hide"/>" 
+							onclick="showOrHideSmartApp('${app.appId}', true)" />
+				</td>
 			</tr>
 			<script type="text/javascript">
 				appIdAccessTokenMap['${app.appId}'] = '${model.appTokenMap[app.appId]}';
 			</script>
 		</c:forEach>
-		<c:if test="${fn:length(model.list) == 0}">
-			<tr><td><spring:message code="smartcontainer.noappsinstalledforusertochoose"/></td></tr>
-		</c:if>
 	</tbody>
 </table>
 </div>
+
+<c:if test="${fn:length(model.hiddenApps) > 0}">
+<%-- Dialog for hidden apps --%>
+<div id="hiddenApps" title="<spring:message code="smartcontainer.manageHiddenApps"/>">
+	<form method="post">
+		<div id="errorMsg-show" class="errorMsg" style="text-align: center;">
+			<span class="error"><spring:message code="smartcontainer.failedToSaveChanges"/></span>
+		</div>
+		<table class="defaultSmartTable" cellpadding="3" cellspacing="0" width="100%">
+			<c:forEach var="hiddenApp" items="${model.hiddenApps}" varStatus="varStatus">
+				<tr id="${hiddenApp.appId}-row">
+					<td width="100%" <c:if test="${varStatus.index % 2 == 0}">class='evenRow'</c:if> valign="top">${hiddenApp.name}</td>
+					<td <c:if test="${varStatus.index % 2 == 0}">class='evenRow'</c:if> valign="top">
+						<input class="smallButton" type="button" value="<spring:message code="smartcontainer.show"/>" 
+							onclick="showOrHideSmartApp('${hiddenApp.appId}', false)" />
+					</td>
+				</tr>
+			</c:forEach>
+			<tr>
+				<td colspan="2" style="padding-top: 20px" align="center">
+					<input type="button" align="right" value="<spring:message code="general.done" javaScriptEscape="true"/>"
+						onclick="javascript:$j('#hiddenApps').dialog('close')" />
+				</td>
+			</tr>
+		</table>
+	</form>
+</div>
+</c:if>
 
 <div id="iframe_holder"></div>
 </div>

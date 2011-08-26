@@ -10,7 +10,7 @@
 	<c:when test="${fn:length(apps) > 0}">
 	<form method="post">
 		<input type="hidden" name="systemId" value='<request:parameter name="systemId"/>' />
-		<table class="userAppTable" cellpadding="3" cellspacing="0" width="70%">
+		<table class="defaultSmartTable" cellpadding="3" cellspacing="0" width="70%">
 			<tr>
 				<th class="userAppRowHeader"><spring:message code="smartcontainer.appName"/></th>
 				<th class="userAppRowHeader centerAligned" style="max-width: 40px"><spring:message code="smartcontainer.isHiddenFromUser"/></th>

@@ -1,0 +1,18 @@
+TH.userAppRowHeader{
+	text-align: left; background-color: #CCCCCC;
+}
+TD.smartOddRow{
+	background-color: whitesmoke;
+}
+.defaultSmartTable{
+	border: 1px solid #CCCCCC;
+}
+.centerAligned{
+	text-align: center;
+}
+.rightAligned{
+	text-align: right;
+}
+.leftAligned{
+	text-align: left;
+}

@@ -6,7 +6,7 @@
 
 <div class="box">
 	<br />
-	<table class="userAppTable" cellpadding="5" cellspacing="0" width="60%">
+	<table class="defaultSmartTable" cellpadding="5" cellspacing="0" width="60%">
 		<tr>
 			<th class="userAppRowHeader"><spring:message code="general.name"/></th>
 			<th class="userAppRowHeader"><spring:message code="User.username"/></th>
@@ -21,7 +21,7 @@
 				${smartUser.openMRSUser.username}
 			</td>
 			<td <c:if test="${varStatus.index % 2 != 0}">class='smartOddRow'</c:if> valign="top" style="text-align:right">
-				<input class="smallButton" type="button" value='<spring:message code="smartcontainer.manageUserHiddenApps"/>' 
+				<input class="smallButton" type="button" value='<spring:message code="smartcontainer.manageHiddenApps"/>' 
 					onclick="javascript:document.location='<openmrs:contextPath />/module/smartcontainer/manageUserHiddenApps.form?systemId=${smartUser.openMRSUser.systemId}'" />
 			</td>
 		</tr>

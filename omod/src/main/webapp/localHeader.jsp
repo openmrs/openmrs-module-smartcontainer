@@ -1,20 +1,7 @@
 <%@ include file="/WEB-INF/template/include.jsp"%>
 <%@ include file="/WEB-INF/template/header.jsp"%>
 
-<style>
-TH.userAppRowHeader{
-	text-align: center; background-color: #CCCCCC;
-}
-TD.smartOddRow{
-	background-color: whitesmoke;
-}
-.userAppTable{
-	border: 1px solid #CCCCCC;
-}
-.centerAligned{
-	text-align: center;
-}
-</style>
+<openmrs:htmlInclude file="/moduleResources/smartcontainer/smart.css" />
 
 <ul id="menu">
 	<li class="first">
