@@ -42,8 +42,12 @@ public class DWRSmartService {
 			log.debug("In DWRSmartService........");
 		
 		SmartUserService userService = Context.getService(SmartUserService.class);
-		if (StringUtils.isBlank(systemId))
+		if (StringUtils.isBlank(systemId)) {
+			if (Context.getAuthenticatedUser() == null)
+				return false;
+			
 			systemId = Context.getAuthenticatedUser().getSystemId();
+		}
 		
 		SmartUser smartUser = userService.getUserByName(systemId);
 		App app = Context.getService(SmartAppService.class).getAppById(appId);
@@ -55,7 +59,8 @@ public class DWRSmartService {
 			
 			Context.getService(SmartUserService.class).saveUser(smartUser);
 			if (log.isDebugEnabled())
-				log.debug(((hide) ? "Hidden" : "Showing") + " smart app " + ((hide) ? "from" : "to") + " user....");
+				log.debug(((hide) ? "Added" : "Removed") + " smart app " + ((hide) ? "to" : "from")
+				        + " user's hidden apps....");
 			
 			return true;
 		}

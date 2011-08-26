@@ -118,8 +118,10 @@ public class SmartAppListController {
 			}
 			
 			appService.deleteApp(app);
-			//remove this app's access token
-			appAccessTokenMap.remove(app.getAppId());
+			if (appAccessTokenMap != null) {
+				//remove this app's access token
+				appAccessTokenMap.remove(app.getAppId());
+			}
 			
 		} else if ("upload".equals(action)) {
 			App newApp = null;
@@ -134,8 +136,13 @@ public class SmartAppListController {
 					if (!apps.contains(newApp)) {
 						newApp.setRetire(false);
 						appService.saveApp(newApp);
-						//generate an access token for this app
-						appAccessTokenMap.put(newApp.getAppId(), generateRandomAccessToken());
+						
+						if (appAccessTokenMap == null)
+							generateTokensForInstalledApps();//includes the newly installed one
+						else {
+							//generate an access token for this app only
+							appAccessTokenMap.put(newApp.getAppId(), generateRandomAccessToken());
+						}
 					}
 				}
 				catch (MalformedURLException e) {
@@ -161,8 +168,12 @@ public class SmartAppListController {
 					if (!apps.contains(newApp)) {
 						newApp.setRetire(false);
 						appService.saveApp(newApp);
-						//generate an access token for this app
-						appAccessTokenMap.put(newApp.getAppId(), generateRandomAccessToken());
+						
+						if (appAccessTokenMap == null)
+							generateTokensForInstalledApps();
+						else
+							appAccessTokenMap.put(newApp.getAppId(), generateRandomAccessToken());
+						
 					} else {
 
 					}
@@ -205,15 +216,9 @@ public class SmartAppListController {
 	 * @return
 	 */
 	public static Map<Integer, String> getAppAccessTokenMap() {
-		if (appAccessTokenMap == null) {
-			appAccessTokenMap = new HashMap<Integer, String>();
-			
-			Collection<App> allApps = Context.getService(SmartAppService.class).getAllApps();
-			//Grant access to all uploaded apps
-			for (App app : allApps) {
-				appAccessTokenMap.put(app.getAppId(), generateRandomAccessToken());
-			}
-		}
+		if (appAccessTokenMap == null)
+			generateTokensForInstalledApps();
+		
 		//we don't want callers to make changes to the map
 		return Collections.unmodifiableMap(appAccessTokenMap);
 	}
@@ -227,4 +232,12 @@ public class SmartAppListController {
 		return RandomStringUtils.randomAlphanumeric(12);
 	}
 	
+	private static void generateTokensForInstalledApps() {
+		appAccessTokenMap = new HashMap<Integer, String>();
+		Collection<App> allApps = Context.getService(SmartAppService.class).getAllApps();
+		//Grant access to all uploaded apps
+		for (App app : allApps) {
+			appAccessTokenMap.put(app.getAppId(), generateRandomAccessToken());
+		}
+	}
 }

@@ -42,14 +42,16 @@ public class SmartcontainerPortletController extends PortletController {
 	protected void populateModel(HttpServletRequest request, Map<String, Object> model) {
 		
 		User user = Context.getAuthenticatedUser();
-		Collection<App> allApps = Context.getService(SmartAppService.class).getAllApps();
-		Collection<App> hiddenApps = Context.getService(SmartUserService.class).getUserByName(user.getSystemId())
-		        .getHiddenApps();
-		allApps.removeAll(hiddenApps);
-		model.put("currentUser", user);
-		model.put("visibleApps", allApps);
-		model.put("hiddenApps", hiddenApps);
-		model.put("appTokenMap", SmartAppListController.getAppAccessTokenMap());
+		if (user != null) {
+			Collection<App> allApps = Context.getService(SmartAppService.class).getAllApps();
+			Collection<App> hiddenApps = Context.getService(SmartUserService.class).getUserByName(user.getSystemId())
+			        .getHiddenApps();
+			allApps.removeAll(hiddenApps);
+			model.put("currentUser", user);
+			model.put("visibleApps", allApps);
+			model.put("hiddenApps", hiddenApps);
+			model.put("appTokenMap", SmartAppListController.getAppAccessTokenMap());
+		}
 	}
 	
 }

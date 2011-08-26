@@ -50,10 +50,12 @@ public class ManageSmartUserAndAppController {
 	
 	@RequestMapping(method = RequestMethod.GET, value = SMART_USER_URL)
 	public String showSmartUserList(ModelMap model) {
-		Collection<SmartUser> smartUsers = getSmartUserService().getAllUsers();
-		//don't include this user
-		smartUsers.remove(getSmartUserService().getUserByName(Context.getAuthenticatedUser().getSystemId()));
-		model.addAttribute("smartUsers", getSmartUserService().getAllUsers());
+		if (Context.getAuthenticatedUser() != null) {
+			Collection<SmartUser> smartUsers = getSmartUserService().getAllUsers();
+			//don't include this user
+			smartUsers.remove(getSmartUserService().getUserByName(Context.getAuthenticatedUser().getSystemId()));
+			model.addAttribute("smartUsers", getSmartUserService().getAllUsers());
+		}
 		return SMART_USER_URL;
 		
 	}
