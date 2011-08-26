@@ -168,4 +168,12 @@
             </column>
         </addColumn>
     </changeSet>
+    
+    <changeSet author="ajanthan" id="smartcontainer-2011-07-26-19:50">
+    	<comment>Adding all existing users to smartcontainer_user table</comment>
+    	<sql>
+            INSERT INTO smartcontainer_user(user_id)
+            SELECT user_id FROM users;
+        </sql>
+    </changeSet>
 </databaseChangeLog>

@@ -2,29 +2,46 @@
 
 <openmrs:require privilege="Manage SMART Apps" otherwise="/login.htm" redirect="/module/smartcontainer/smartUsers.list" />
 
+<openmrs:htmlInclude file="/scripts/jquery/dataTables/css/dataTables_jui.css"/>
+<openmrs:htmlInclude file="/scripts/jquery/dataTables/js/jquery.dataTables.min.js"/>
+
+<script type="text/javascript">
+	$j(document).ready(function(){
+		$j("#smartUsersTable").dataTable({
+			bJQueryUI: true
+		});		
+	});
+</script>
+
 <b class="boxHeader"><spring:message code="smartcontainer.admin.manage.user"/></b>
 
 <div class="box">
-	<br />
-	<table class="defaultSmartTable" cellpadding="5" cellspacing="0" width="60%">
+	<div class="leftAligned">
+	<table id="smartUsersTable" cellspacing="0" cellpadding="5" width="100%">
+	  <thead>
 		<tr>
-			<th class="userAppRowHeader"><spring:message code="general.name"/></th>
-			<th class="userAppRowHeader"><spring:message code="User.username"/></th>
-			<th class="userAppRowHeader">&nbsp;</th>
+			<th><spring:message code="general.name"/></th>
+			<th><spring:message code="User.username"/></th>
+			<th>&nbsp;</th>
 		</tr>
+	  </thead>
+	  <tbody>
 		<c:forEach var="smartUser" items="${smartUsers}" varStatus="varStatus">
 		<tr>
-			<td <c:if test="${varStatus.index % 2 != 0}">class='smartOddRow'</c:if> valign="top">
+			<td>
 				${smartUser.openMRSUser.personName}
 			</td>
-			<td <c:if test="${varStatus.index % 2 != 0}">class='smartOddRow'</c:if> valign="top">
+			<td>
 				${smartUser.openMRSUser.username}
 			</td>
-			<td <c:if test="${varStatus.index % 2 != 0}">class='smartOddRow'</c:if> valign="top" style="text-align:right">
-				<input class="smallButton" type="button" value='<spring:message code="smartcontainer.manageHiddenApps"/>' 
-					onclick="javascript:document.location='<openmrs:contextPath />/module/smartcontainer/manageUserHiddenApps.form?systemId=${smartUser.openMRSUser.systemId}'" />
+			<td>
+				<a href="<openmrs:contextPath />/module/smartcontainer/manageUserHiddenApps.form?systemId=${smartUser.openMRSUser.systemId}">
+					<spring:message code="smartcontainer.manageHiddenApps"/>
+				</a>
 			</td>
 		</tr>
 		</c:forEach>
+	  </tbody>
 	</table>
+	</div>
 </div>
