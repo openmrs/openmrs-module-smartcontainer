@@ -109,7 +109,7 @@
 	 	</description>
 	</globalProperty>
 	<globalProperty>
-		<property>smartcontainer.allergyExceptionConcept</property>
+		<property>smartcontainer.allergy.exceptionConcept</property>
 		<defaultValue></defaultValue>
 		<description>
 			The concept id of the Smart Allergy Exception concept used in forms

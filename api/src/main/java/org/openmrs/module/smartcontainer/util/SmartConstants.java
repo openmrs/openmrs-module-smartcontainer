@@ -61,6 +61,6 @@ public class SmartConstants {
 	 * The name of the global property to store the concept id of the "Smart Allergy Exception"
 	 * concept used in forms.
 	 */
-	public static final String GP_ALLERGY_EXCEPTION_CONCEPT = "smartcontainer.allergyExceptionConcept";
+	public static final String GP_ALLERGY_EXCEPTION_CONCEPT = "smartcontainer.allergy.exceptionConcept";
 	
 }

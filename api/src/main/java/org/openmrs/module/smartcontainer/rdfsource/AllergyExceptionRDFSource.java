@@ -20,9 +20,7 @@ import java.util.List;
 
 import org.openmrs.Patient;
 import org.openmrs.module.smartcontainer.RdfSource;
-import org.openmrs.module.smartcontainer.smartData.CodedValue;
 import org.openmrs.module.smartcontainer.smartData.SmartAllergyException;
-import org.openmrs.module.smartcontainer.util.RdfUtil;
 import org.openrdf.model.BNode;
 import org.openrdf.model.URI;
 import org.openrdf.rio.RDFHandlerException;
@@ -61,14 +59,6 @@ public class AllergyExceptionRDFSource extends RdfSource {
 		graph.endRDF();
 		
 		return sWriter.toString();
-	}
-	
-	//TODO move methods like this to the RdfSource to make them reusable
-	private URI addChildNode(String nodename, BNode parentNode, RDFXMLWriter graph, CodedValue codedValue)
-	    throws RDFHandlerException, IOException {
-		URI childnode = factory.createURI(sp, nodename);
-		graph.handleStatement(factory.createStatement(parentNode, childnode, RdfUtil.codedValue(factory, graph, codedValue)));
-		return childnode;
 	}
 	
 	public String getRDF(Patient patient) throws IOException {

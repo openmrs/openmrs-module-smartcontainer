@@ -10,5 +10,5 @@
  	<concept_map concept_map_id="201" source="2" concept_id="2013" source_code="NO_KNOWN_FOOD_CODE" comment="no comment" creator="1" date_created="2004-08-12 00:00:00.0"/>
   	<obs obs_id="200" person_id="7" concept_id="2011" encounter_id="4" obs_datetime="2008-08-15 00:00:00.0" value_coded="2012" location_id="1" creator="1" date_created="2008-08-19 12:32:59.0" voided="false" uuid="9f3f3642-cdd0-11e0-9c47-00248140a5eb"/>
   	<obs obs_id="201" person_id="7" concept_id="2011" encounter_id="4" obs_datetime="2008-08-17 00:00:00.0" value_coded="2013" location_id="1" creator="1" date_created="2008-08-19 12:32:59.0" voided="false" uuid="a4b283ea-cdd0-11e0-9c47-00248140a5eb"/>
-  	<global_property property="smartcontainer.allergyExceptionConcept" property_value="2011" uuid="6c7cbfbc-ce03-11e0-9c47-00248140a5eb" />
+  	<global_property property="smartcontainer.allergy.exceptionConcept" property_value="2011" uuid="6c7cbfbc-ce03-11e0-9c47-00248140a5eb" />
 </dataset>
