@@ -45,7 +45,11 @@ public class SmartVitalSignsHandler implements SmartDataHandler<SmartVitalSigns>
 		this.loincMap = loincMap;
 	}
 	
-	public SmartVitalSigns getForPatient(Patient patient) {
+	/**
+	 * @see org.openmrs.module.smartcontainer.smartData.handler.SmartDataHandler#getForPatient(org.openmrs.Patient,
+	 *      java.lang.String)
+	 */
+	public SmartVitalSigns getForPatient(Patient patient, String id) {
 		return null;
 	}
 	

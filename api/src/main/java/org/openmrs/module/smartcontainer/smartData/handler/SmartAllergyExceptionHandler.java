@@ -16,7 +16,6 @@ package org.openmrs.module.smartcontainer.smartData.handler;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Concept;
@@ -51,7 +50,11 @@ public class SmartAllergyExceptionHandler implements SmartDataHandler<SmartAller
 		this.map = map;
 	}
 	
-	public SmartAllergyException getForPatient(Patient patient) {
+	/**
+	 * @see org.openmrs.module.smartcontainer.smartData.handler.SmartDataHandler#getForPatient(org.openmrs.Patient,
+	 *      java.lang.String)
+	 */
+	public SmartAllergyException getForPatient(Patient patient, String id) {
 		// not used
 		return null;
 	}
@@ -62,32 +65,21 @@ public class SmartAllergyExceptionHandler implements SmartDataHandler<SmartAller
 	 */
 	public List<SmartAllergyException> getAllForPatient(Patient patient) {
 		List<SmartAllergyException> smartAllergyExceptions = new ArrayList<SmartAllergyException>();
-		String conceptIdGP = Context.getAdministrationService().getGlobalProperty(
-		    SmartConstants.GP_ALLERGY_EXCEPTION_CONCEPT);
-		Integer conceptId = null;
-		if (StringUtils.isNotBlank(conceptIdGP)) {
-			try {
-				conceptId = Integer.valueOf(conceptIdGP);
-			}
-			catch (NumberFormatException e) {}
-			
-			if (conceptId != null) {
-				Concept allergyExceptionConcept = Context.getConceptService().getConcept(conceptId);
-				if (allergyExceptionConcept != null) {
-					List<Obs> allergyExceptionObs = Context.getObsService().getObservationsByPersonAndConcept(patient,
-					    allergyExceptionConcept);
-					for (Obs obs : allergyExceptionObs) {
-						if (obs.getValueCoded() == null) {
-							log.warn("No valude coded value for allergy exception concept with id:"
-							        + obs.getConcept().getConceptId());
-							continue;
-						}
-						
-						SmartAllergyException allergyException = new SmartAllergyException();
-						allergyException.setException(SmartDataHandlerUtil.codedValueHelper(obs.getValueCoded(), map));
-						smartAllergyExceptions.add(allergyException);
-					}
+		Concept allergyExceptionConcept = SmartDataHandlerUtil
+		        .getConceptByGlobalProperty(SmartConstants.GP_ALLERGY_EXCEPTION_CONCEPT);
+		if (allergyExceptionConcept != null) {
+			List<Obs> allergyExceptionObs = Context.getObsService().getObservationsByPersonAndConcept(patient,
+			    allergyExceptionConcept);
+			for (Obs obs : allergyExceptionObs) {
+				if (obs.getValueCoded() == null) {
+					log.warn("No valude coded value for allergy exception concept with id:"
+					        + obs.getConcept().getConceptId());
+					continue;
 				}
+				
+				SmartAllergyException allergyException = new SmartAllergyException();
+				allergyException.setException(SmartDataHandlerUtil.codedValueHelper(obs.getValueCoded(), map));
+				smartAllergyExceptions.add(allergyException);
 			}
 		}
 		

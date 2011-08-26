@@ -39,13 +39,60 @@ public class SmartMedicationHandler implements SmartDataHandler<SmartMedication>
 	}
 	
 	/**
-	 * @see org.openmrs.module.smartcontainer.smartData.handler.SmartDataHandler#getAllForPatient(org.openmrs.Patient)
-	 * @should get all the patient smart medications
+	 * @see org.openmrs.module.smartcontainer.smartData.handler.SmartDataHandler#getAllForPatient(org.openmrs.Patient,
+	 *      java.lang.String)
+	 * @should get the smart medication for a drugorder that matches the specified uuid
 	 */
 	public List<SmartMedication> getAllForPatient(Patient patient) {
-		List<DrugOrder> drugs = Context.getOrderService().getDrugOrdersByPatient(patient);
+		return getMedications(patient, null);
+	}
+	
+	public SmartConceptMap getMap() {
+		return map;
+	}
+	
+	public void setMap(SmartConceptMap map) {
+		this.map = map;
+	}
+	
+	/**
+	 * @see org.openmrs.module.smartcontainer.smartData.handler.SmartDataHandler#getForPatient(org.openmrs.Patient,
+	 *      java.lang.String)
+	 */
+	public SmartMedication getForPatient(Patient patient, String id) {
+		List<SmartMedication> medications = getMedications(patient, id);
+		if (medications.size() == 1)
+			return medications.get(0);
+		
+		return null;
+	}
+	
+	/**
+	 * Utility method that returns a list of all patient drugOrders. If drugOrderUuid is specified,
+	 * then it will return a list that contains only one drugOrder matching the specified uuid or an
+	 * empty list if no match is found
+	 * 
+	 * @param patient
+	 * @param drugOrderUuid
+	 * @return a list of of drugOrders
+	 */
+	private List<SmartMedication> getMedications(Patient patient, String drugOrderUuid) {
+		List<DrugOrder> drugOrders = Context.getOrderService().getDrugOrdersByPatient(patient);
+		if (StringUtils.isNotBlank(drugOrderUuid)) {
+			//if this list is empty after the loop, then there was no match found
+			List<DrugOrder> ordersWithMatchingUuid = new ArrayList<DrugOrder>();
+			for (DrugOrder d : drugOrders) {
+				if (drugOrderUuid.equals(d.getUuid())) {
+					ordersWithMatchingUuid.add(d);
+					break;
+				}
+			}
+			
+			drugOrders = ordersWithMatchingUuid;
+		}
+		
 		List<SmartMedication> medications = new ArrayList<SmartMedication>();
-		for (DrugOrder d : drugs) {
+		for (DrugOrder d : drugOrders) {
 			SmartMedication medication = new SmartMedication();
 			medication.setDrugName(SmartDataHandlerUtil.codedValueHelper(d.getDrug().getConcept(), getMap()));
 			
@@ -75,12 +122,12 @@ public class SmartMedicationHandler implements SmartDataHandler<SmartMedication>
 					String frequency = "{" + NOT_SPECIFIED + "}";
 					if (valueAndFrequency.length > 1) {
 						frequency = d.getFrequency().trim();
-						//use the entire string after the first occurrence if a '/'
+						//use the entire string after the first occurrence of '/'
 						frequency = frequency.substring(frequency.indexOf("/") + 1).toLowerCase();
 						if (openmrsToSmartFrequencyMap.keySet().contains(frequency)) {
 							frequency = openmrsToSmartFrequencyMap.get(frequency);
 						} else {
-							//set it either to the unstructured(i) value from the DB
+							//set it to the value from the DB
 							frequency = "{" + frequency + "}";
 						}
 					}
@@ -106,18 +153,5 @@ public class SmartMedicationHandler implements SmartDataHandler<SmartMedication>
 			
 		}
 		return medications;
-	}
-	
-	public SmartConceptMap getMap() {
-		return map;
-	}
-	
-	public void setMap(SmartConceptMap map) {
-		this.map = map;
-	}
-	
-	public SmartMedication getForPatient(Patient patient) {
-		
-		return null;
 	}
 }

@@ -30,4 +30,19 @@ public class SmartMedicationHandlerTest extends SmartDataHandlerTest {
 	public void getAllForPatient_shouldGetAllThePatientSmartMedications() throws Exception {
 		Assert.assertEquals(4, sds.getAllForPatient(Context.getPatientService().getPatient(2), SmartMedication.class).size());
 	}
+	
+	/**
+	 * @see {@link SmartMedicationHandler#getAllForPatient(Patient)}
+	 */
+	@Test
+	@Verifies(value = "should get the smart medication for a drugorder that matches the specified uuid", method = "getAllForPatient(Patient)")
+	public void getAllForPatient_shouldGetTheSmartMedicationForADrugorderThatMatchesTheSpecifiedUuid() throws Exception {
+		SmartMedication medication = sds.getForPatient(Context.getPatientService().getPatient(2), SmartMedication.class,
+		    "dfca4077-493c-496b-8312-856ee5d1cc26");
+		Assert.assertNotNull(medication);
+		Assert.assertEquals("STAVUDINE LAMIVUDINE AND NEVIRAPINE", medication.getDrugName().getTitle());
+		Assert.assertEquals("TRIMUNE_454545", medication.getDrugName().getCode());
+		Assert.assertEquals("1", medication.getFrequency().getValue());
+		Assert.assertEquals("{day x 7 days/week}", medication.getFrequency().getUnit());
+	}
 }

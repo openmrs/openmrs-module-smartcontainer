@@ -2,6 +2,9 @@ package org.openmrs.module.smartcontainer.util;
 
 import java.util.Date;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.openmrs.Concept;
 import org.openmrs.ConceptNumeric;
 import org.openmrs.api.context.Context;
@@ -15,6 +18,8 @@ import org.openmrs.module.smartcontainer.smartData.VitalSign;
 import org.springframework.format.datetime.DateFormatter;
 
 public class SmartDataHandlerUtil {
+	
+	private static final Log log = LogFactory.getLog(SmartDataHandlerUtil.class);
 	
 	/**
 	 * Helper method to convert Date into ISO-8601 string
@@ -194,5 +199,30 @@ public class SmartDataHandlerUtil {
 		String useAllergyObjectGP = Context.getAdministrationService().getGlobalProperty(
 		    SmartConstants.GP_USE_ALLERGY_OBJECT, "true");
 		return Boolean.parseBoolean(useAllergyObjectGP);
+	}
+	
+	/**
+	 * Gets a concept that has a conceptId matching the value of the global property that has a name
+	 * matching the specified name
+	 * 
+	 * @param globalPropertyName the name of the global property to match against
+	 * @return the concept
+	 */
+	public static Concept getConceptByGlobalProperty(String globalPropertyName) {
+		Concept concept = null;
+		if (StringUtils.isNotBlank(globalPropertyName)) {
+			String conceptIdGP = Context.getAdministrationService().getGlobalProperty(
+			    SmartConstants.GP_ALLERGY_EXCEPTION_CONCEPT);
+			if (StringUtils.isNotBlank(conceptIdGP)) {
+				try {
+					concept = Context.getConceptService().getConcept(Integer.valueOf(conceptIdGP));
+				}
+				catch (NumberFormatException e) {
+					log.warn("Invalid conceptId value:" + conceptIdGP);
+				}
+			}
+		}
+		
+		return concept;
 	}
 }

@@ -44,7 +44,7 @@ public class DemographicsController {
         try {
             writer = resp.getWriter();
             SmartDemographics d = Context.getService(SmartDataService.class)
-                    .getForPatient(patient, SmartDemographics.class);
+                    .getForPatient(patient, SmartDemographics.class, null);
             writer.write(resource.getRDF(d));
 
             writer.close();

@@ -36,7 +36,8 @@ public class SmartDemographicsHandlerTest extends BaseModuleContextSensitiveTest
 	@Test
 	public void getForPatient_shouldReturnSmartDemographics() throws Exception {
 		SmartDemographicsHandler smartDataHandler = new SmartDemographicsHandler();
-		SmartDemographics smartDemographics = smartDataHandler.getForPatient(Context.getPatientService().getPatient(2));
+		SmartDemographics smartDemographics = smartDataHandler
+		        .getForPatient(Context.getPatientService().getPatient(2), null);
 		Assert.assertNotNull(smartDemographics);
 		Assert.assertNotNull(smartDemographics.getFamilyName());
 		Assert.assertNotNull(smartDemographics.getBirthDate());

@@ -25,10 +25,10 @@ import org.openmrs.module.smartcontainer.util.SmartDataHandlerUtil;
 public class SmartDemographicsHandler implements SmartDataHandler<SmartDemographics> {
 	
 	/**
-	 * @should return SmartDemographics
-	 * @see org.openmrs.module.smartcontainer.smartData.handler.SmartDataHandler#getForPatient(org.openmrs.Patient)
+	 * @see org.openmrs.module.smartcontainer.smartData.handler.SmartDataHandler#getForPatient(org.openmrs.Patient,
+	 *      java.lang.String)
 	 */
-	public SmartDemographics getForPatient(Patient patient) {
+	public SmartDemographics getForPatient(Patient patient, String id) {
 		SmartDemographics demographics = new SmartDemographics();
 		demographics.setFamilyName(patient.getFamilyName()); // Free text
 		demographics.setGivenName(patient.getGivenName()); // Free text

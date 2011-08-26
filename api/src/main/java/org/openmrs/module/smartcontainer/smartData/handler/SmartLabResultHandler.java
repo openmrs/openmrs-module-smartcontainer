@@ -27,7 +27,7 @@ public class SmartLabResultHandler implements SmartDataHandler<SmartLabResult> {
 		this.map = map;
 	}
 	
-	public SmartLabResult getForPatient(Patient patient) {
+	public SmartLabResult getForPatient(Patient patient, String id) {
 		return null;
 	}
 	

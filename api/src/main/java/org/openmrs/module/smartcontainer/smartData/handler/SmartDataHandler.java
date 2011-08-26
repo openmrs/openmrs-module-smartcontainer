@@ -28,10 +28,11 @@ public interface SmartDataHandler<T extends SmartBaseData> {
      * @param patient
      * @return
      */
-    public T getForPatient(Patient patient);
+    public T getForPatient(Patient patient, String id);
 
     /**
      * @param patient
+     * @param id
      * @return
      */
     public List<T> getAllForPatient(Patient patient);

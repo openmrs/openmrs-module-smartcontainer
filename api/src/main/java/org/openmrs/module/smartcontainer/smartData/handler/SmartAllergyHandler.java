@@ -65,7 +65,7 @@ public class SmartAllergyHandler implements SmartDataHandler<SmartAllergy> {
 		this.fdaMap = fdaMap;
 	}
 
-	public SmartAllergy getForPatient(Patient patient) {
+	public SmartAllergy getForPatient(Patient patient, String id) {
 		// not used
 		return null;
 	}

@@ -17,6 +17,7 @@ import java.util.List;
 
 import org.openmrs.Patient;
 import org.openmrs.module.smartcontainer.smartData.SmartBaseData;
+import org.openmrs.module.smartcontainer.smartData.SmartDemographics;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -36,12 +37,16 @@ public interface SmartDataService {
 	public <T extends SmartBaseData> List<T> getAllForPatient(Patient patient, Class<T> clazz);
 	
 	/**
-	 * Returns a Smart data(eg demographics)
+	 * Returns the smart object matching the specified class and unique identifier to be matched
+	 * against. If the class is {@link SmartDemographics}, the id argument will be ignored. Note
+	 * that the unique identifier can be matched in different ways for different implementations of
+	 * this method.
 	 * 
 	 * @param patient
 	 * @param clazz
+	 * @param id the unique identifier to be matched for the Smart object to fetch
 	 * @return
 	 */
-	public <T extends SmartBaseData> T getForPatient(Patient patient, Class<T> clazz);
+	public <T extends SmartBaseData> T getForPatient(Patient patient, Class<T> clazz, String id);
 	
 }
