@@ -33,7 +33,7 @@ public class SmartAllergyHandlerTest extends BaseModuleContextSensitiveTest {
 		executeDataSet("patient.xml");
 		executeDataSet("allergies.xml");
 	}
-
+	
 	/**
 	 * @verifies return SmartDemographics
 	 * @see SmartAllergyHandler#getForPatient(org.openmrs.Patient)
@@ -41,8 +41,7 @@ public class SmartAllergyHandlerTest extends BaseModuleContextSensitiveTest {
 	@Test
 	public void getForPatient_shouldReturnSmartAllergies() throws Exception {
 		SmartAllergyHandler smartDataHandler = (SmartAllergyHandler) applicationContext.getBean("allergyHandler");
-		List<SmartAllergy> smartAllergies = smartDataHandler
-				.getAllForPatient(Context.getPatientService().getPatient(2));
+		List<SmartAllergy> smartAllergies = smartDataHandler.getAllForPatient(Context.getPatientService().getPatient(2));
 		
 		SmartAllergy smartAllergy = smartAllergies.get(0);
 		Assert.assertNotNull(smartAllergy);
@@ -58,8 +57,7 @@ public class SmartAllergyHandlerTest extends BaseModuleContextSensitiveTest {
 	@Test
 	public void getForPatient_shouldRetasurnSmartAllergies() throws Exception {
 		SmartAllergyHandler smartDataHandler = (SmartAllergyHandler) applicationContext.getBean("allergyHandler");
-		List<SmartAllergy> smartAllergies = smartDataHandler
-				.getAllForPatient(Context.getPatientService().getPatient(2));
+		List<SmartAllergy> smartAllergies = smartDataHandler.getAllForPatient(Context.getPatientService().getPatient(2));
 		
 		AllergyRDFSource source = new AllergyRDFSource();
 		System.out.println("allergies: " + source.getRDF(smartAllergies));

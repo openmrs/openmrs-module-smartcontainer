@@ -22,14 +22,13 @@ import org.openmrs.test.BaseModuleContextSensitiveTest;
 
 /**
  */
-public class SmartDemographicsHandlerTest extends
-		BaseModuleContextSensitiveTest {
+public class SmartDemographicsHandlerTest extends BaseModuleContextSensitiveTest {
 	
 	@Before
 	public void setUp() throws Exception {
 		executeDataSet("patient.xml");
 	}
-
+	
 	/**
 	 * @verifies return SmartDemographics
 	 * @see SmartDemographicsHandler#getForPatient(org.openmrs.Patient)
@@ -37,8 +36,7 @@ public class SmartDemographicsHandlerTest extends
 	@Test
 	public void getForPatient_shouldReturnSmartDemographics() throws Exception {
 		SmartDemographicsHandler smartDataHandler = new SmartDemographicsHandler();
-		SmartDemographics smartDemographics = smartDataHandler
-				.getForPatient(Context.getPatientService().getPatient(2));
+		SmartDemographics smartDemographics = smartDataHandler.getForPatient(Context.getPatientService().getPatient(2));
 		Assert.assertNotNull(smartDemographics);
 		Assert.assertNotNull(smartDemographics.getFamilyName());
 		Assert.assertNotNull(smartDemographics.getBirthDate());
