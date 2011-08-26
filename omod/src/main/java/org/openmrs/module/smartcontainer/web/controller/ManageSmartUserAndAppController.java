@@ -52,8 +52,7 @@ public class ManageSmartUserAndAppController {
 	public String showSmartUserList(ModelMap model) {
 		Collection<SmartUser> smartUsers = getSmartUserService().getAllUsers();
 		//don't include this user
-		smartUsers.remove(smartUsers.remove(getSmartUserService()
-		        .getUserByName(Context.getAuthenticatedUser().getUsername())));
+		smartUsers.remove(getSmartUserService().getUserByName(Context.getAuthenticatedUser().getSystemId()));
 		model.addAttribute("smartUsers", getSmartUserService().getAllUsers());
 		return SMART_USER_URL;
 		
