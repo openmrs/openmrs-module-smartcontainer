@@ -16,6 +16,8 @@ package org.openmrs.module.smartcontainer.db.hibernate;
 import java.util.Collection;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.openmrs.api.APIException;
@@ -27,6 +29,8 @@ import org.openmrs.module.smartcontainer.db.UserDAO;
  * Implementation for User DAO
  */
 public class HibernateUserDAO implements UserDAO {
+	
+	private static final Log log = LogFactory.getLog(HibernateUserDAO.class);
 	
 	private SessionFactory sessionFactory;
 	
@@ -47,6 +51,7 @@ public class HibernateUserDAO implements UserDAO {
 	/**
 	 * @see org.openmrs.module.smartcontainer.db.UserDAO#getUserByName(java.lang.String)
 	 */
+	@SuppressWarnings("unchecked")
 	public SmartUser getUserByName(String name) throws DAOException {
 		Query query = sessionFactory
 		        .getCurrentSession()
@@ -56,7 +61,14 @@ public class HibernateUserDAO implements UserDAO {
 		query.setString(1, name);
 		List<SmartUser> users = query.list();
 		
-		return users.get(0);
+		if (users.size() > 0) {
+			if (users.size() > 1)
+				log.warn("Found multiple users matching the username or system id:" + name);
+			
+			return users.get(0);
+		}
+		
+		return null;
 	}
 	
 	/**
