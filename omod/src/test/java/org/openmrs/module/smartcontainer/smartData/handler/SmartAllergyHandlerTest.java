@@ -45,7 +45,7 @@ public class SmartAllergyHandlerTest extends BaseModuleContextSensitiveTest {
 		
 		SmartAllergy smartAllergy = smartAllergies.get(0);
 		Assert.assertNotNull(smartAllergy);
-		Assert.assertNull(smartAllergy.getNotes());
+		Assert.assertEquals("I have none", smartAllergy.getNotes());
 		// TODO figure out how to calculate this in the handler
 		Assert.assertEquals(null, smartAllergy.getClassOfAllergen());
 		Assert.assertEquals("HEADACHE_12345", smartAllergy.getReaction().getCode());
