@@ -46,7 +46,7 @@ public class AuthorizationFilter implements Filter {
 	@Override
 	public void init(FilterConfig config) throws ServletException {
 		if (log.isDebugEnabled())
-			log.error("Initializing SMART REST Authorization filter");
+			log.debug("Initializing SMART REST Authorization filter");
 	}
 	
 	/**

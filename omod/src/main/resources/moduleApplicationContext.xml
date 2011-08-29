@@ -128,7 +128,7 @@
         <property name="fdaMap" ref="fdaMapping" />
         <property name="rxnormMap" ref="rxNormConceptMapping" />
     </bean>
-    <bean id="dempgraphicsHandler"
+    <bean id="demographicsHandler"
           class="org.openmrs.module.smartcontainer.smartData.handler.SmartDemographicsHandler"/>
     <bean id="medicationsHandler"
           class="org.openmrs.module.smartcontainer.smartData.handler.SmartMedicationHandler">
@@ -166,7 +166,7 @@
           class="org.openmrs.module.smartcontainer.impl.SmartDataServiceImpl">
         <property name="handlers">
             <map>
-                <entry key="SmartDemographics" value-ref="dempgraphicsHandler"/>
+                <entry key="SmartDemographics" value-ref="demographicsHandler"/>
                 <entry key="SmartMedication" value-ref="medicationsHandler"/>
                 <entry key="SmartLabResult" value-ref="labResultHandler"/>
                 <entry key="SmartProblem" value-ref="problemHandler"/>
