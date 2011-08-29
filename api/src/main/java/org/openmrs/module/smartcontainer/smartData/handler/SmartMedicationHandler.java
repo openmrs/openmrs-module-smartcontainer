@@ -10,6 +10,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.DrugOrder;
+import org.openmrs.Order;
 import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.smartcontainer.SmartConceptMap;
@@ -77,81 +78,72 @@ public class SmartMedicationHandler implements SmartDataHandler<SmartMedication>
 	 * @return a list of of drugOrders
 	 */
 	private List<SmartMedication> getMedications(Patient patient, String drugOrderUuid) {
-		List<DrugOrder> drugOrders = Context.getOrderService().getDrugOrdersByPatient(patient);
-		if (StringUtils.isNotBlank(drugOrderUuid)) {
-			//if this list is empty after the loop, then there was no match found
-			List<DrugOrder> ordersWithMatchingUuid = new ArrayList<DrugOrder>();
-			for (DrugOrder d : drugOrders) {
-				if (drugOrderUuid.equals(d.getUuid())) {
-					ordersWithMatchingUuid.add(d);
-					break;
-				}
-			}
-			
-			drugOrders = ordersWithMatchingUuid;
-		}
+		Order order = Context.getOrderService().getOrderByUuid(drugOrderUuid);
+		DrugOrder drugOrder = Context.getOrderService().getOrder(order.getOrderId(), DrugOrder.class);
 		
 		List<SmartMedication> medications = new ArrayList<SmartMedication>();
-		for (DrugOrder d : drugOrders) {
-			SmartMedication medication = new SmartMedication();
-			medication.setDrugName(SmartDataHandlerUtil.codedValueHelper(d.getDrug().getConcept(), getMap()));
-			
-			if (d.getAutoExpireDate() != null)// may be not expired yet
-				medication.setEndDate(SmartDataHandlerUtil.date(d.getAutoExpireDate()));
-			
-			if (d.getStartDate() != null)
-				medication.setStartDate(SmartDataHandlerUtil.date(d.getStartDate()));
-			
-			//if the medication is already discontinued, use the date when it was discontinued
-			if (d.getDiscontinued() && d.getDiscontinuedDate() != null)
-				medication.setEndDate(SmartDataHandlerUtil.date(d.getDiscontinuedDate()));
-			else if (d.getAutoExpireDate() != null)
-				medication.setEndDate(SmartDataHandlerUtil.date(d.getAutoExpireDate()));
-			
-			// for quantity
-			if (d.getQuantity() != null)
-				medication.setQuantity(SmartDataHandlerUtil.valueAndUnitHelper(d.getQuantity(), d.getUnits()));
-			
-			// for frequency
-			if (StringUtils.isNotBlank(d.getFrequency())) {
-				boolean validFrequencyOrValue = false;
-				String[] valueAndFrequency = d.getFrequency().trim().split("/");
-				try {
-					Integer value = Integer.valueOf(valueAndFrequency[0].trim());
-					//default value
-					String frequency = "{" + NOT_SPECIFIED + "}";
-					if (valueAndFrequency.length > 1) {
-						frequency = d.getFrequency().trim();
-						//use the entire string after the first occurrence of '/'
-						frequency = frequency.substring(frequency.indexOf("/") + 1).toLowerCase();
-						if (openmrsToSmartFrequencyMap.keySet().contains(frequency)) {
-							frequency = openmrsToSmartFrequencyMap.get(frequency);
-						} else {
-							//set it to the value from the DB
-							frequency = "{" + frequency + "}";
-						}
+		
+		SmartMedication medication = new SmartMedication();
+		
+		medication.setId(drugOrder.getUuid());
+		
+		medication.setDrugName(SmartDataHandlerUtil.codedValueHelper(drugOrder.getDrug().getConcept(), getMap()));
+		
+		if (drugOrder.getAutoExpireDate() != null)// may be not expired yet
+			medication.setEndDate(SmartDataHandlerUtil.date(drugOrder.getAutoExpireDate()));
+		
+		if (drugOrder.getStartDate() != null)
+			medication.setStartDate(SmartDataHandlerUtil.date(drugOrder.getStartDate()));
+		
+		//if the medication is already discontinued, use the date when it was discontinued
+		if (drugOrder.getDiscontinued() && drugOrder.getDiscontinuedDate() != null)
+			medication.setEndDate(SmartDataHandlerUtil.date(drugOrder.getDiscontinuedDate()));
+		else if (drugOrder.getAutoExpireDate() != null)
+			medication.setEndDate(SmartDataHandlerUtil.date(drugOrder.getAutoExpireDate()));
+		
+		// for quantity
+		if (drugOrder.getQuantity() != null)
+			medication.setQuantity(SmartDataHandlerUtil.valueAndUnitHelper(drugOrder.getQuantity(), drugOrder.getUnits()));
+		
+		// for frequency
+		if (StringUtils.isNotBlank(drugOrder.getFrequency())) {
+			boolean validFrequencyOrValue = false;
+			String[] valueAndFrequency = drugOrder.getFrequency().trim().split("/");
+			try {
+				Integer value = Integer.valueOf(valueAndFrequency[0].trim());
+				//default value
+				String frequency = "{" + NOT_SPECIFIED + "}";
+				if (valueAndFrequency.length > 1) {
+					frequency = drugOrder.getFrequency().trim();
+					//use the entire string after the first occurrence of '/'
+					frequency = frequency.substring(frequency.indexOf("/") + 1).toLowerCase();
+					if (openmrsToSmartFrequencyMap.keySet().contains(frequency)) {
+						frequency = openmrsToSmartFrequencyMap.get(frequency);
+					} else {
+						//set it to the value from the DB
+						frequency = "{" + frequency + "}";
 					}
-					
-					medication.setFrequency(SmartDataHandlerUtil.valueAndUnitHelper(value, frequency));
-					validFrequencyOrValue = true;
-				}
-				catch (NumberFormatException e) {
-					// will handle this below since validFrequencyOrValue will be false
 				}
 				
-				if (!validFrequencyOrValue) {
-					//the specified value or units were invalid
-					log.warn("Invalid frequency value was found for drug order with id:" + d.getOrderId());
-				}
+				medication.setFrequency(SmartDataHandlerUtil.valueAndUnitHelper(value, frequency));
+				validFrequencyOrValue = true;
+			}
+			catch (NumberFormatException e) {
+				// will handle this below since validFrequencyOrValue will be false
 			}
 			
-			// TODO:if the instruction is not present generate one
-			if (d.getInstructions() != null)
-				medication.setInstructions(d.getInstructions());
-			//
-			medications.add(medication);
-			
+			if (!validFrequencyOrValue) {
+				//the specified value or units were invalid
+				log.warn("Invalid frequency value was found for drug order with id:" + drugOrder.getOrderId());
+			}
 		}
+		
+		// TODO:if the instruction is not present generate one
+		if (drugOrder.getInstructions() != null)
+			medication.setInstructions(drugOrder.getInstructions());
+		//
+		medications.add(medication);
+			
 		return medications;
 	}
 }

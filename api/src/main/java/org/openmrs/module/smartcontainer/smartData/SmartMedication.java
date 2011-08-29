@@ -9,13 +9,23 @@ package org.openmrs.module.smartcontainer.smartData;
  * Medication</a>
  */
 public class SmartMedication implements SmartBaseData {
+
+	private String id;
     private CodedValue drugName;
     private String startDate;
     private String endDate;
     private String instructions;
     private ValueAndUnit quantity;
     private ValueAndUnit frequency;
+	
+	public String getId() {
+		return id;
+	}
 
+	public void setId(String id) {
+		this.id = id;
+	}
+	
     public CodedValue getDrugName() {
         return drugName;
     }

@@ -211,14 +211,13 @@ public class SmartDataHandlerUtil {
 	public static Concept getConceptByGlobalProperty(String globalPropertyName) {
 		Concept concept = null;
 		if (StringUtils.isNotBlank(globalPropertyName)) {
-			String conceptIdGP = Context.getAdministrationService().getGlobalProperty(
-			    SmartConstants.GP_ALLERGY_EXCEPTION_CONCEPT);
+			String conceptIdGP = Context.getAdministrationService().getGlobalProperty(globalPropertyName);
 			if (StringUtils.isNotBlank(conceptIdGP)) {
 				try {
 					concept = Context.getConceptService().getConcept(Integer.valueOf(conceptIdGP));
 				}
 				catch (NumberFormatException e) {
-					log.warn("Invalid conceptId value:" + conceptIdGP);
+					log.warn(globalPropertyName + " global property has and invalid conceptId value:" + conceptIdGP);
 				}
 			}
 		}

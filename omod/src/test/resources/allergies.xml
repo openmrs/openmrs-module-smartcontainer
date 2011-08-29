@@ -21,7 +21,7 @@
     
   <active_list_type active_list_type_id="1" name="Allergy" description="An Allergy the Patient may have" creator="1" date_created="2010-05-28 00:00:00.0" retired="0" uuid="96f4f603-6a99-11df-a648-37a07f9c90fb"/>
   <active_list_type active_list_type_id="2" name="Problem" description="A Problem the Patient may have" creator="1" date_created="2010-05-28 00:00:00.0" retired="0" uuid="a0c7422b-6a99-11df-a648-37a07f9c90fb"/>
-  <active_list active_list_id="1" active_list_type_id="1" person_id="2" concept_id="784" start_date="2011-08-19 00:00:00.0" creator="1" date_created="2011-08-19 15:33:44.0" voided="0" uuid="0817a530-0eea-4fb5-a1fa-928eba26b6b9"/>
+  <active_list active_list_id="1" active_list_type_id="1" person_id="2" concept_id="784" start_date="2011-08-19 00:00:00.0" comments="I have none" creator="1" date_created="2011-08-19 15:33:44.0" voided="0" uuid="0817a530-0eea-4fb5-a1fa-928eba26b6b9"/>
   <active_list active_list_id="2" active_list_type_id="1" person_id="2" concept_id="6100" start_date="2011-08-19 00:00:00.0" creator="1" date_created="2011-08-19 15:47:57.0" voided="0" uuid="acaa5fad-e191-486e-9647-6044ea49e62c"/>
   <active_list_allergy active_list_id="1" reaction_concept_id="620" severity="SEVERE"/>
   <active_list_allergy active_list_id="2" reaction_concept_id="6019" severity="INTOLERANCE" allergy_type="FOOD" />
