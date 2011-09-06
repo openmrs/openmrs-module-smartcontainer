@@ -178,7 +178,7 @@
 			autoOpen: false,
 			resizable: false,
 			width:500,
-			height:300,
+			height:'auto',
 			modal: true,
 			beforeClose: function(event, ui){
 				//refresh the page to reflect the changes
