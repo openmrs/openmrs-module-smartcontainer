@@ -114,7 +114,7 @@ public class SmartProblemHandler implements SmartDataHandler<SmartProblem> {
 					}
 					
 					SmartProblem problem = new SmartProblem();
-					problem.setProblemName(SmartDataHandlerUtil.codedValueHelper(addedObs.getConcept(), map));
+					problem.setProblemName(SmartDataHandlerUtil.codedValueHelper(addedObs.getValueCoded(), map));
 					problem.setOnset(SmartDataHandlerUtil.date(addedObs.getObsDatetime()));
 					
 					if (foundMatchingResolvedObs) {
