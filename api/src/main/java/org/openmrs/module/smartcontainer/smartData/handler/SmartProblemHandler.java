@@ -24,6 +24,7 @@ import org.openmrs.Patient;
 import org.openmrs.activelist.Problem;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.smartcontainer.SmartConceptMap;
+import org.openmrs.module.smartcontainer.TransientSmartConceptMap;
 import org.openmrs.module.smartcontainer.smartData.SmartProblem;
 import org.openmrs.module.smartcontainer.util.SmartConstants;
 import org.openmrs.module.smartcontainer.util.SmartDataHandlerUtil;
@@ -133,4 +134,11 @@ public class SmartProblemHandler implements SmartDataHandler<SmartProblem> {
 		return smartProblems;
 	}
 	
+	/**
+	 * @see org.openmrs.module.smartcontainer.smartData.handler.SmartDataHandler#getRequiredConceptMappings()
+	 */
+	@Override
+	public List<TransientSmartConceptMap> getRequiredConceptMappings() {
+		return null;
+	}
 }

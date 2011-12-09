@@ -24,19 +24,20 @@ import org.openmrs.activelist.AllergySeverity;
 import org.openmrs.activelist.AllergyType;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.smartcontainer.SmartConceptMap;
+import org.openmrs.module.smartcontainer.TransientSmartConceptMap;
 import org.openmrs.module.smartcontainer.smartData.CodedValue;
 import org.openmrs.module.smartcontainer.smartData.SmartAllergy;
 import org.openmrs.module.smartcontainer.util.SmartDataHandlerUtil;
 
 /**
- * Converts {@link Allergy} and/or obs/allergies to {@link SmartAllergy} objects 
+ * Converts {@link Allergy} and/or obs/allergies to {@link SmartAllergy} objects
  */
 public class SmartAllergyHandler implements SmartDataHandler<SmartAllergy> {
-
+	
 	private static final Log log = LogFactory.getLog(SmartAllergyHandler.class);
-
+	
 	private SmartConceptMap snomedMap;
-
+	
 	private SmartConceptMap rxnormMap;
 	
 	private SmartConceptMap fdaMap;
@@ -44,15 +45,15 @@ public class SmartAllergyHandler implements SmartDataHandler<SmartAllergy> {
 	public SmartConceptMap getSnomedMap() {
 		return snomedMap;
 	}
-
+	
 	public void setSnomedMap(SmartConceptMap snomedMap) {
 		this.snomedMap = snomedMap;
 	}
-
+	
 	public SmartConceptMap getRxnormMap() {
 		return rxnormMap;
 	}
-
+	
 	public void setRxnormMap(SmartConceptMap rxnormMap) {
 		this.rxnormMap = rxnormMap;
 	}
@@ -60,25 +61,24 @@ public class SmartAllergyHandler implements SmartDataHandler<SmartAllergy> {
 	public SmartConceptMap getFdaMap() {
 		return fdaMap;
 	}
-
+	
 	public void setFdaMap(SmartConceptMap fdaMap) {
 		this.fdaMap = fdaMap;
 	}
-
+	
 	public SmartAllergy getForPatient(Patient patient, String id) {
 		// not used
 		return null;
 	}
-
+	
 	/* (non-Javadoc)
 	 * @see org.openmrs.module.smartcontainer.smartData.handler.SmartDataHandler#getAllForPatient(org.openmrs.Patient)
 	 */
 	public List<SmartAllergy> getAllForPatient(Patient patient) {
 		List<SmartAllergy> smartAllergies = new ArrayList<SmartAllergy>();
-
+		
 		if (SmartDataHandlerUtil.useAllergyObject()) {
-			List<Allergy> openmrsAllergies = Context.getPatientService()
-					.getAllergies(patient);
+			List<Allergy> openmrsAllergies = Context.getPatientService().getAllergies(patient);
 			
 			for (Allergy allergy : openmrsAllergies) {
 				SmartAllergy smartAllergy = new SmartAllergy();
@@ -96,7 +96,7 @@ public class SmartAllergyHandler implements SmartDataHandler<SmartAllergy> {
 					// allergy type.  therefore most impls won't have this set
 					//throw new RuntimeException("Don't know how to handle allergy type of : " + allergy.getAllergyType() + " with active list allergy id: " + allergy.getActiveListId());
 				}
-					
+				
 				smartAllergy.setClassOfAllergen(convertAllergyTypeToClass(allergy.getAllergyType()));
 				smartAllergy.setCategory(convertAllergyTypeToCategory(allergy));
 				
@@ -168,7 +168,7 @@ public class SmartAllergyHandler implements SmartDataHandler<SmartAllergy> {
 		*/
 		return smartAllergies;
 	}
-
+	
 	private boolean isDrugAllergy(Allergy allergy) {
 		if (allergy.getAllergyType() != null)
 			return allergy.getAllergyType().equals(AllergyType.DRUG);
@@ -177,7 +177,7 @@ public class SmartAllergyHandler implements SmartDataHandler<SmartAllergy> {
 			return allergy.getAllergen().getConceptClass().getUuid().equals("8d490dfc-c2cc-11de-8d13-0010c6dffd0f");
 		}
 	}
-
+	
 	private boolean isFoodAllergy(Allergy allergy) {
 		if (allergy.getAllergyType() != null) {
 			return allergy.getAllergyType().equals(AllergyType.FOOD);
@@ -185,7 +185,7 @@ public class SmartAllergyHandler implements SmartDataHandler<SmartAllergy> {
 		
 		return false;
 	}
-
+	
 	/**
 	 * @param allergyType
 	 * @return
@@ -195,7 +195,7 @@ public class SmartAllergyHandler implements SmartDataHandler<SmartAllergy> {
 		// uses rxnorm mapping
 		return null; //new CodedValue();
 	}
-
+	
 	/**
 	 * Converts openmrs AllergyType class into the SMART class of allergen in rxnorm codes
 	 * 
@@ -218,24 +218,21 @@ public class SmartAllergyHandler implements SmartDataHandler<SmartAllergy> {
 				if (AllergySeverity.INTOLERANCE == severity) {
 					title = "drug intolerance";
 					code = "59037007";
-				}
-				else {
+				} else {
 					title = "drug allergy";
 					code = "416098002";
 				}
-			}
-			else if (isFoodAllergy(allergy)) {
+			} else if (isFoodAllergy(allergy)) {
 				if (AllergySeverity.INTOLERANCE == severity) {
 					title = "food intolerance";
 					code = "235719002";
-				}
-				else {
+				} else {
 					title = "food allergy";
 					code = "6736007";
 				}
 			}
 		}
-		
+
 		else {
 			// allergy type is not null
 			switch (allergyType) {
@@ -243,8 +240,7 @@ public class SmartAllergyHandler implements SmartDataHandler<SmartAllergy> {
 					if (AllergySeverity.INTOLERANCE == severity) {
 						title = "drug intolerance";
 						code = "59037007";
-					}
-					else {
+					} else {
 						title = "drug allergy";
 						code = "416098002";
 					}
@@ -253,8 +249,7 @@ public class SmartAllergyHandler implements SmartDataHandler<SmartAllergy> {
 					if (AllergySeverity.INTOLERANCE == severity) {
 						title = "food intolerance";
 						code = "235719002";
-					}
-					else {
+					} else {
 						title = "food allergy";
 						code = "6736007";
 					}
@@ -292,7 +287,7 @@ public class SmartAllergyHandler implements SmartDataHandler<SmartAllergy> {
 		
 		return SmartDataHandlerUtil.codedValueHelper(title, code, snomedMap);
 	}
-
+	
 	/**
 	 * Converts openmrs AllergySeverity into the SMART severity code
 	 * 
@@ -324,13 +319,21 @@ public class SmartAllergyHandler implements SmartDataHandler<SmartAllergy> {
 				break;
 			case UNKNOWN:
 				throw new RuntimeException("Wha??!?!");
-			
+				
 		}
 		// not used in openmrs severities
 		//http://www.ihtsdo.org/snomed-ct/concepts/371923003, Title="Mild to moderate"
 		//http://www.ihtsdo.org/snomed-ct/concepts/371924009, Title="Moderate to severe"
-
+		
 		return SmartDataHandlerUtil.codedValueHelper(title, code, snomedMap);
 	}
-
+	
+	/**
+	 * @see org.openmrs.module.smartcontainer.smartData.handler.SmartDataHandler#getRequiredConceptMappings()
+	 */
+	@Override
+	public List<TransientSmartConceptMap> getRequiredConceptMappings() {
+		return null;
+	}
+	
 }

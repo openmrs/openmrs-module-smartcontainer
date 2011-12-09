@@ -13,27 +13,36 @@
  */
 package org.openmrs.module.smartcontainer.smartData.handler;
 
-import org.openmrs.Patient;
-import org.openmrs.module.smartcontainer.smartData.SmartBaseData;
-
 import java.util.List;
+
+import org.openmrs.Patient;
+import org.openmrs.module.smartcontainer.TransientSmartConceptMap;
+import org.openmrs.module.smartcontainer.smartData.SmartBaseData;
 
 /**
  *
  *
  */
 public interface SmartDataHandler<T extends SmartBaseData> {
-
-    /**
-     * @param patient
-     * @return
-     */
-    public T getForPatient(Patient patient, String id);
-
-    /**
-     * @param patient
-     * @param id
-     * @return
-     */
-    public List<T> getAllForPatient(Patient patient);
+	
+	/**
+	 * @param patient
+	 * @return
+	 */
+	public T getForPatient(Patient patient, String id);
+	
+	/**
+	 * @param patient
+	 * @param id
+	 * @return
+	 */
+	public List<T> getAllForPatient(Patient patient);
+	
+	/**
+	 * Gets a list of smart concept mappings that are required by the SMART app associated to the
+	 * Implementing handler.
+	 * 
+	 * @return a list of {@link TransientSmartConceptMap}s
+	 */
+	public List<TransientSmartConceptMap> getRequiredConceptMappings();
 }

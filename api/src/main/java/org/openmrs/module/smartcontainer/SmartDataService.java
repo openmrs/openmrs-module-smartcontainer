@@ -14,10 +14,12 @@
 package org.openmrs.module.smartcontainer;
 
 import java.util.List;
+import java.util.Map;
 
 import org.openmrs.Patient;
 import org.openmrs.module.smartcontainer.smartData.SmartBaseData;
 import org.openmrs.module.smartcontainer.smartData.SmartDemographics;
+import org.openmrs.module.smartcontainer.smartData.handler.SmartDataHandler;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -48,5 +50,12 @@ public interface SmartDataService {
 	 * @return
 	 */
 	public <T extends SmartBaseData> T getForPatient(Patient patient, Class<T> clazz, String id);
+	
+	/**
+	 * Gets a map of all registered smart data handlers
+	 * 
+	 * @return a map of smart data handlers
+	 */
+	public Map<String, SmartDataHandler<? extends SmartBaseData>> getHandlers();
 	
 }

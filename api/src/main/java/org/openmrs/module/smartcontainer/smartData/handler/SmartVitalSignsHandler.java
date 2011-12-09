@@ -3,9 +3,10 @@ package org.openmrs.module.smartcontainer.smartData.handler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -17,6 +18,7 @@ import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.smartcontainer.ConceptMappingNotFoundException;
 import org.openmrs.module.smartcontainer.SmartConceptMap;
+import org.openmrs.module.smartcontainer.TransientSmartConceptMap;
 import org.openmrs.module.smartcontainer.smartData.CodedValue;
 import org.openmrs.module.smartcontainer.smartData.SmartEncounter;
 import org.openmrs.module.smartcontainer.smartData.SmartVitalSigns;
@@ -27,10 +29,27 @@ public class SmartVitalSignsHandler implements SmartDataHandler<SmartVitalSigns>
 	
 	Log log = LogFactory.getLog(getClass());
 	
-	private final List<String> LOINC_CODES = Arrays.asList("8302-2", "3141-9", "39156-5", "9279-1", "8867-4", "2710-2",
-	    "8310-5", "8480-6", "8462-4");
+	private static final Map<String, String> LOINC_NAME_CODE_MAP;
+	static {
+		LOINC_NAME_CODE_MAP = new HashMap<String, String>();
+		LOINC_NAME_CODE_MAP.put("Height", "8302-2");
+		LOINC_NAME_CODE_MAP.put("Weight", "3141-9");
+		LOINC_NAME_CODE_MAP.put("Body Mass Index", "39156-5");
+		LOINC_NAME_CODE_MAP.put("Respiratory Rate", "9279-1");
+		LOINC_NAME_CODE_MAP.put("Heart Rate", "8867-4");
+		LOINC_NAME_CODE_MAP.put("Oxygen Saturation", "2710-2");
+		LOINC_NAME_CODE_MAP.put("Diastolic Blood Pressure", "8310-5");
+		LOINC_NAME_CODE_MAP.put("Systolic Blood Pressure", "8480-6");
+		LOINC_NAME_CODE_MAP.put("Intravascular diastolic", "8462-4");
+	}
 	
-	private final List<String> SNOMED_CODES = Arrays.asList("33586001", "368209003");
+	//Mapping of require terms
+	private static final Map<String, String> SNOMED_NAME_CODE_MAP;
+	static {
+		SNOMED_NAME_CODE_MAP = new HashMap<String, String>();
+		SNOMED_NAME_CODE_MAP.put("Sitting position", "33586001");
+		SNOMED_NAME_CODE_MAP.put("Right upper arm structure", "368209003");
+	}
 	
 	// set by the moduleApplicationContext
 	private SmartConceptMap loincMap;
@@ -188,7 +207,7 @@ public class SmartVitalSignsHandler implements SmartDataHandler<SmartVitalSigns>
 		try {
 			conceptCode = loincMap.lookUp(c);
 			
-			if (LOINC_CODES.contains(conceptCode))
+			if (LOINC_NAME_CODE_MAP.values().contains(conceptCode))
 				return conceptCode;
 			
 		}
@@ -200,7 +219,7 @@ public class SmartVitalSignsHandler implements SmartDataHandler<SmartVitalSigns>
 		try {
 			conceptCode = snomedMap.lookUp(c);
 			
-			if (SNOMED_CODES.contains(conceptCode))
+			if (SNOMED_NAME_CODE_MAP.values().contains(conceptCode))
 				return conceptCode;
 			
 		}
@@ -227,5 +246,19 @@ public class SmartVitalSignsHandler implements SmartDataHandler<SmartVitalSigns>
 		}
 		
 		return null;
+	}
+	
+	/**
+	 * @see org.openmrs.module.smartcontainer.smartData.handler.SmartDataHandler#getRequiredConceptMappings()
+	 */
+	@Override
+	public List<TransientSmartConceptMap> getRequiredConceptMappings() {
+		List<TransientSmartConceptMap> vitalSignMappings = new ArrayList<TransientSmartConceptMap>();
+		vitalSignMappings.addAll(SmartDataHandlerUtil.getConceptMappings(getLoincMap().getConceptSourceName(),
+		    LOINC_NAME_CODE_MAP));
+		vitalSignMappings.addAll(SmartDataHandlerUtil.getConceptMappings(getSnomedMap().getConceptSourceName(),
+		    SNOMED_NAME_CODE_MAP));
+		
+		return vitalSignMappings;
 	}
 }

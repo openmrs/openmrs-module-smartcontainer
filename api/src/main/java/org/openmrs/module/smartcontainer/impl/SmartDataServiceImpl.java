@@ -28,6 +28,7 @@ public class SmartDataServiceImpl implements SmartDataService {
 	
 	private Map<String, SmartDataHandler<? extends SmartBaseData>> handlers;
 	
+	@Override
 	public Map<String, SmartDataHandler<? extends SmartBaseData>> getHandlers() {
 		return handlers;
 	}

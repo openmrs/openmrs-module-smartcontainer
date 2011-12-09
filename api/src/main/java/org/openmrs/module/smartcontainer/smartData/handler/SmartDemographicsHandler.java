@@ -16,6 +16,7 @@ package org.openmrs.module.smartcontainer.smartData.handler;
 import java.util.List;
 
 import org.openmrs.Patient;
+import org.openmrs.module.smartcontainer.TransientSmartConceptMap;
 import org.openmrs.module.smartcontainer.smartData.SmartDemographics;
 import org.openmrs.module.smartcontainer.util.SmartDataHandlerUtil;
 
@@ -48,6 +49,14 @@ public class SmartDemographicsHandler implements SmartDataHandler<SmartDemograph
 	 * @see org.openmrs.module.smartcontainer.smartData.handler.SmartDataHandler#getAllForPatient(org.openmrs.Patient)
 	 */
 	public List<SmartDemographics> getAllForPatient(Patient patient) {
+		return null;
+	}
+	
+	/**
+	 * @see org.openmrs.module.smartcontainer.smartData.handler.SmartDataHandler#getRequiredConceptMappings()
+	 */
+	@Override
+	public List<TransientSmartConceptMap> getRequiredConceptMappings() {
 		return null;
 	}
 }

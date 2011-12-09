@@ -1,15 +1,20 @@
 package org.openmrs.module.smartcontainer.util;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Concept;
 import org.openmrs.ConceptNumeric;
+import org.openmrs.api.ConceptService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.smartcontainer.ConceptMappingNotFoundException;
 import org.openmrs.module.smartcontainer.SmartConceptMap;
+import org.openmrs.module.smartcontainer.TransientSmartConceptMap;
 import org.openmrs.module.smartcontainer.smartData.CodeProvenance;
 import org.openmrs.module.smartcontainer.smartData.CodedValue;
 import org.openmrs.module.smartcontainer.smartData.ValueAndUnit;
@@ -223,5 +228,27 @@ public class SmartDataHandlerUtil {
 		}
 		
 		return concept;
+	}
+	
+	/**
+	 * Utility method that gets concept mappings for the names and source codes in the specified map
+	 * to the concept source matching the specified source name
+	 * 
+	 * @param sourceName the concept source name of the concept source to search
+	 * @param nameSourceCodeMap a mapping for the name and source code to look up
+	 * @return a list of {@link TransientSmartConceptMap}s
+	 */
+	public static List<TransientSmartConceptMap> getConceptMappings(String sourceName, Map<String, String> nameSourceCodeMap) {
+		List<TransientSmartConceptMap> conceptMappings = new ArrayList<TransientSmartConceptMap>();
+		if (StringUtils.isNotBlank(sourceName) && nameSourceCodeMap != null) {
+			ConceptService cs = Context.getConceptService();
+			for (Map.Entry<String, String> entry : nameSourceCodeMap.entrySet()) {
+				Concept concept = cs.getConceptByMapping(entry.getValue(), sourceName);
+				conceptMappings.add(new TransientSmartConceptMap(entry.getValue(), sourceName, entry.getKey(),
+				        (concept != null) ? concept.getConceptId() : null));
+			}
+		}
+		
+		return conceptMappings;
 	}
 }

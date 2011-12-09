@@ -29,6 +29,6 @@
 		<input type="submit" align="right" name="save" value="<spring:message code="smartcontainer.addAppUserLevel.save" javaScriptEscape="true"/>" >
 	</form>
 	</c:when>
-	<c:otherwise><spring:message code="smartcontainer.noappsinstalled"/></c:otherwise>
+	<c:otherwise><spring:message code="smartcontainer.noappsinstalledOrshowHidden"/></c:otherwise>
 	</c:choose>
 </div>

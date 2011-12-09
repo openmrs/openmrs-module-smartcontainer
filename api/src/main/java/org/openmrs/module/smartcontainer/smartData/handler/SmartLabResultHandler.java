@@ -9,6 +9,7 @@ import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.smartcontainer.SmartConceptMap;
+import org.openmrs.module.smartcontainer.TransientSmartConceptMap;
 import org.openmrs.module.smartcontainer.smartData.Attribution;
 import org.openmrs.module.smartcontainer.smartData.QuantitativeResult;
 import org.openmrs.module.smartcontainer.smartData.SmartLabResult;
@@ -91,6 +92,14 @@ public class SmartLabResultHandler implements SmartDataHandler<SmartLabResult> {
 	
 	private boolean isLabTest(Concept concept) {
 		return concept.getConceptClass().getName().equals("Test");
+	}
+	
+	/**
+	 * @see org.openmrs.module.smartcontainer.smartData.handler.SmartDataHandler#getRequiredConceptMappings()
+	 */
+	@Override
+	public List<TransientSmartConceptMap> getRequiredConceptMappings() {
+		return null;
 	}
 	
 }

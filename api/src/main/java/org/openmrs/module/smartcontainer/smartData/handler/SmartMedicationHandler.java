@@ -14,6 +14,7 @@ import org.openmrs.Order;
 import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.smartcontainer.SmartConceptMap;
+import org.openmrs.module.smartcontainer.TransientSmartConceptMap;
 import org.openmrs.module.smartcontainer.smartData.SmartMedication;
 import org.openmrs.module.smartcontainer.util.SmartDataHandlerUtil;
 
@@ -89,10 +90,10 @@ public class SmartMedicationHandler implements SmartDataHandler<SmartMedication>
 		for (DrugOrder d : drugOrders) {
 			medications.add(makeMedication(d));
 		}
-			
+		
 		return medications;
 	}
-		
+	
 	private SmartMedication makeMedication(DrugOrder drugOrder) {
 		SmartMedication medication = new SmartMedication();
 		
@@ -154,5 +155,13 @@ public class SmartMedicationHandler implements SmartDataHandler<SmartMedication>
 			medication.setInstructions(drugOrder.getInstructions());
 		//
 		return medication;
+	}
+	
+	/**
+	 * @see org.openmrs.module.smartcontainer.smartData.handler.SmartDataHandler#getRequiredConceptMappings()
+	 */
+	@Override
+	public List<TransientSmartConceptMap> getRequiredConceptMappings() {
+		return null;
 	}
 }
