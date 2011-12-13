@@ -12,6 +12,7 @@
  	<concept_map concept_map_id="102" source="101" source_code="WEIGHT_454545" comment="no comment" creator="1" date_created="2004-08-12 00:00:00.0" concept_id="5089"/>
   	<concept_map concept_map_id="103" source="101" source_code="CD4_454545" comment="no comment" creator="1" date_created="2004-08-12 00:00:00.0" concept_id="5497"/>
   	<concept_map concept_map_id="104" source="2" source_code="CIVIL_STATUS_454545" comment="no comment" creator="1" date_created="2004-08-12 00:00:00.0" concept_id="4"/>
+  	<concept_map concept_map_id="105" source="2" source_code="TEST-CODE" comment="no comment" creator="1" date_created="2004-08-12 00:00:00.0" concept_id="5"/>
   	<obs obs_id="100" person_id="7" concept_id="4" encounter_id="4" obs_datetime="2008-08-15 00:00:00.0" value_coded="5" location_id="1" creator="1" date_created="2008-08-19 12:32:59.0" voided="false" uuid="38a531be-ca8a-11e0-ae8d-00248140a5eb"/>
   	<obs obs_id="101" person_id="7" concept_id="17" encounter_id="4" obs_datetime="2008-08-17 00:00:00.0" value_coded="5" location_id="1" creator="1" date_created="2008-08-19 12:32:59.0" voided="false" uuid="4411ac3a-ca8a-11e0-ae8d-00248140a5eb"/>
     <global_property property="smartcontainer.problem.useProblemObject" property_value="true" uuid="fc23ccba-ca88-11e0-ae8d-00248140a5eb" />
