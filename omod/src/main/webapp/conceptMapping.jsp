@@ -18,11 +18,24 @@ th.appColumn{
 .otherColumn{
 	padding-left: 10px;
 }
+.smart_info{
+	margin-top: 5px;
+	margin-bottom: 5px;
+	border: 1px dashed lightgrey;
+	padding: 5px 5px 5px 18px;
+	background-color: lightyellow;
+}
 </style>
 
 <h1><spring:message code="smartcontainer.admin.conceptMapping.title"/></h1>
 <b class="boxHeader"><spring:message code="smartcontainer.admin.required.conceptMappings"/></b>
 <div class="box">
+<c:if test="${canManageMappings != true}">
+	<div class="smart_info">
+		<img src="<openmrs:contextPath />/images/info.gif" /> 
+		<spring:message code="smartcontainer.cannotManageConceptMappings.info" />
+	</div>
+</c:if>
 <form  method="post">
 <table class="mappingsTable" cellpadding="5" cellspacing="0">
 	<tr bgcolor="#D9D7D7">

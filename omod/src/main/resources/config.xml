@@ -7,7 +7,7 @@
     <version>0.1</version>
     <package>org.openmrs.module.@MODULE_ID@</package>
     <author>Balachandiran Ajanthan</author>
-    <description>Provides API and space for this instace to be a SMART Apps container</description>
+    <description>Provides API and space for this instance to be a SMART Apps container</description>
 
     <activator>@MODULE_PACKAGE@.SmartContainerActivator</activator>
 
