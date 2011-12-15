@@ -15,7 +15,7 @@ import org.openmrs.ConceptSource;
 import org.openmrs.api.ConceptService;
 import org.openmrs.module.smartcontainer.SmartDataService;
 import org.openmrs.module.smartcontainer.TransientSmartConceptMap;
-import org.openmrs.module.smartcontainer.smartData.SmartBaseData;
+import org.openmrs.module.smartcontainer.smartData.SmartData;
 import org.openmrs.module.smartcontainer.smartData.handler.SmartDataHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -56,8 +56,8 @@ public class ConceptMappingController {
 		//Map to group  required mapping for each smart data handler
 		Map<String, List<TransientSmartConceptMap>> handlerListOfMappingsMap = new HashMap<String, List<TransientSmartConceptMap>>();
 		
-		Map<String, SmartDataHandler<? extends SmartBaseData>> handlersMap = smartService.getHandlers();
-		for (Map.Entry<String, SmartDataHandler<? extends SmartBaseData>> handlerEntry : handlersMap.entrySet()) {
+		Map<String, SmartDataHandler<? extends SmartData>> handlersMap = smartService.getHandlers();
+		for (Map.Entry<String, SmartDataHandler<? extends SmartData>> handlerEntry : handlersMap.entrySet()) {
 			List<TransientSmartConceptMap> listOfMappings = handlerEntry.getValue().getRequiredConceptMappings();
 			if (CollectionUtils.isNotEmpty(listOfMappings)) {
 				//Add a spacing between the handler names for better display in the form

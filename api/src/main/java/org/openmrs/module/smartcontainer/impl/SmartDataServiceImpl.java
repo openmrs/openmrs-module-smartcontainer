@@ -18,7 +18,7 @@ import java.util.Map;
 
 import org.openmrs.Patient;
 import org.openmrs.module.smartcontainer.SmartDataService;
-import org.openmrs.module.smartcontainer.smartData.SmartBaseData;
+import org.openmrs.module.smartcontainer.smartData.SmartData;
 import org.openmrs.module.smartcontainer.smartData.handler.SmartDataHandler;
 
 /**
@@ -26,10 +26,10 @@ import org.openmrs.module.smartcontainer.smartData.handler.SmartDataHandler;
  */
 public class SmartDataServiceImpl implements SmartDataService {
 	
-	private Map<String, SmartDataHandler<? extends SmartBaseData>> handlers;
+	private Map<String, SmartDataHandler<? extends SmartData>> handlers;
 	
 	@Override
-	public Map<String, SmartDataHandler<? extends SmartBaseData>> getHandlers() {
+	public Map<String, SmartDataHandler<? extends SmartData>> getHandlers() {
 		return handlers;
 	}
 	
@@ -39,7 +39,7 @@ public class SmartDataServiceImpl implements SmartDataService {
 	 * 
 	 * @param h
 	 */
-	public void setHandlers(Map<String, SmartDataHandler<? extends SmartBaseData>> h) {
+	public void setHandlers(Map<String, SmartDataHandler<? extends SmartData>> h) {
 		if (this.handlers == null) {
 			this.handlers = h;
 		} else {
@@ -55,7 +55,7 @@ public class SmartDataServiceImpl implements SmartDataService {
 	 * @see org.openmrs.module.smartcontainer.SmartDataService#getAllForPatient(org.openmrs.Patient,
 	 *      java.lang.Class)
 	 */
-	public <T extends SmartBaseData> List<T> getAllForPatient(Patient patient, Class<T> clazz) {
+	public <T extends SmartData> List<T> getAllForPatient(Patient patient, Class<T> clazz) {
 		// Get a handler from the handlers which is mapped to simple name of the
 		// clazz and call getAllForPatient(patient)
 		return (List<T>) handlers.get(clazz.getSimpleName()).getAllForPatient(patient);
@@ -65,7 +65,7 @@ public class SmartDataServiceImpl implements SmartDataService {
 	 * @see org.openmrs.module.smartcontainer.SmartDataService#getForPatient(org.openmrs.Patient,
 	 *      java.lang.Class, java.lang.String)
 	 */
-	public <T extends SmartBaseData> T getForPatient(Patient patient, Class<T> clazz, String id) {
+	public <T extends SmartData> T getForPatient(Patient patient, Class<T> clazz, String id) {
 		// Get a handler from the handlers which is mapped to simple name of the
 		// clazz and call getForPatient(patient)
 		return (T) handlers.get(clazz.getSimpleName()).getForPatient(patient, id);

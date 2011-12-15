@@ -8,7 +8,7 @@ package org.openmrs.module.smartcontainer.smartData;
  * > SMART Allergy documentation</a>
  * 
  */
-public class SmartAllergy implements SmartBaseData {
+public class SmartAllergy extends BaseSmartData {
 	private CodedValue category;
 	private CodedValue severity;
 	private CodedValue classOfAllergen;

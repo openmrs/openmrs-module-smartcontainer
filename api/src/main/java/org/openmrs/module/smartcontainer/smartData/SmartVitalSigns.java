@@ -10,7 +10,7 @@ import java.util.List;
  *      VitalSigns</a>
  *
  */
-public class SmartVitalSigns implements SmartBaseData {
+public class SmartVitalSigns extends BaseSmartData {
 	private String date;
 	private SmartEncounter encounter;
 	private VitalSign height;

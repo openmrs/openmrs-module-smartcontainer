@@ -8,7 +8,7 @@ package org.openmrs.module.smartcontainer.smartData;
  * > AllergyException</a>
  * </p>
  */
-public class SmartAllergyException implements SmartBaseData {
+public class SmartAllergyException extends BaseSmartData {
 	
 	private CodedValue exception;
 	

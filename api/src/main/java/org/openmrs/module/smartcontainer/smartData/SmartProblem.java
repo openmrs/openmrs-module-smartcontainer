@@ -7,7 +7,7 @@ package org.openmrs.module.smartcontainer.smartData;
  * href="http://wiki.chip.org/smart-project/index.php/Preview_Data_Model#Problem_RDF">
  * Problem</a>
  */
-public class SmartProblem implements SmartBaseData {
+public class SmartProblem extends BaseSmartData {
     private CodedValue problemName;
     private String onset;
     private String resolution;

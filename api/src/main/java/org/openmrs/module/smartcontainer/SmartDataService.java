@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.openmrs.Patient;
-import org.openmrs.module.smartcontainer.smartData.SmartBaseData;
+import org.openmrs.module.smartcontainer.smartData.SmartData;
 import org.openmrs.module.smartcontainer.smartData.SmartDemographics;
 import org.openmrs.module.smartcontainer.smartData.handler.SmartDataHandler;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,7 +36,7 @@ public interface SmartDataService {
 	 * @param Class corresponding to Smart data
 	 * @return list of Smart data
 	 */
-	public <T extends SmartBaseData> List<T> getAllForPatient(Patient patient, Class<T> clazz);
+	public <T extends SmartData> List<T> getAllForPatient(Patient patient, Class<T> clazz);
 	
 	/**
 	 * Returns the smart object matching the specified class and unique identifier to be matched
@@ -49,13 +49,13 @@ public interface SmartDataService {
 	 * @param id the unique identifier to be matched for the Smart object to fetch
 	 * @return
 	 */
-	public <T extends SmartBaseData> T getForPatient(Patient patient, Class<T> clazz, String id);
+	public <T extends SmartData> T getForPatient(Patient patient, Class<T> clazz, String id);
 	
 	/**
 	 * Gets a map of all registered smart data handlers
 	 * 
 	 * @return a map of smart data handlers
 	 */
-	public Map<String, SmartDataHandler<? extends SmartBaseData>> getHandlers();
+	public Map<String, SmartDataHandler<? extends SmartData>> getHandlers();
 	
 }

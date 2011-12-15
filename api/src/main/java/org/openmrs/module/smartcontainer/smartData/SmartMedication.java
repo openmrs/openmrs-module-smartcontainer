@@ -8,7 +8,7 @@ package org.openmrs.module.smartcontainer.smartData;
  * href="http://wiki.chip.org/smart-project/index.php/Preview_Data_Model#Medication_RDF">
  * Medication</a>
  */
-public class SmartMedication implements SmartBaseData {
+public class SmartMedication extends BaseSmartData {
 
 	private String id;
     private CodedValue drugName;

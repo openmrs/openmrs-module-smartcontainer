@@ -17,13 +17,13 @@ import java.util.List;
 
 import org.openmrs.Patient;
 import org.openmrs.module.smartcontainer.TransientSmartConceptMap;
-import org.openmrs.module.smartcontainer.smartData.SmartBaseData;
+import org.openmrs.module.smartcontainer.smartData.SmartData;
 
 /**
  *
  *
  */
-public interface SmartDataHandler<T extends SmartBaseData> {
+public interface SmartDataHandler<T extends SmartData> {
 	
 	/**
 	 * @param patient

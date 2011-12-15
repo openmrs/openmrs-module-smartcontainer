@@ -7,7 +7,7 @@ package org.openmrs.module.smartcontainer.smartData;
  * href="http://wiki.chip.org/smart-project/index.php/Preview_Data_Model#Lab_Result_RDF">
  * Lab_Result</a>
  */
-public class SmartLabResult implements SmartBaseData {
+public class SmartLabResult extends BaseSmartData {
     private CodedValue labName;
     private QuantitativeResult quantitativeResult;
     private String externalID;
