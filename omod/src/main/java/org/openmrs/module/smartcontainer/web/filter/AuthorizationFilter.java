@@ -68,20 +68,24 @@ public class AuthorizationFilter implements Filter {
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
 		//only allow requests from smart apps installed in this container instance
 		if (Context.isAuthenticated() && request.getRemoteAddr().equals(request.getLocalAddr())) {
+			boolean processRequest = false;
 			try {
 				String appIdString = ServletRequestUtils.getRequiredStringParameter(httpRequest, "appId");
 				String accessToken = ServletRequestUtils.getRequiredStringParameter(httpRequest, "accessToken");
 				Integer appId = Integer.valueOf(appIdString);
 				//check if we know this combination
 				Map<Integer, String> credentials = SmartAppListController.getAppAccessTokenMap();
-				if (credentials.containsKey(appId) && OpenmrsUtil.nullSafeEquals(accessToken, credentials.get(appId))) {
-					chain.doFilter(request, response);
-					return;
-				}
+				if (credentials.containsKey(appId) && OpenmrsUtil.nullSafeEquals(accessToken, credentials.get(appId)))
+					processRequest = true;
 			}
 			catch (Exception ex) {
 				log.error("Error occurred:" + ex.getMessage());
 				//do nothing
+			}
+			
+			if (processRequest) {
+				chain.doFilter(request, response);
+				return;
 			}
 		}
 		
