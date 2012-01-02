@@ -3,6 +3,7 @@
 <openmrs:htmlInclude file="/moduleResources/smartcontainer/jschannel.js" />
 <openmrs:htmlInclude file="/moduleResources/smartcontainer/smart-api-container.js" />
 <openmrs:htmlInclude file="/dwr/interface/DWRSmartService.js" />
+<openmrs:htmlInclude file="/moduleResources/smartcontainer/smart.css" />
 
 <style type="text/css">
 #main {

@@ -74,8 +74,7 @@ public class AppFactory {
 	 */
 	public static App getAppFromLocalFile(InputStream maniFileAsStream) throws ParseException, IOException {
 		String maniFile = new Scanner(maniFileAsStream).useDelimiter("\\A").next();
-		pa = new ManifestParser();
-		return getApp(pa, maniFile);
+		return getApp(maniFile);
 		
 	}
 	
@@ -90,8 +89,7 @@ public class AppFactory {
 		URL appURL = new URL(url);
 		String maniFile = null;
 		maniFile = new Scanner((InputStream) appURL.getContent()).useDelimiter("\\A").next();
-		pa = new ManifestParser();
-		return getApp(pa, maniFile);
+		return getApp(maniFile);
 		
 	}
 	
@@ -105,8 +103,9 @@ public class AppFactory {
 	 * @throws IOException
 	 * @should return an App
 	 */
-	private static App getApp(ManifestParser pa, String manifestJsonText) throws IOException, ParseException {
+	private static App getApp(String manifestJsonText) throws IOException, ParseException {
 		App app = new App();
+		pa = new ManifestParser();
 		pa.parse(manifestJsonText);
 		app.setName((String) pa.get(NAME));
 		
