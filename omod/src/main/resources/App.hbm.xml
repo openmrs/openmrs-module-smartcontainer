@@ -17,6 +17,7 @@
         <property name="sMARTAppId" type="string" column="smart_id"/>
         <property name="defaultApp" type="boolean" column="default_app"/>
         <property name="retire" type="boolean" column="retire"/>
+        <property name="manifest" type="string" column="manifest" length="16777215"/>
         <many-to-one name="activity"
                      class="org.openmrs.module.smartcontainer.app.Activity" cascade="all">
             <column name="activity_id"/>

@@ -27,6 +27,7 @@ import org.json.simple.parser.ParseException;
 /**
  * Used to construct a SMART App from its manifest file
  */
+@SuppressWarnings("rawtypes")
 public class AppFactory {
 	
 	public static Log log = LogFactory.getLog(AppFactory.class);
@@ -73,10 +74,8 @@ public class AppFactory {
 	 */
 	public static App getAppFromLocalFile(InputStream maniFileAsStream) throws ParseException, IOException {
 		String maniFile = new Scanner(maniFileAsStream).useDelimiter("\\A").next();
-		App app = new App();
 		pa = new ManifestParser();
-		pa.parse(maniFile);
-		return getApp(app, pa);
+		return getApp(pa, maniFile);
 		
 	}
 	
@@ -89,25 +88,26 @@ public class AppFactory {
 	 */
 	public static App getAppFromUrl(String url) throws MalformedURLException, IOException, ParseException {
 		URL appURL = new URL(url);
-		App app = new App();
 		String maniFile = null;
 		maniFile = new Scanner((InputStream) appURL.getContent()).useDelimiter("\\A").next();
 		pa = new ManifestParser();
-		pa.parse(maniFile);
-		return getApp(app, pa);
+		return getApp(pa, maniFile);
 		
 	}
 	
 	/**
 	 * helper method
 	 * 
-	 * @param app2
 	 * @param pa
+	 * @param manifestJsonText
 	 * @return
+	 * @throws ParseException
+	 * @throws IOException
 	 * @should return an App
 	 */
-	private static App getApp(App app, ManifestParser pa) {
-		
+	private static App getApp(ManifestParser pa, String manifestJsonText) throws IOException, ParseException {
+		App app = new App();
+		pa.parse(manifestJsonText);
 		app.setName((String) pa.get(NAME));
 		
 		app.setAuthor((String) pa.get(AUTHOR));
@@ -120,7 +120,7 @@ public class AppFactory {
 		app.setMode((String) pa.get(MODE));
 		app.setsMARTAppId((String) pa.get(SMARTAPPID));
 		app.setVersion((String) pa.get(VERSION));
-		
+		app.setManifest(manifestJsonText);
 		setActivity(app, (Map) pa.get(ACTIVITY));
 		
 		setWebhook(app, (Map) pa.get(WEBHOOK));

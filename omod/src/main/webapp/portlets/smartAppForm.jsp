@@ -1,11 +1,7 @@
 <%@ include file="/WEB-INF/template/include.jsp"%>
 
-<!--<script-->
-<!--	src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>-->
-<openmrs:htmlInclude file="/moduleResources/smartcontainer/class.js" />
-<openmrs:htmlInclude file="/moduleResources/smartcontainer/smart-api-container.js" />
 <openmrs:htmlInclude file="/moduleResources/smartcontainer/jschannel.js" />
-<openmrs:htmlInclude file="/moduleResources/smartcontainer/smart.css" />
+<openmrs:htmlInclude file="/moduleResources/smartcontainer/smart-api-container.js" />
 <openmrs:htmlInclude file="/dwr/interface/DWRSmartService.js" />
 
 <style type="text/css">
@@ -55,7 +51,7 @@
 	border: 2px dotted #ddd;
 }
 
-.activity_iframe {
+.display_iframe {
 	width: 100%; 
 	height: 100%;
 	border: 0px;
@@ -68,58 +64,42 @@
 }
 </style>
 <script type="text/javascript">
-	var SMART_HELPER = {};
 	var already_running = {};
 	var selectedAppId;
 	var appIdAccessTokenMap = new Object();
 	var needToReload = false;
-
-	SMART_HELPER.handle_record_info = function(app, callback) {
-		callback({
-			'user' : {
-				'id' : '${model.currentUser.userId}',
-				'full_name' : '${model.currentUser.personName}'
-			},
-			'record' : {
-				'full_name' : '${model.patient.personName}',
-				'id' : '${model.patient.patientId}'
-			},
-			'credentials' : {
-				'token' : '',
-				'secret' : '',
-				'oauth_cookie' : ''
-			}
-		});
+	var SMART_HOST = new SMART_CONNECT_HOST();
+	var smartIdManifestMap = new Object();
+	
+	var simple_context = { 
+		record: {
+			full_name : '${model.patient.personName}',
+			id: '${model.patient.patientId}'
+		},
+		user: {
+			id : '${model.currentUser.userId}',
+			full_name : '${model.currentUser.personName}'
+		}
 	};
-
-	var appURL
-
-	SMART_HELPER.handle_start_activity = function(activity, callback) {
-
-		var url = appURL;
-		var frame_id = "app_content_iframe_" + randomUUID();
+	
+	SMART_HOST.get_credentials = function (app_instance, callback){
+		callback({});
+	};
+	
+	SMART_HOST.get_iframe = function (app_instance, callback){
+	   	var frame_id = "app_content_iframe_" + app_instance.uuid;
 		var h = $j('#iframe_holder');
 		$j("iframe", h).hide();
 
-		var frame = $j('<iframe SEAMLESS class="activity_iframe" src="'+url+'" id="'+frame_id+'">  </iframe>')
+		var frame = $j('<iframe SEAMLESS class="display_iframe" src="about:blank" id="'+frame_id+'">  </iframe>')
 		h.append(frame);
 		callback(frame[0]);
 
 		$j(window).resize();
-		already_running[activity.app] = frame_id;
-	};
-	$j(window).resize(function() {
-		var h = $j('#iframe_holder');
-		var o = $j("#app_selector").offset();
-		var available_h = window.innerHeight - o.top - 20;
-		h.height(available_h);
-		$j('.activity_iframe').height(available_h);
-	});
-	SMART_HELPER.handle_resume_activity = function(activity, callback) {
-		console.log("resume activity");
+		already_running[app_instance.manifest.id] = frame_id;
 	};
 
-	SMART_HELPER.handle_api = function(activity, api_call, callback) {
+	SMART_HOST.handle_api = function(app_instance, api_call, callback) {
 		if (api_call.method == "GET"
 				&& api_call.func.match(/^\/capabilities\/$/)) {
 			callback("<?xml version='1.0' encoding='utf-8'?>\
@@ -130,43 +110,37 @@
 				    <sp:capability rdf:resource='http://smartplatforms.org/capability/SNOMED/lookup'/>\
 				    </rdf:Description>\
 				</rdf:RDF>");
-		}
-
-		else {
+			
+		}else {
 			var array = api_call.func.split("/");
 			var pid = array[2].valueOf();
 			var type = array[3];
-			if (!activity.params)
-				activity.params = {};
+			if (!api_call.params)
+				api_call.params = {};
 			//send the name of the param as the authorization header value
-			activity.params['appId'] = selectedAppId;
-			activity.params['accessToken'] = appIdAccessTokenMap[selectedAppId];
+			api_call.params['appId'] = selectedAppId;
+			api_call.params['accessToken'] = appIdAccessTokenMap[selectedAppId];
+			
 			$j.ajax({
 				dataType : "text",
 				url : "${pageContext.request.contextPath}"
 						+ "/ws/smartcontainer/api" +api_call.func,
-				contentType : activity.contentType,
-				data : activity.params,
-				type : activity.method,
+				contentType : api_call.contentType,
+				data : api_call.params,
+				type : api_call.method,
 				success : callback,
 				error : function(data) {
 					alert("error");
 				}
 			});
 		}
-
 	};
-
-	SMART = new SMART_CONTAINER(SMART_HELPER);
-
-	var appSelected = function(app_id, url, containerAppId) {
+	
+	var appSelected = function(app_id, containerAppId) {
 		selectedAppId = containerAppId;
 		if (already_running[app_id] == null) {
-
-			appURL = url
-			SMART.start_activity("main", app_id);
+			SMART_HOST.launch_app(smartIdManifestMap[selectedAppId], simple_context);
 		} else {
-
 			var h = $j('#iframe_holder');
 			$j("iframe", h).hide();
 			$j("#" + already_running[app_id]).show();
@@ -209,6 +183,14 @@
 			}
 		});
 	}
+	
+	$j(window).resize(function() {
+		var h = $j('#iframe_holder');
+		var o = $j("#app_selector").offset();
+		var available_h = window.innerHeight - o.top - 20;
+		h.height(available_h);
+		$j('.display_iframe').height(available_h);
+	});
 </script>
 <c:if test="${fn:length(model.visibleApps) == 0}">
 	<spring:message code="smartcontainer.noappsinstalledOrshowHidden"/>
@@ -225,10 +207,10 @@
 	<tbody>
 		<c:forEach items="${model.visibleApps}" var="app" varStatus="status">
 			<tr>
-				<td onclick="appSelected('${app.sMARTAppId}','${app.activity.activityURL}', '${app.appId}')">
+				<td onclick="appSelected('${app.sMARTAppId}', '${app.appId}')">
 					<input type="image" src="${app.icon}" />
 				</td>
-				<td onclick="appSelected('${app.sMARTAppId}','${app.activity.activityURL}', '${app.appId}')">
+				<td onclick="appSelected('${app.sMARTAppId}', '${app.appId}')">
 					<a>${app.name}</a>
 				</td>
 				<td>
@@ -238,6 +220,7 @@
 			</tr>
 			<script type="text/javascript">
 				appIdAccessTokenMap['${app.appId}'] = '${model.appTokenMap[app.appId]}';
+				smartIdManifestMap['${app.appId}'] = ${app.manifest};
 			</script>
 		</c:forEach>
 	</tbody>

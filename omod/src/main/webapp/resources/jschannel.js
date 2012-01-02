@@ -1,5 +1,5 @@
 /**
- * js_channel is a very lightweight abstraction on top of
+ * server js_channel is a very lightweight abstraction on top of
  * postMessage which defines message formats and semantics
  * to support interactions more rich than just message passing
  * js_channel supports:
@@ -535,7 +535,7 @@
 
             obj.bind('__ready', onReady);
             setTimeout(function() {
- 	        if (cfg.origin !== null)
+		if (cfg.origin !== null)
                 postMessage({ method: scopeMethod('__ready'), params: "ping" }, true);
             }, 0);
 

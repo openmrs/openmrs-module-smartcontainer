@@ -1,9 +1,10 @@
 /*
- * The SMArt container side of the API
- *
+ * SMART Connect Host:  container side of the SMART Connect API
  * Josh Mandel
  * Ben Adida
  */
+
+(function(window) {
 
 // simple pattern to match URLs with http or https
 var __SMART_URL_PATTERN = /^(https?:\/\/[^/]+)/;
@@ -12,196 +13,297 @@ var __SMART_URL_PATTERN = /^(https?:\/\/[^/]+)/;
 function __SMART_extract_origin(url) {
     var match = url.match(__SMART_URL_PATTERN);
     if (match)
-	return match[1];
+	return match[1].toLowerCase();
     else
 	return null;
 }
 
-SMART_CONTAINER = Class.extend({
 
-    init: function(SMART_HELPER) {
-	    this.debug = false;
-	    this.SMART_HELPER = SMART_HELPER;
-	    this.activities = {};
-	},
-
-
-    callback: function(f, params) {
-	    var _this = this;
-	    return function() {return f.apply(_this, arguments);};
-    },
-
-    context_changed: function() {
-    	jQuery.each(this.activities, function(aid, a){
-    		var c = a.channel;
-    		if (c)  {
-        	    c.call({method: "activitydestroy", success: function(){}});
-    			c.destroy();
-    		}
-    	});
-
-	    this.activities = {};	    
-    },
-
-    receive_api_call: function(activity, message, callback) {
-	    this.SMART_HELPER.handle_api(activity, message, function(r){callback({contentType: "xml",  data: r})});	    
-    },
-
-    receive_ready: function(activity, callback) {	    
-	    var _this = this;
-
-	    var message = activity.context;
-	    activity.ready = true;
-		message.activity_id = activity.uuid;
-		message.ready_data = activity.ready_data;
-	        message.iframe_width = jQuery(activity.iframe).width();
-   	        message.iframe_height = jQuery(activity.iframe).height();
-		callback(message);
-		activity.channel.destroy();
-		
-		activity.channel  = Channel.build(
-	          {window: activity.iframe.contentWindow, 
-	           origin: activity.origin, 
-	           scope: activity.uuid, 
-	           debugOutput: _this.debug});
-		
-		activity.channel.bind("api_call", function(t, p) {
-			t.delayReturn(true);
-			_this.receive_api_call(activity, p, t.complete);
-		});
-
-		activity.channel.bind("adjust_size", function(t, p) {
-			_this.SMART_HELPER.handle_adjust_size(activity, p);
-  	        });
-
-		activity.channel.bind("start_activity", function(t, p) {
-			t.delayReturn(true);
-			_this.receive_start_activity_message(activity, p, t.complete);
-		});
-
-		activity.channel.bind("end_activity", function(t, p) {
-			t.delayReturn(true);
-			_this.receive_end_activity_message(activity,p);
-		});
-
-		activity.channel.bind("restart_activity", function(t, p) {
-			t.delayReturn(true);
-			_this.receive_restart_activity_message(activity,t.complete);
-		});
-    },
-
-    foreground_activity: function(activity_id){
-    	var activity = this.activities[activity_id];
-	if (activity.channel !== undefined)
-	    activity.channel.call({method: "activityforeground", success: function(){}});
-    },
-
-    background_activity: function(activity_id){
-    	var activity = this.activities[activity_id];
-	if (activity.channel !== undefined)
-	    activity.channel.call({method: "activitybackground", success: function(){}});
-    },
+window.SMART_CONNECT_HOST = function() {
     
-    start_activity: function(activity_name, app){
-    	var message = {
-			   name: activity_name,
-			   app: app
-			   };
-    	
-    	this.receive_start_activity_message(null, message);
-    },
-    
+    var sc = this;
 
-    end_activity: function(activity_id){
-    	var activity = this.activities[activity_id];
-    	this.receive_end_activity_message(activity, {response: null});
-    },
+    /*
+      Begin public interface to SMART_CONTAINER object
+    */
 
-    receive_restart_activity_message: function(activity, callback) {
-	    var _this = this;
-    	callback(true);
-    	activity.channel.destroy();
-	
-    	this.clear_unbound_channels();
-    	
-	    activity.channel  = Channel.build({window: activity.iframe.contentWindow, 
-	    								   origin: activity.origin, 
-	    								   scope: "not_ready", 
-	    								   debugOutput: _this.debug});
+    sc.debug = false;
+    sc.running_apps = {};
 
-	    activity.channel.bind("ready", function(t, p) {
-		    t.delayReturn(true);
-		    _this.receive_ready(activity, t.complete);
-	      	});
-    },
+    sc.handle_context_changed = function() { };
+    sc.on_app_ready = function(a){ };
 
-    
-    receive_end_activity_message: function(activity, message) {
-    	var caller = activity.caller;
-    	var response = message.response;    	
-	
-    	if (caller === undefined) return;
+    sc.on_app_launch_begin =    function(a,callback){ callback(); };
+    sc.on_app_launch_complete = function(a,callback) { callback(); };
 
-    	this.SMART_HELPER.handle_resume_activity(
-						 caller, 
-						 function() {
-							 caller.callbacks[activity.uuid]({contentType: "xml", data: response});
-						 });
-    },
+    sc.on_app_launch_delegated_begin =    function(a,callback){ callback(); };
+    sc.on_app_launch_delegated_complete = function(a,callback) { callback(); };
 
-    receive_start_activity_message: function(activity, message, callback) {
-    	var uuid = randomUUID();
-    	if (activity !== null) {
-    		if (activity.callbacks === undefined)
-    			activity.callbacks = {};
-    		activity.callbacks[uuid] = callback;
+    sc.get_credentials = function() {
+	var err = "Must override SMART_CONNECT_HOST.get_credentials";
+	console.log(err);
+	throw err;
+    };
+
+    sc.get_iframe = function() {
+	var err = "Must override SMART_CONNECT_HOST.get_iframe";
+	console.log(err);
+	throw err;
+    };
+
+    sc.get_iframe = function() {
+	var err = "Must override SMART_CONNECT_HOST.handle_api";
+	console.log(err);
+	throw err;
+    };
+
+    sc.destroy_app_instance = function(app_instance) {
+    	var c = app_instance.channel;
+    	if (c)  {
+            c.notify({method: "destroy"});
+    	    c.destroy();
     	}
+	if (app_instance.iframe)
+	{
+	    jQuery(app_instance.iframe).remove();
+	}
 
-    	this.clear_unbound_channels();
-    	
-    	var new_activity = this.activities[uuid]= {
-    		uuid: uuid,
-    		caller: activity,
-			name: message.name,
-			app: message.app,
-			ready_data: message.ready_data,
-			ready: false
-		};
-    	
-	var _this = this;
-	this.SMART_HELPER.handle_start_activity(
-			new_activity, 
-			function(iframe) {
-			    var origin  = __SMART_extract_origin(jQuery(iframe).attr('src'));
-			    new_activity.origin = origin;
-			    new_activity.iframe = iframe;
-		    	new_activity.channel  = Channel.build({window: iframe.contentWindow, origin: origin, scope: "not_ready", debugOutput: _this.debug});							    
+	delete sc.running_apps[app_instance.uuid];
+    };
 
-		    	// Make sure we've received context var before letting the app call "ready" 
-		    	// to avoid a race condition.  (We could, alternatively, poll on  context 
-		    	// when "ready" is called.)
-			    _this.SMART_HELPER.handle_record_info(new_activity, function(context) {
-			    	new_activity.context = context;
+    sc.record_context_changed = function() {	
+    	jQuery.each(sc.running_apps, function(aid, a){
+	    if (a.manifest.scope !== "record") return;
+	    sc.destroy_app_instance(a);
+	});
+    };
 
-			    	new_activity.channel.bind("ready", function(t, p) {
-					    t.delayReturn(true);
-					    _this.receive_ready(new_activity, t.complete);
-				      	});
-			    });
-		});
-    },
-    
-    clear_unbound_channels: function() {
-	    jQuery.each(this.activities, function(aid, activity) {
-	    	if (activity.ready === false && activity.channel !== undefined)
-	    	{	
-	    		activity.channel.destroy();
-	    		activity.channel = undefined;
-	    	}
+    sc.notify_app_foregrounded= function(app_instance_id){
+    	var app_instance = sc.running_apps[app_instance_id];
+	if (app_instance.channel !== undefined)
+	    app_instance.channel.notify({method: "foreground"});
+    };
+
+    sc.notify_app_backgrounded = function(app_instance_id){
+    	var app_instance = sc.running_apps[app_instance_id];
+	if (app_instance.channel !== undefined)
+	    app_instance.channel.notify({method: "background"});
+    };
+
+
+    sc.notify_app_destroyed = function(app_instance_id){
+    	var app_instance = sc.running_apps[app_instance_id];
+	if (app_instance.channel !== undefined)
+	    app_instance.channel.notify({method: "destroy"});
+    };
+  
+    sc.launch_app = function(manifest, context, options) {
+
+	if (typeof manifest !== "object" || typeof manifest.id !== "string") {
+	    throw "Expected an app manifest!";
+	}
+	
+	var uuid = randomUUID();
+	var app_instance = sc.running_apps[uuid] = {
+	    uuid: uuid,
+	    manifest: manifest,
+	    context: context,
+	    options: options
+	};
+
+	begin_launch_wrapper(app_instance)
+	    .pipe(get_credentials_wrapper)
+	    .pipe(get_iframe_wrapper)
+	    .pipe(function() {
+		var launch_url = app_instance.manifest.index;
+		var base_url =  app_instance.manifest.base_url;
+		launch_url = launch_url.replace("{base_url}", base_url);
+
+		launch_url += "?oauth_header="+
+		    encodeURIComponent(app_instance.credentials.oauth_header);
+
+		app_instance.origin = __SMART_extract_origin(launch_url);
+		app_instance.iframe.src = launch_url;
+		return app_instance;
+	    })
+	    .pipe(complete_launch_wrapper);	
+    };    
+
+
+    /*
+      Beyond here are private functions, not exposed on the SMART_CONTAINER object.
+      (Note: channel calls, accessible via postMessage, are defined below.)
+     */
+
+    var generate_ready_message = function(app_instance, callback) {	    
+	var message = { 
+	    context: app_instance.context,
+	    credentials: app_instance.credentials,
+	    uuid: app_instance.uuid,
+	    manifest: app_instance.manifest,
+	    ready_data: app_instance.ready_data
+	};
+	
+	return message;
+    };
+
+
+    var begin_launch_wrapper = function(app_instance) {
+	var dfd = jQuery.Deferred();
+	sc.on_app_launch_begin(app_instance, function(r){
+	    dfd.resolve(app_instance);
+	});
+	
+	return dfd.promise();
+    };
+
+    var complete_launch_wrapper = function(app_instance) {
+	var dfd = jQuery.Deferred();
+	sc.on_app_launch_complete(app_instance, function(r){
+	    dfd.resolve(app_instance);
+	});
+	return dfd.promise();
+    };
+
+    var begin_launch_delegated_wrapper = function(app_instance) {
+	var dfd = jQuery.Deferred();
+	sc.on_app_launch_delegated_begin(app_instance, function(r){
+	    dfd.resolve(app_instance);
+	});
+	
+	return dfd.promise();
+    };
+
+    var complete_launch_delegated_wrapper = function(app_instance) {
+	var dfd = jQuery.Deferred();
+	sc.on_app_launch_delegated_complete(app_instance, function(r){
+	    dfd.resolve(app_instance);
+	});
+	return dfd.promise();
+    };
+
+    var get_credentials_wrapper = function(app_instance) {
+	var dfd = jQuery.Deferred();
+	sc.get_credentials(app_instance, function(r) {
+	    app_instance.credentials = r;
+	    dfd.resolve(app_instance)
+	});
+	return dfd.promise();
+    };
+
+    var get_iframe_wrapper = function(app_instance) {
+	var dfd = jQuery.Deferred();
+	sc.get_iframe(app_instance, function(r) {
+	    app_instance.iframe = r;
+	    dfd.resolve(app_instance)
+	});
+	return dfd.promise();
+    };
+
+
+    var receive_api_call = function(app_instance, call_info, callback) {
+	sc.handle_api(app_instance, 
+				     call_info, 
+				     function(r){
+					 callback({
+					     contentType: "text",  
+					     data: r})
+				     });	    
+    };
+
+    var procureChannel = function(event){
+	var app_instance = null;
+	if (event.data !== '"procure_channel"') return;
+
+	jQuery.each(sc.running_apps, function(aid, a) {
+	    if (a.iframe && a.iframe.contentWindow === event.source)
+		app_instance = a;
+	});
+	
+	if (app_instance) {
+	    bind_new_channel(app_instance);
+	    event.source.postMessage('"app_instance_uuid='+app_instance.uuid+'"', app_instance.origin);
+	}
+    };
+
+    if (window.addEventListener) window.addEventListener('message', procureChannel, false);
+    else if(window.attachEvent) window.attachEvent('onmessage', procureChannel);
+
+    // Once an app launches, discover which iframe it belongs to,
+    // and create a new jschannel bound to that iframe.
+    // If necessary, bind functions to the channel according to app type.
+    var bind_new_channel = function(app_instance) {
+	
+	app_instance.channel && app_instance.channel.destroy();
+	
+	app_instance.channel  = Channel.build({
+	    window: app_instance.iframe.contentWindow, 
+	    origin: app_instance.origin, 
+	    scope: app_instance.uuid, 
+	    debugOutput: sc.debug
+	});
+	
+	bind_app_channel(app_instance);
+	
+	if (app_instance.manifest.mode == "frame_ui")
+	    bind_emr_frame_app_channel(app_instance);
+	
+	if (app_instance.manifest.mode == "ui")
+	    bind_ui_app_channel(app_instance);
+
+	var ready_data = generate_ready_message(app_instance);
+
+	app_instance.channel.call({
+	    method: "ready",
+	    params: ready_data,
+	    success: function(){sc.on_app_ready(app_instance);}
+	});
+
+    };
+
+    var bind_emr_frame_app_channel = function(app_instance) {
+	    app_instance.channel.bind("api_call_delegated", function(t, p) {
+		
+		t.delayReturn(true);
+		var on_behalf_of = p.app_instance;
+		var call_info = p.call_info;
+
+		receive_api_call(on_behalf_of, call_info, t.complete); 
 	    });
-    }
 
- });
+	    app_instance.channel.bind("launch_app_delegated", function(t, p) {
+		t.delayReturn(true);
+
+		var new_app_instance = p;
+
+		begin_launch_delegated_wrapper(new_app_instance)
+		    .pipe(get_credentials_wrapper)
+		    .pipe(function() {
+			var uuid = new_app_instance.uuid;
+			t.complete(new_app_instance);
+			return new_app_instance;
+		    })
+		    .pipe(complete_launch_delegated_wrapper);	
+	    });
+    };
+
+    var bind_ui_app_channel = function(app_instance) {
+	    app_instance.channel.bind("call_app_and_wait", function(t, p) {
+		t.delayReturn(true);
+		receive_call_app_and_wait(app_instance, p, t.complete);
+	    });
+    };
+
+    var bind_app_channel = function(app_instance) {
+
+	app_instance.channel.bind("api_call", function(t, p) {
+	    t.delayReturn(true);
+	    receive_api_call(app_instance, p, t.complete);
+	});
+	
+    };
+
+};
 
 function randomUUID() {
 	var s = [], itoh = '0123456789ABCDEF';
@@ -220,3 +322,5 @@ function randomUUID() {
 	s[8] = s[13] = s[18] = s[23] = '-';
 	return s.join('');
 };
+
+})(window);
