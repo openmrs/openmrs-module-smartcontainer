@@ -48,13 +48,6 @@
             <type>jar</type>
             <scope>compile</scope>
         </dependency>
-        <dependency>
-            <groupId>com.sdicons.jsontools</groupId>
-            <artifactId>jsontools-core</artifactId>
-            <version>1.7</version>
-            <type>jar</type>
-            <scope>compile</scope>
-        </dependency>
 
 
         <dependency>
