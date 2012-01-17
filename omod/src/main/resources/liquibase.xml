@@ -121,16 +121,16 @@
                                  deferrable="false" initiallyDeferred="false" referencedColumnNames="user_id"
                                  referencedTableName="users"/>
     </changeSet>
-    <changeSet id="smartcontainer-2011-05-25-16:50" author="ajanthan">
+    <changeSet id="smartcontainer-2011-05-23-16:50" author="ajanthan">
         <preConditions onFail="MARK_RAN">
             <not>
-                <tableExists tableName="smartcontainer_user_hidden_app"/>
+                <tableExists tableName="smartcontainer_user_app"/>
             </not>
         </preConditions>
         <comment>
-            Creating the smartcontainer_user_hidden_app table
+            Creating the smartcontainer_user_app table
         </comment>
-        <createTable tableName="smartcontainer_user_hidden_app">
+        <createTable tableName="smartcontainer_user_app">
             <column defaultValueNumeric="0" name="smartcontainer_user_id"
                     type="int">
                 <constraints nullable="false"/>
@@ -141,25 +141,34 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet id="smartcontainer-2011-05-25-17:50" author="ajanthan">
+    <changeSet id="smartcontainer-2011-05-23-17:50" author="ajanthan">
         <addPrimaryKey columnNames="smartcontainer_app_id, smartcontainer_user_id"
-                       tableName="smartcontainer_user_hidden_app"/>
+                       tableName="smartcontainer_user_app"/>
     </changeSet>
     
-    <changeSet id="smartcontainer-2011-05-25-18:50" author="ajanthan">
+    <changeSet id="smartcontainer-2011-05-23-18:50" author="ajanthan">
         <addForeignKeyConstraint baseColumnNames="smartcontainer_app_id"
-                                 baseTableName="smartcontainer_user_hidden_app" constraintName="app_relation"
+                                 baseTableName="smartcontainer_user_app" constraintName="app_relation"
                                  deferrable="false" initiallyDeferred="false"
                                  referencedColumnNames="smartcontainer_app_id"
                                  referencedTableName="smartcontainer_app"/>
     </changeSet>
     
-    <changeSet id="smartcontainer-2011-05-25-19:50" author="ajanthan">
+    <changeSet id="smartcontainer-2011-05-24-19:50" author="ajanthan">
         <addForeignKeyConstraint baseColumnNames="smartcontainer_user_id"
-                                 baseTableName="smartcontainer_user_hidden_app" constraintName="user_app"
+                                 baseTableName="smartcontainer_user_app" constraintName="user_app"
                                  deferrable="false" initiallyDeferred="false"
                                  referencedColumnNames="smartcontainer_user_id"
                                  referencedTableName="smartcontainer_user"/>
+    </changeSet>
+    
+    <changeSet author="ajanthan" id="smartcontainer-2011-07-24-19:50">
+    	<validCheckSum>bff0e022d9c32d775139bb81ec9efcd</validCheckSum>
+    	<validCheckSum>a2fb56cb922a4d332dfe8bc22f280b4</validCheckSum>
+        <sql>
+            INSERT INTO smartcontainer_user(user_id)
+            SELECT user_id FROM users;
+        </sql>
     </changeSet>
     
     <changeSet author="ajanthan" id="smartcontainer-2011-07-25-19:50">
@@ -170,11 +179,11 @@
         </addColumn>
     </changeSet>
     
-    <changeSet author="ajanthan" id="smartcontainer-2011-07-26-19:50">
-    	<comment>Adding all existing users to smartcontainer_user table</comment>
-    	<sql>
-            INSERT INTO smartcontainer_user(user_id)
-            SELECT user_id FROM users;
-        </sql>
+    <changeSet id="smartcontainer-2012-01-17-11:50" author="wyclif">
+    	<preConditions onFail="MARK_RAN">
+             <tableExists tableName="smartcontainer_user_app"/>
+        </preConditions>
+    	<comment>Renaming smartcontainer_user_app table to smartcontainer_user_hidden_app</comment>
+        <renameTable newTableName="smartcontainer_user_hidden_app" oldTableName="smartcontainer_user_app"/>
     </changeSet>
 </databaseChangeLog>
