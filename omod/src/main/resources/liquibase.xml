@@ -182,6 +182,7 @@
     <changeSet id="smartcontainer-2012-01-17-11:50" author="wyclif">
     	<preConditions onFail="MARK_RAN">
              <tableExists tableName="smartcontainer_user_app"/>
+             <not><tableExists tableName="smartcontainer_user_hidden_app"/></not>
         </preConditions>
     	<comment>Renaming smartcontainer_user_app table to smartcontainer_user_hidden_app</comment>
         <renameTable newTableName="smartcontainer_user_hidden_app" oldTableName="smartcontainer_user_app"/>
