@@ -187,4 +187,14 @@
     	<comment>Renaming smartcontainer_user_app table to smartcontainer_user_hidden_app</comment>
         <renameTable newTableName="smartcontainer_user_hidden_app" oldTableName="smartcontainer_user_app"/>
     </changeSet>
+    
+    <changeSet id="smartcontainer-2012-01-17-13:53" author="wyclif">
+    	<preConditions onFail="MARK_RAN">
+             <not><columnExists tableName="smartcontainer_app" columnName="manifest"/></not>
+        </preConditions>
+    	<comment>Adding manifest column to smartcontainer_app table</comment>
+        <addColumn tableName="smartcontainer_app">
+        	<column name="manifest" type="mediumtext"/>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>
