@@ -1,0 +1,5 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+	<smartcontainer_app smartcontainer_app_id="6" name="test app1" author="test author1" smart_id="test1@sample-apps.org" retire="0" />
+	<smartcontainer_app smartcontainer_app_id="7" name="test app2" author="test author2" smart_id="test2@sample-apps.org" retire="1" />
+</dataset>

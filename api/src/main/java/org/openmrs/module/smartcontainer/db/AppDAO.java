@@ -13,9 +13,11 @@
  */
 package org.openmrs.module.smartcontainer.db;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.openmrs.api.db.DAOException;
+import org.openmrs.module.smartcontainer.SmartAppService;
 import org.openmrs.module.smartcontainer.app.App;
 
 /**
@@ -54,4 +56,12 @@ public interface AppDAO {
 	 * @param newApp
 	 */
 	public void save(App newApp);
+	
+	/**
+	 * Gets all apps excluding apps with the specified appIds
+	 * 
+	 * @see SmartAppService#getUserVisibleApps(org.openmrs.module.smartcontainer.SmartUser)
+	 * @return a list of {@link App}s
+	 */
+	public List<App> getApps(Collection<Integer> exclude);
 }

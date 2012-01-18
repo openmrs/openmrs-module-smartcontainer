@@ -73,4 +73,14 @@ public interface SmartAppService {
 	 * @param newApp
 	 */
 	public void saveApp(App newApp);
+	
+	/**
+	 * Gets all the none hidden apps for the specified smart user
+	 * 
+	 * @param smartUser the {@link SmartUser} whose visible apps to fetch
+	 * @return a collection of visible {@link App}s
+	 * @should get all the un retired none hidden apps for the specified smart user
+	 * @should return all un retired apps if the user has no hidden apps
+	 */
+	public Collection<App> getUserVisibleApps(SmartUser smartUser);
 }

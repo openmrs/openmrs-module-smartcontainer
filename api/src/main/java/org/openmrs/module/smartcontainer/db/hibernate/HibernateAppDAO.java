@@ -13,12 +13,15 @@
  */
 package org.openmrs.module.smartcontainer.db.hibernate;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.openmrs.api.db.DAOException;
 import org.openmrs.module.smartcontainer.app.App;
 import org.openmrs.module.smartcontainer.db.AppDAO;
@@ -100,5 +103,17 @@ public class HibernateAppDAO implements AppDAO {
 	public void save(App newApp) {
 		sessionFactory.getCurrentSession().saveOrUpdate(newApp);
 		
+	}
+	
+	/**
+	 * @see org.openmrs.module.smartcontainer.db.AppDAO#getApps(Collection)
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<App> getApps(Collection<Integer> exclude) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(App.class);
+		criteria.add(Restrictions.not(Restrictions.in("appId", exclude)));
+		criteria.add(Restrictions.eq("retire", false));
+		return criteria.list();
 	}
 }

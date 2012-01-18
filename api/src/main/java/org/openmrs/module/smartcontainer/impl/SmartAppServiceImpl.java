@@ -13,10 +13,15 @@
  */
 package org.openmrs.module.smartcontainer.impl;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import org.openmrs.api.APIException;
+import org.openmrs.api.context.Context;
 import org.openmrs.module.smartcontainer.SmartAppService;
+import org.openmrs.module.smartcontainer.SmartUser;
 import org.openmrs.module.smartcontainer.app.App;
 import org.openmrs.module.smartcontainer.db.AppDAO;
 
@@ -76,5 +81,25 @@ public class SmartAppServiceImpl implements SmartAppService {
 	public void saveApp(App newApp) {
 		dao.save(newApp);
 		
+	}
+	
+	/**
+	 * @see org.openmrs.module.smartcontainer.SmartAppService#getUserVisibleApps(org.openmrs.User)
+	 */
+	@Override
+	public Collection<App> getUserVisibleApps(SmartUser smartUser) {
+		if (smartUser != null) {
+			Collection<App> hiddenApps = smartUser.getHiddenApps();
+			if (hiddenApps.size() == 0)
+				return Context.getService(SmartAppService.class).getAllApps();
+			
+			List<Integer> appIdsToExclude = new ArrayList<Integer>(hiddenApps.size());
+			for (App app : smartUser.getHiddenApps()) {
+				appIdsToExclude.add(app.getAppId());
+			}
+			return dao.getApps(appIdsToExclude);
+		}
+		
+		return Collections.emptyList();
 	}
 }
