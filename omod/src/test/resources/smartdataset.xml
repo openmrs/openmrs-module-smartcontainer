@@ -12,63 +12,45 @@
             birthdate_estimated="0" dead="0" creator="1" date_created="2005-09-22 00:00:00"
             changed_by="1" date_changed="2011-08-02 13:04:45" voided="0"
             uuid="6bce0240-bb77-11e0-9815-001d723850fa"/>
-    <!-- Table smartcontainer_activity -->
-    <smartcontainer_activity
-            smartcontainer_activity_id="1" activity_name="main"
-            activity_url="http://sample-apps.smartplatforms.org/framework/cardio_risk_viz/bootstrap.html"/>
-    <smartcontainer_activity
-            smartcontainer_activity_id="2" activity_name="main"
-            activity_url="http://smartsim.takethewind.com/bootstrap.html"/>
-    <smartcontainer_activity
-            smartcontainer_activity_id="3" activity_name="main"
-            activity_url="http://sample-apps.smartplatforms.org/framework/pedi_bpc/bootstrap.html"/>
-    <smartcontainer_activity
-            smartcontainer_activity_id="4" activity_name="main"
-            activity_url="http://sample-apps.smartplatforms.org/framework/med_list/bootstrap.html"/>
-    <smartcontainer_activity
-            smartcontainer_activity_id="5" activity_name="main"
-            activity_url="http://sample-apps.smartplatforms.org/framework/problem_list/bootstrap.html"/>
-    <!-- Table smartcontainer_app -->
+    
+	<!-- Table smartcontainer_app -->
     <smartcontainer_app smartcontainer_app_id="1"
                         name="Cardiac Risk"
                         description="A Visualization of Cardiology Bloodwork Results with the Framingham Risk Score"
                         author="Implimentation: Arjun Sanyal, Children's Hospital Boston; Design: McCandless &amp; Posavec http://informationisbeautiful.net"
                         mode="ui" version=".1a" base_url="http://sample-apps.smartplatforms.org"
                         icon="http://sample-apps.smartplatforms.org/framework/cardio_risk_viz/icon.png"
-                        smart_id="cardiac_risk@apps.smartplatforms.org" default_app="0"
-                        activity_id="1" webhook_id="1" retire="0"/>
+                        smart_id="cardiac_risk@apps.smartplatforms.org" retire="0"/>
     <smartcontainer_app smartcontainer_app_id="2"
                         name="CARDIO SALUTIS"
                         description="Calculates the cardiovascular risk in 10 years based on the score algorithm"
                         author="smartsim" mode="ui" version=".1a" base_url="http://smartsim.takethewind.com"
                         icon="http://smartsim.takethewind.com/icon.png"
-                        smart_id="cardio_salutis@apps.smartplatforms.org"
-                        default_app="0" activity_id="2" webhook_id="2" retire="0"/>
+                        smart_id="cardio_salutis@apps.smartplatforms.org" retire="0"/>
     <smartcontainer_app smartcontainer_app_id="3" name="PediBPC"
                         description="Display pediatric blood pressures with calculated percentiles"
                         author="Nikolai Schwertner" mode="ui" version=".1a"
                         base_url="http://sample-apps.smartplatforms.org"
                         icon="http://sample-apps.smartplatforms.org/framework/pedi_bpc/icon.png"
-                        smart_id="pedi_bpc@apps.smartplatforms.org" default_app="0"
-                        activity_id="3" webhook_id="3" retire="0"/>
+                        smart_id="pedi_bpc@apps.smartplatforms.org" retire="0"/>
     <smartcontainer_app smartcontainer_app_id="4" name="Med List"
                         description="Display medications in a table or timeline view"
                         author="Josh Mandel, Children's Hospital Boston"
                         mode="ui" version=".1a" base_url="http://sample-apps.smartplatforms.org"
                         icon="http://sample-apps.smartplatforms.org/framework/med_list/icon.png"
-                        smart_id="med-list@apps.smartplatforms.org" default_app="0"
-                        activity_id="4" webhook_id="4" retire="0"/>
+                        smart_id="med-list@apps.smartplatforms.org" retire="0"/>
     <smartcontainer_app smartcontainer_app_id="5" name="Problems"
                         description="Display problems in a table view" author="Josh Mandel, Children's Hospital Boston"
                         mode="ui" version=".1a" base_url="http://sample-apps.smartplatforms.org"
                         icon="http://sample-apps.smartplatforms.org/framework/problem_list/icon.png"
-                        smart_id="problem-list@apps.smartplatforms.org" default_app="0"
-                        activity_id="5" webhook_id="5" retire="0"/>
+                        smart_id="problem-list@apps.smartplatforms.org" retire="0"/>
+    
     <!-- Table smartcontainer_user -->
     <smartcontainer_user smartcontainer_user_id="1"
                          user_id="1"/>
     <smartcontainer_user smartcontainer_user_id="2"
                          user_id="2"/>
+                         
     <!-- Table smartcontainer_user_hidden_app -->
     <smartcontainer_user_hidden_app
             smartcontainer_user_id="1" smartcontainer_app_id="1"/>
@@ -80,17 +62,7 @@
             smartcontainer_user_id="1" smartcontainer_app_id="4"/>
     <smartcontainer_user_hidden_app
             smartcontainer_user_id="1" smartcontainer_app_id="5"/>
-    <!-- Table smartcontainer_webhook -->
-    <smartcontainer_webhook
-            smartcontainer_webhook_id="1"/>
-    <smartcontainer_webhook
-            smartcontainer_webhook_id="2"/>
-    <smartcontainer_webhook
-            smartcontainer_webhook_id="3"/>
-    <smartcontainer_webhook
-            smartcontainer_webhook_id="4"/>
-    <smartcontainer_webhook
-            smartcontainer_webhook_id="5"/>
+            
     <!-- Table users -->
     <users user_id="1" system_id="admin" username=""
            password="9dec69ab38905531af03942f64c671d03a8749331937bf01e30f8a08718b7e949321b5d3c4795dc1c2fcfaa020b2315f82841ba6f6f56ed8a1894b0e40796f53"
