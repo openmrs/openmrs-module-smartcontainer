@@ -17,7 +17,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Map;
 import java.util.Scanner;
 
 import org.apache.commons.logging.Log;
@@ -27,7 +26,6 @@ import org.json.simple.parser.ParseException;
 /**
  * Used to construct a SMART App from its manifest file
  */
-@SuppressWarnings("rawtypes")
 public class AppFactory {
 	
 	public static Log log = LogFactory.getLog(AppFactory.class);
@@ -48,17 +46,7 @@ public class AppFactory {
 	
 	public static final String SMARTAPPID = "id";
 	
-	public static final String ACTIVITY = "activities";
-	
-	public static final String WEBHOOK = "web_hooks";
-	
-	public static final String DEFAULTAPP = "enabled_by_default";
-	
 	public static final String URL = "url";
-	
-	private static Activity activity;
-	
-	private static WebHook webHook;
 	
 	private static ManifestParser pa;
 	
@@ -111,7 +99,6 @@ public class AppFactory {
 		
 		app.setAuthor((String) pa.get(AUTHOR));
 		app.setBaseURL((String) pa.get(BASEURL));
-		app.setDefaultApp(Boolean.valueOf((String) pa.get(DEFAULTAPP)));
 		app.setDescription((String) pa.get(DESCRIPTION));
 		temp = (String) pa.get(ICON);
 		temp = removeBaseURL(temp, app.getBaseURL());
@@ -120,52 +107,8 @@ public class AppFactory {
 		app.setsMARTAppId((String) pa.get(SMARTAPPID));
 		app.setVersion((String) pa.get(VERSION));
 		app.setManifest(manifestJsonText);
-		setActivity(app, (Map) pa.get(ACTIVITY));
 		
-		setWebhook(app, (Map) pa.get(WEBHOOK));
 		return app;
-	}
-	
-	/**
-	 * helper method to set the web hooks
-	 * 
-	 * @param app2
-	 * @param string
-	 */
-	private static void setWebhook(App app, Map map) {
-		webHook = new WebHook();
-		if (map != null && !map.isEmpty()) {
-			// pa.parse(webhookString);
-			
-			webHook.setName((String) map.keySet().toArray()[0]);
-			map = (Map) (map.get(webHook.getName()));
-			webHook.setDescription((String) map.get(DESCRIPTION));
-			temp = (String) map.get(URL);
-			temp = removeBaseURL(temp, app.getBaseURL());
-			webHook.setURL(temp);
-			app.setWebHook(webHook);
-		} else {
-			app.setWebHook(webHook);
-		}
-		
-	}
-	
-	/**
-	 * helper method to set the activity
-	 * 
-	 * @param app2
-	 * @param string
-	 */
-	private static void setActivity(App app, Map map) {
-		if (map != null && !map.isEmpty()) {
-			
-			activity = new Activity();
-			activity.setActivityName((String) map.keySet().toArray()[0]);
-			temp = (String) map.get(activity.getActivityName());
-			temp = removeBaseURL(temp, app.getBaseURL());
-			activity.setActivityURL(temp);
-			app.setActivity(activity);
-		}
 	}
 	
 	/**

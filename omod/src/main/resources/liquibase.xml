@@ -196,4 +196,60 @@
         	<column name="manifest" type="mediumtext"/>
         </addColumn>
     </changeSet>
+    
+    <changeSet id="smartcontainer-2012-01-17-16:00" author="wyclif">
+    	<preConditions onFail="MARK_RAN">
+             <foreignKeyConstraintExists foreignKeyName="activity_app"/>
+        </preConditions>
+    	<comment>Dropping foreign key constraint on smartcontainer_app.activity_id table</comment>
+        <dropForeignKeyConstraint baseTableName="smartcontainer_app" constraintName="activity_app"/>
+    </changeSet>
+    
+    <changeSet id="smartcontainer-2012-01-17-16:01" author="wyclif">
+    	<preConditions onFail="MARK_RAN">
+             <foreignKeyConstraintExists foreignKeyName="webhook_app"/>
+        </preConditions>
+    	<comment>Dropping foreign key constraint on smartcontainer_app.webhook_id table</comment>
+        <dropForeignKeyConstraint baseTableName="smartcontainer_app" constraintName="webhook_app"/>
+    </changeSet>
+    
+    <changeSet id="smartcontainer-2012-01-17-16:02" author="wyclif">
+    	<preConditions onFail="MARK_RAN">
+             <columnExists tableName="smartcontainer_app" columnName="default_app"/>
+        </preConditions>
+    	<comment>Dropping default_app column from smartcontainer_app table</comment>
+        <dropColumn tableName="smartcontainer_app" columnName="default_app"/>
+    </changeSet>
+    
+    <changeSet id="smartcontainer-2012-01-17-16:03" author="wyclif">
+    	<preConditions onFail="MARK_RAN">
+             <columnExists tableName="smartcontainer_app" columnName="activity_id"/>
+        </preConditions>
+    	<comment>Dropping activity_id column from smartcontainer_app table</comment>
+        <dropColumn tableName="smartcontainer_app" columnName="activity_id"/>
+    </changeSet>
+    
+    <changeSet id="smartcontainer-2012-01-17-16:04" author="wyclif">
+    	<preConditions onFail="MARK_RAN">
+             <columnExists tableName="smartcontainer_app" columnName="webhook_id"/>
+        </preConditions>
+    	<comment>Dropping webhook_id column from smartcontainer_app table</comment>
+        <dropColumn tableName="smartcontainer_app" columnName="webhook_id"/>
+    </changeSet>
+    
+    <changeSet id="smartcontainer-2012-01-17-16:05" author="wyclif">
+    	<preConditions onFail="MARK_RAN">
+             <tableExists tableName="smartcontainer_activity"/>
+        </preConditions>
+    	<comment>Dropping smartcontainer_activity table</comment>
+        <dropTable tableName="smartcontainer_activity"/>
+    </changeSet>
+    
+    <changeSet id="smartcontainer-2012-01-17-16:06" author="wyclif">
+    	<preConditions onFail="MARK_RAN">
+             <tableExists tableName="smartcontainer_webhook"/>
+        </preConditions>
+    	<comment>Dropping smartcontainer_webhook table</comment>
+        <dropTable tableName="smartcontainer_webhook"/>
+    </changeSet>
 </databaseChangeLog>

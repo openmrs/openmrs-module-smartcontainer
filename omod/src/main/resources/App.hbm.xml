@@ -15,16 +15,7 @@
         <property name="baseURL" type="string" column="base_url"/>
         <property name="icon" type="string" column="icon"/>
         <property name="sMARTAppId" type="string" column="smart_id"/>
-        <property name="defaultApp" type="boolean" column="default_app"/>
         <property name="retire" type="boolean" column="retire"/>
         <property name="manifest" type="string" column="manifest" length="16777215"/>
-        <many-to-one name="activity"
-                     class="org.openmrs.module.smartcontainer.app.Activity" cascade="all">
-            <column name="activity_id"/>
-        </many-to-one>
-        <many-to-one name="webHook" class="WebHook" cascade="all">
-            <column name="webhook_id"/>
-        </many-to-one>
-
     </class>
 </hibernate-mapping>

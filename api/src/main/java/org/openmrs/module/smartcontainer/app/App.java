@@ -36,12 +36,6 @@ public final class App {
 	
 	private String sMARTAppId;
 	
-	private Activity activity;
-	
-	private WebHook webHook;
-	
-	private Boolean defaultApp;
-	
 	private Boolean retire;
 	
 	private String manifest;
@@ -174,27 +168,6 @@ public final class App {
 	}
 	
 	/**
-	 * @return the activity
-	 */
-	public Activity getActivity() {
-		return activity;
-	}
-	
-	/**
-	 * @return the webHook
-	 */
-	public WebHook getWebHook() {
-		return webHook;
-	}
-	
-	/**
-	 * @return the defaultApp
-	 */
-	public Boolean getDefaultApp() {
-		return defaultApp;
-	}
-	
-	/**
 	 * @param author the author to set
 	 */
 	public void setAuthor(String author) {
@@ -234,27 +207,6 @@ public final class App {
 	 */
 	public void setsMARTAppId(String sMARTAppId) {
 		this.sMARTAppId = sMARTAppId;
-	}
-	
-	/**
-	 * @param activity the activity to set
-	 */
-	public void setActivity(Activity activity) {
-		this.activity = activity;
-	}
-	
-	/**
-	 * @param webHook the webHook to set
-	 */
-	public void setWebHook(WebHook webHook) {
-		this.webHook = webHook;
-	}
-	
-	/**
-	 * @param defaultApp the defaultApp to set
-	 */
-	public void setDefaultApp(Boolean defaultApp) {
-		this.defaultApp = defaultApp;
 	}
 	
 	/**
