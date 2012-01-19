@@ -131,13 +131,16 @@
 				type : api_call.method,
 				success : callback,
 				error : function(data) {
-					alert("error");
+					$j('#appNameHolder').html(smartIdManifestMap[selectedAppId].name);
+					$j('#appError').show();
 				}
 			});
 		}
 	};
 	
 	var appSelected = function(app_id, containerAppId) {
+		$j('#appNameHolder').html("");
+		$j('#appError').hide();
 		selectedAppId = containerAppId;
 		if (already_running[app_id] == null) {
 			SMART_HOST.launch_app(smartIdManifestMap[selectedAppId], simple_context);
@@ -168,6 +171,10 @@
 	});
 
 	function showOrHideSmartApp(appId, hide){
+		var appNameHolderId = (hide)?"#appNameHolder-hide":"#appNameHolder-show";
+		$j(appNameHolderId).html("");
+		var id = (hide)?"#errorMsg-hide":"#errorMsg-show";
+		$j(id).hide();
 		
 		DWRSmartService.showOrHideSmartApp(appId, hide, null, function(success) {
 			if(success && hide){
@@ -179,6 +186,8 @@
 				$j('#'+appId+'-row').hide();
 			}
 			else if(!success){
+				var appNameHolderId = (hide)?"#appNameHolder-hide":"#appNameHolder-show";
+				$j(appNameHolderId).html(smartIdManifestMap[appId].name);
 				var id = (hide)?"#errorMsg-hide":"#errorMsg-show";
 				$j(id).show();
 			}
@@ -196,9 +205,14 @@
 <c:if test="${fn:length(model.visibleApps) == 0}">
 	<spring:message code="smartcontainer.noappsinstalledOrshowHidden"/>
 </c:if>
+<div id="appError" class="error errorMsg leftAligned">
+	<spring:message code="smartcontainer.error.whileExecutingApp"/>&nbsp; <span id="appNameHolder"></span>
+</div>
+<div id="errorMsg-hide" class="error errorMsg leftAligned">
+	<spring:message code="smartcontainer.error.failedToSaveChangesFor"/>&nbsp; <span id="appNameHolder-hide"></span>
+</div>
 <div id="main">
 <div id="app_selector" style="float: left">
-<span id="errorMsg-hide" class="error errorMsg"><spring:message code="smartcontainer.failedToSaveChanges"/></span>
 
 <c:if test="${fn:length(model.hiddenApps) > 0}">
 <input class="smallButton" type="button" value='<spring:message code="smartcontainer.manageHiddenApps" />' 
@@ -233,7 +247,9 @@
 <div id="hiddenApps" title="<spring:message code="smartcontainer.manageHiddenApps"/>">
 	<form method="post">
 		<div id="errorMsg-show" class="errorMsg" style="text-align: center;">
-			<span class="error"><spring:message code="smartcontainer.failedToSaveChanges"/></span>
+			<span class="error">
+				<spring:message code="smartcontainer.error.failedToSaveChangesFor"/>&nbsp; <span id="appNameHolder-show"></span>
+			</span>
 		</div>
 		<table class="defaultSmartTable" cellpadding="3" cellspacing="0" width="100%">
 			<c:forEach var="hiddenApp" items="${model.hiddenApps}" varStatus="varStatus">
@@ -244,6 +260,9 @@
 							onclick="showOrHideSmartApp('${hiddenApp.appId}', false)" />
 					</td>
 				</tr>
+				<script type="text/javascript">
+					smartIdManifestMap['${hiddenApp.appId}'] = ${hiddenApp.manifest};
+				</script>
 			</c:forEach>
 			<tr>
 				<td colspan="2" style="padding-top: 20px" align="center">

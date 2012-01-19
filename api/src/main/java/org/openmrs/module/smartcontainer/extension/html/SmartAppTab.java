@@ -53,7 +53,7 @@ public class SmartAppTab extends PatientDashboardTabExt {
     @Override
     public String getTabName() {
 
-        return "SMART App";
+        return "smartcontainer.patientDasbhboardTab.title";
     }
 
 }
