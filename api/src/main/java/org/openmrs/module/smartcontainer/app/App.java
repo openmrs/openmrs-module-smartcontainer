@@ -36,16 +36,16 @@ public final class App {
 	
 	private String sMARTAppId;
 	
-	private Boolean retire;
+	private Boolean retired;
 	
 	private String manifest;
 	
-	public Boolean getRetire() {
-		return retire;
+	public Boolean getRetired() {
+		return retired;
 	}
 	
-	public void setRetire(Boolean retire) {
-		this.retire = retire;
+	public void setRetired(Boolean retired) {
+		this.retired = retired;
 	}
 	
 	/**

@@ -134,7 +134,7 @@ public class SmartAppListController {
 					log.info("APP  :" + newApp);
 					List<App> apps = (List<App>) appService.getAllApps();
 					if (!apps.contains(newApp)) {
-						newApp.setRetire(false);
+						newApp.setRetired(false);
 						appService.saveApp(newApp);
 						
 						if (appAccessTokenMap == null)
@@ -166,7 +166,7 @@ public class SmartAppListController {
 					newApp = AppFactory.getAppFromLocalFile(multipartFile.getInputStream());
 					List<App> apps = (List<App>) appService.getAllApps();
 					if (!apps.contains(newApp)) {
-						newApp.setRetire(false);
+						newApp.setRetired(false);
 						appService.saveApp(newApp);
 						
 						if (appAccessTokenMap == null)

@@ -20,30 +20,30 @@
                         author="Implimentation: Arjun Sanyal, Children's Hospital Boston; Design: McCandless &amp; Posavec http://informationisbeautiful.net"
                         mode="ui" version=".1a" base_url="http://sample-apps.smartplatforms.org"
                         icon="http://sample-apps.smartplatforms.org/framework/cardio_risk_viz/icon.png"
-                        smart_id="cardiac_risk@apps.smartplatforms.org" retire="0"/>
+                        smart_id="cardiac_risk@apps.smartplatforms.org" retired="0"/>
     <smartcontainer_app smartcontainer_app_id="2"
                         name="CARDIO SALUTIS"
                         description="Calculates the cardiovascular risk in 10 years based on the score algorithm"
                         author="smartsim" mode="ui" version=".1a" base_url="http://smartsim.takethewind.com"
                         icon="http://smartsim.takethewind.com/icon.png"
-                        smart_id="cardio_salutis@apps.smartplatforms.org" retire="0"/>
+                        smart_id="cardio_salutis@apps.smartplatforms.org" retired="0"/>
     <smartcontainer_app smartcontainer_app_id="3" name="PediBPC"
                         description="Display pediatric blood pressures with calculated percentiles"
                         author="Nikolai Schwertner" mode="ui" version=".1a"
                         base_url="http://sample-apps.smartplatforms.org"
                         icon="http://sample-apps.smartplatforms.org/framework/pedi_bpc/icon.png"
-                        smart_id="pedi_bpc@apps.smartplatforms.org" retire="0"/>
+                        smart_id="pedi_bpc@apps.smartplatforms.org" retired="0"/>
     <smartcontainer_app smartcontainer_app_id="4" name="Med List"
                         description="Display medications in a table or timeline view"
                         author="Josh Mandel, Children's Hospital Boston"
                         mode="ui" version=".1a" base_url="http://sample-apps.smartplatforms.org"
                         icon="http://sample-apps.smartplatforms.org/framework/med_list/icon.png"
-                        smart_id="med-list@apps.smartplatforms.org" retire="0"/>
+                        smart_id="med-list@apps.smartplatforms.org" retired="0"/>
     <smartcontainer_app smartcontainer_app_id="5" name="Problems"
                         description="Display problems in a table view" author="Josh Mandel, Children's Hospital Boston"
                         mode="ui" version=".1a" base_url="http://sample-apps.smartplatforms.org"
                         icon="http://sample-apps.smartplatforms.org/framework/problem_list/icon.png"
-                        smart_id="problem-list@apps.smartplatforms.org" retire="0"/>
+                        smart_id="problem-list@apps.smartplatforms.org" retired="0"/>
     
     <!-- Table smartcontainer_user -->
     <smartcontainer_user smartcontainer_user_id="1"

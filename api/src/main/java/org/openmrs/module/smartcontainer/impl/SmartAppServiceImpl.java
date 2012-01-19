@@ -61,7 +61,7 @@ public class SmartAppServiceImpl implements SmartAppService {
 	 * @see org.openmrs.module.smartcontainer.SmartAppService#DeleteApp(org.openmrs.module.smartcontainer.app.App)
 	 */
 	public void deleteApp(App app) throws APIException {
-		app.setRetire(true);
+		app.setRetired(true);
 		saveApp(app);
 		
 	}

@@ -76,7 +76,7 @@ public class SmartAppServiceImplTest extends BaseModuleContextSensitiveTest {
 		App app = appService.getAppByName("PediBPC");
 		appService.deleteApp(app);
 		app = appService.getAppByName("PediBPC");
-		assertTrue(app.getRetire());
+		assertTrue(app.getRetired());
 	}
 	
 	/**

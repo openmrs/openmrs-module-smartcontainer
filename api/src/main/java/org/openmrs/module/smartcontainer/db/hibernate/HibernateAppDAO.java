@@ -76,7 +76,7 @@ public class HibernateAppDAO implements AppDAO {
 	@SuppressWarnings("unchecked")
 	public List<App> getAllApps() throws DAOException {
 		
-		return sessionFactory.getCurrentSession().createQuery("from App u where u.retire=0 order by u.appId").list();
+		return sessionFactory.getCurrentSession().createQuery("from App u where u.retired=0 order by u.appId").list();
 	}
 	
 	/**
@@ -113,7 +113,7 @@ public class HibernateAppDAO implements AppDAO {
 	public List<App> getApps(Collection<Integer> exclude) {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(App.class);
 		criteria.add(Restrictions.not(Restrictions.in("appId", exclude)));
-		criteria.add(Restrictions.eq("retire", false));
+		criteria.add(Restrictions.eq("retired", false));
 		return criteria.list();
 	}
 }

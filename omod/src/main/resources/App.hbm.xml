@@ -15,7 +15,7 @@
         <property name="baseURL" type="string" column="base_url"/>
         <property name="icon" type="string" column="icon"/>
         <property name="sMARTAppId" type="string" column="smart_id"/>
-        <property name="retire" type="boolean" column="retire"/>
+        <property name="retired" type="boolean" column="retired"/>
         <property name="manifest" type="string" column="manifest" length="16777215"/>
     </class>
 </hibernate-mapping>

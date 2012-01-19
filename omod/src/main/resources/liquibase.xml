@@ -252,4 +252,16 @@
     	<comment>Dropping smartcontainer_webhook table</comment>
         <dropTable tableName="smartcontainer_webhook"/>
     </changeSet>
+    
+    <changeSet id="smartcontainer-2012-01-17-16:07" author="dkayiwa">
+		<preConditions onFail="MARK_RAN">
+			<columnExists tableName="smartcontainer_app" columnName="retire"/>
+		</preConditions>
+		<comment>
+			Change smartcontainer_app.retire column to smartcontainer_app.retired
+		</comment>
+		<renameColumn tableName="smartcontainer_app"
+   			 oldColumnName="retire" newColumnName="retired" columnDataType="int(1)"/>
+	</changeSet>
+	
 </databaseChangeLog>
