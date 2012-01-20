@@ -10,6 +10,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Concept;
 import org.openmrs.ConceptNumeric;
+import org.openmrs.api.APIException;
 import org.openmrs.api.ConceptService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.smartcontainer.ConceptMappingNotFoundException;
@@ -44,8 +45,9 @@ public class SmartDataHandlerUtil {
 	 * @param map
 	 * @return
 	 */
-	public static CodedValue codedValueHelper(Concept concept, SmartConceptMap map) {
-		CodedValue code = codedValueHelper(codedValueNameHelper(concept), codedValueCodeHelper(concept, map), map);
+	public static CodedValue codedValueHelper(Concept concept, SmartConceptMap map, boolean isCodeRequired) {
+		CodedValue code = codedValueHelper(codedValueNameHelper(concept),
+		    codedValueCodeHelper(concept, map, isCodeRequired), map);
 		code.setCodeProvenance(codedValueProvenanceHelper(concept, map));
 		return code;
 	}
@@ -73,7 +75,7 @@ public class SmartDataHandlerUtil {
 	 */
 	private static CodeProvenance codedValueProvenanceHelper(Concept concept, SmartConceptMap map) {
 		CodeProvenance provenance = new CodeProvenance();
-		provenance.setSourceCode(codedValueSourceCodeHelper(concept));
+		provenance.setSourceCode(codedValueCodeHelper(concept, map, false));
 		provenance.setTitle(codedValueNameHelper(concept));
 		provenance.setSourceCodeBaseURL("http://openmrs.org/codes/");
 		/*
@@ -89,26 +91,22 @@ public class SmartDataHandlerUtil {
 	
 	/**
 	 * @param concept
-	 * @return
-	 */
-	private static String codedValueSourceCodeHelper(Concept concept) {
-		
-		return concept.getConceptId().toString();
-	}
-	
-	/**
-	 * @param concept
 	 * @param map
 	 * @return
 	 */
-	private static String codedValueCodeHelper(Concept concept, SmartConceptMap map) {
-		String code = null;
+	private static String codedValueCodeHelper(Concept concept, SmartConceptMap map, boolean isCodeRequired) {
+		String code = Context.getMessageSourceService().getMessage("smartcontainer.mappingRequired");
+		if (StringUtils.isNotBlank(code))
+			code = code + "*";
+		
 		try {
 			code = map.lookUp(concept);
 		}
 		catch (ConceptMappingNotFoundException e) {
-			throw new RuntimeException(e);
+			if (isCodeRequired)
+				throw new APIException("Concept mapping not found for: " + concept.getDisplayString(), e);
 		}
+		
 		return code;
 	}
 	
@@ -118,7 +116,7 @@ public class SmartDataHandlerUtil {
 	 */
 	private static String codedValueNameHelper(Concept concept) {
 		
-		return concept.getName().getName();
+		return concept.getDisplayString();
 	}
 	
 	/**
@@ -169,7 +167,8 @@ public class SmartDataHandlerUtil {
 	 */
 	public static VitalSign vitalSignHelper(Double valueNumeric, ConceptNumeric cn, SmartConceptMap smartConceptMap) {
 		VitalSign sign = new VitalSign();
-		sign.setVitalName(SmartDataHandlerUtil.codedValueHelper(cn, smartConceptMap));
+		//we need the actual source code because we need to compare it to the codes used in the required mappings
+		sign.setVitalName(codedValueHelper(cn, smartConceptMap, true));
 		sign.setValue(valueNumeric.toString());
 		sign.setUnit(cn.getUnits());
 		return sign;

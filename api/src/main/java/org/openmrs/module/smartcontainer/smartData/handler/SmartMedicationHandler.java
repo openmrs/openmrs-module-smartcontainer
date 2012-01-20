@@ -99,7 +99,8 @@ public class SmartMedicationHandler implements SmartDataHandler<SmartMedication>
 		
 		medication.setId(drugOrder.getUuid());
 		
-		medication.setDrugName(SmartDataHandlerUtil.codedValueHelper(drugOrder.getDrug().getConcept(), getMap()));
+		medication.setDrugName(SmartDataHandlerUtil.codedValueHelper((drugOrder.getDrug() != null) ? drugOrder.getDrug()
+		        .getConcept() : drugOrder.getConcept(), getMap(), false));
 		
 		if (drugOrder.getAutoExpireDate() != null)// may be not expired yet
 			medication.setEndDate(SmartDataHandlerUtil.date(drugOrder.getAutoExpireDate()));

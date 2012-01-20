@@ -66,7 +66,7 @@ public class SmartProblemHandler implements SmartDataHandler<SmartProblem> {
 			List<Problem> openmrsProblems = Context.getPatientService().getProblems(patient);
 			for (Problem p : openmrsProblems) {
 				SmartProblem problem = new SmartProblem();
-				problem.setProblemName(SmartDataHandlerUtil.codedValueHelper(p.getProblem(), map));// coded value
+				problem.setProblemName(SmartDataHandlerUtil.codedValueHelper(p.getProblem(), map, false));// coded value
 				problem.setOnset(SmartDataHandlerUtil.date(p.getStartDate()));
 				if (p.getEndDate() != null) {
 					problem.setResolution(SmartDataHandlerUtil.date(p.getEndDate()));
@@ -115,7 +115,7 @@ public class SmartProblemHandler implements SmartDataHandler<SmartProblem> {
 					}
 					
 					SmartProblem problem = new SmartProblem();
-					problem.setProblemName(SmartDataHandlerUtil.codedValueHelper(addedObs.getValueCoded(), map));
+					problem.setProblemName(SmartDataHandlerUtil.codedValueHelper(addedObs.getValueCoded(), map, false));
 					problem.setOnset(SmartDataHandlerUtil.date(addedObs.getObsDatetime()));
 					
 					if (foundMatchingResolvedObs) {

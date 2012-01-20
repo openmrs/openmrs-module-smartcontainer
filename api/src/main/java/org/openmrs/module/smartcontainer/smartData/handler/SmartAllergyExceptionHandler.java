@@ -79,7 +79,7 @@ public class SmartAllergyExceptionHandler implements SmartDataHandler<SmartAller
 				}
 				
 				SmartAllergyException allergyException = new SmartAllergyException();
-				allergyException.setException(SmartDataHandlerUtil.codedValueHelper(obs.getValueCoded(), map));
+				allergyException.setException(SmartDataHandlerUtil.codedValueHelper(obs.getValueCoded(), map, false));
 				smartAllergyExceptions.add(allergyException);
 			}
 		}

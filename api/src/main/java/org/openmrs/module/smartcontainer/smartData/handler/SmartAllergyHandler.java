@@ -71,7 +71,7 @@ public class SmartAllergyHandler implements SmartDataHandler<SmartAllergy> {
 		return null;
 	}
 	
-	/* (non-Javadoc)
+	/**
 	 * @see org.openmrs.module.smartcontainer.smartData.handler.SmartDataHandler#getAllForPatient(org.openmrs.Patient)
 	 */
 	public List<SmartAllergy> getAllForPatient(Patient patient) {
@@ -84,13 +84,13 @@ public class SmartAllergyHandler implements SmartDataHandler<SmartAllergy> {
 				SmartAllergy smartAllergy = new SmartAllergy();
 				
 				smartAllergy.setNotes(allergy.getComments());
-				smartAllergy.setReaction(SmartDataHandlerUtil.codedValueHelper(allergy.getReaction(), snomedMap));
+				smartAllergy.setReaction(SmartDataHandlerUtil.codedValueHelper(allergy.getReaction(), snomedMap, false));
 				smartAllergy.setSeverity(convertSeverity(allergy.getSeverity()));
 				
 				if (isFoodAllergy(allergy))
-					smartAllergy.setSubstance(SmartDataHandlerUtil.codedValueHelper(allergy.getAllergen(), fdaMap));
+					smartAllergy.setSubstance(SmartDataHandlerUtil.codedValueHelper(allergy.getAllergen(), fdaMap, false));
 				else if (isDrugAllergy(allergy))
-					smartAllergy.setSubstance(SmartDataHandlerUtil.codedValueHelper(allergy.getAllergen(), snomedMap));
+					smartAllergy.setSubstance(SmartDataHandlerUtil.codedValueHelper(allergy.getAllergen(), snomedMap, false));
 				else {
 					// do nothing because unfortunately the patient dashboard does not ask for or set the
 					// allergy type.  therefore most impls won't have this set

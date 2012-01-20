@@ -48,7 +48,7 @@ public class SmartLabResultHandler implements SmartDataHandler<SmartLabResult> {
 			
 			if (isLabTest(concept) && !o.isObsGrouping()) {
 				SmartLabResult result = new SmartLabResult();
-				result.setLabName(SmartDataHandlerUtil.codedValueHelper(concept, map));
+				result.setLabName(SmartDataHandlerUtil.codedValueHelper(concept, map, false));
 				
 				ConceptNumeric cn = getNumericConcept(concept);
 				if (cn != null) {

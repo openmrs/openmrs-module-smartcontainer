@@ -36,7 +36,7 @@ public class VitalSignController {
     @RequestMapping(method = RequestMethod.GET, value = "records/{pid}/vital_signs/")
     public ModelAndView handle(@PathVariable("pid") Patient patient,
                                HttpServletResponse resp) {
-        log.info("In the Medication Controller");
+        log.info("In the Vital Sign Controller");
         resp.setContentType("text/xml"); // actually I use a constant
         Writer writer;
         try {
