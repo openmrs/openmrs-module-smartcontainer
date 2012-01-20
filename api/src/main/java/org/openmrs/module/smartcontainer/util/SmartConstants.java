@@ -18,6 +18,8 @@ package org.openmrs.module.smartcontainer.util;
  */
 public class SmartConstants {
 	
+	public static final String MODULE_ID = "smartcontainer";
+	
 	/**
 	 * The name of the global property to store the true/false value of whether this instance wants
 	 * to use the ActiveList/Problem table and object to manage the patient's problems <br/>
