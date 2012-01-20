@@ -261,7 +261,7 @@
 			Change smartcontainer_app.retire column to smartcontainer_app.retired
 		</comment>
 		<renameColumn tableName="smartcontainer_app"
-   			 oldColumnName="retire" newColumnName="retired" columnDataType="int(1)"/>
+   			 oldColumnName="retire" newColumnName="retired" columnDataType="smallint"/>
 	</changeSet>
 	
 </databaseChangeLog>
