@@ -48,10 +48,10 @@ public class SmartUserServiceImplTest extends BaseModuleContextSensitiveTest {
     @Test
     public void testGetUserByName() {
 
-        String name = "admin";
+        String name = "";
         String expResult = name;
         SmartUser result = userService.getUserByName(name);
-        assertEquals(expResult, result.getOpenMRSUser().getSystemId());
+        assertEquals(expResult, result.getOpenMRSUser().getUsername());
 
     }
 
@@ -71,7 +71,7 @@ public class SmartUserServiceImplTest extends BaseModuleContextSensitiveTest {
     public void testSaveUser() {
         SmartUser savedUser = null;
         SmartUser user = userService.getUserByName("admin");
-        user.getOpenMRSUser().setSystemId("root");
+        user.getOpenMRSUser().setUsername("root");
         userService.saveUser(user);
 
         savedUser = userService.getUserByName("root");

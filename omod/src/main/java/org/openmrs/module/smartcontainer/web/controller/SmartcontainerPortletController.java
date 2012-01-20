@@ -43,7 +43,7 @@ public class SmartcontainerPortletController extends PortletController {
 		User user = Context.getAuthenticatedUser();
 		if (user != null) {
 			model.put("currentUser", user);
-			SmartUser smartUser = Context.getService(SmartUserService.class).getUserByName(user.getSystemId());
+			SmartUser smartUser = Context.getService(SmartUserService.class).getUserByName(user.getUsername());
 			if (smartUser != null) {
 				model.put("visibleApps", Context.getService(SmartAppService.class).getUserVisibleApps(smartUser));
 				model.put("hiddenApps", smartUser.getHiddenApps());

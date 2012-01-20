@@ -36,7 +36,7 @@ public class SmartAppOptionController extends OptionsFormController {
 	                                BindException errors) throws Exception {
 		Collection<App> allApps = service.getAllApps();
 		Collection<App> userHiddenApps = Context.getService(SmartUserService.class)
-		        .getUserByName(Context.getAuthenticatedUser().getSystemId()).getHiddenApps();
+		        .getUserByName(Context.getAuthenticatedUser().getUsername()).getHiddenApps();
 		String add[] = request.getParameterValues("add");
 		String remove[] = request.getParameterValues("remove");
 		log.debug("saving users........... add " + add + "remove :" + remove);
@@ -61,10 +61,10 @@ public class SmartAppOptionController extends OptionsFormController {
 			}
 		}
 		SmartUser user = Context.getService(SmartUserService.class).getUserByName(
-		    Context.getAuthenticatedUser().getSystemId());
+		    Context.getAuthenticatedUser().getUsername());
 		user.setHiddenApps((Set<App>) userHiddenApps);
 		Context.getService(SmartUserService.class).saveUser(user);
-		log.debug("saved user........... add " + user.getOpenMRSUser().getSystemId());
+		log.debug("saved user........... add " + user.getOpenMRSUser().getUsername());
 		
 		return super.onSubmit(request, response, obj, errors);
 		
@@ -77,7 +77,7 @@ public class SmartAppOptionController extends OptionsFormController {
 		Collection<App> allApps = service.getAllApps();
 		try {
 			smartUser = Context.getService(SmartUserService.class).getUserByName(
-			    Context.getAuthenticatedUser().getSystemId());
+			    Context.getAuthenticatedUser().getUsername());
 		}
 		catch (IndexOutOfBoundsException ex) {
 			if (smartUser == null) {

@@ -35,7 +35,7 @@
 				${smartUser.openMRSUser.username}
 			</td>
 			<td>
-				<a href="<openmrs:contextPath />/module/smartcontainer/manageUserHiddenApps.form?systemId=${smartUser.openMRSUser.systemId}">
+				<a href="<openmrs:contextPath />/module/smartcontainer/manageUserHiddenApps.form?userName=${smartUser.openMRSUser.username}">
 					<spring:message code="smartcontainer.manageHiddenApps"/>
 				</a>
 			</td>

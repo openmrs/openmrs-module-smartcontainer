@@ -60,7 +60,7 @@
 		<signatures>
 			<![CDATA[
 				import @MODULE_PACKAGE@.web.dwr.DWRSmartService;
-				DWRSmartService.showOrHideSmartApp(Integer appId, boolean hide, String systemId);
+				DWRSmartService.showOrHideSmartApp(Integer appId, boolean hide, String userName);
 			]]>
 		</signatures>	
 	</dwr>

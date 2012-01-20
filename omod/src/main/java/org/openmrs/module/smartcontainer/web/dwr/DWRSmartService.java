@@ -32,24 +32,24 @@ public class DWRSmartService {
 	/**
 	 * Process requests to add or remove a smart app to or from the user's list of hidden apps
 	 * 
-	 * @param systemId the systemId of the user
+	 * @param userName the user name
 	 * @param appId the appId of the app to be added or removed
 	 * @param hide specifies if an app is to be removed or added
 	 * @return true if the app was successfully added or removed otherwise false
 	 */
-	public boolean showOrHideSmartApp(Integer appId, boolean hide, String systemId) {
+	public boolean showOrHideSmartApp(Integer appId, boolean hide, String userName) {
 		if (log.isDebugEnabled())
 			log.debug("In DWRSmartService........");
 		
 		SmartUserService userService = Context.getService(SmartUserService.class);
-		if (StringUtils.isBlank(systemId)) {
+		if (StringUtils.isBlank(userName)) {
 			if (Context.getAuthenticatedUser() == null)
 				return false;
 			
-			systemId = Context.getAuthenticatedUser().getSystemId();
+			userName = Context.getAuthenticatedUser().getUsername();
 		}
 		
-		SmartUser smartUser = userService.getUserByName(systemId);
+		SmartUser smartUser = userService.getUserByName(userName);
 		App app = Context.getService(SmartAppService.class).getAppById(appId);
 		if (app != null) {
 			if (hide)

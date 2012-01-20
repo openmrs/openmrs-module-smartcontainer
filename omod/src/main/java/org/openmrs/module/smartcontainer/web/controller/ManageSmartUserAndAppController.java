@@ -53,7 +53,7 @@ public class ManageSmartUserAndAppController {
 		if (Context.getAuthenticatedUser() != null) {
 			Collection<SmartUser> smartUsers = getSmartUserService().getAllUsers();
 			//don't include this user
-			smartUsers.remove(getSmartUserService().getUserByName(Context.getAuthenticatedUser().getSystemId()));
+			smartUsers.remove(getSmartUserService().getUserByName(Context.getAuthenticatedUser().getUsername()));
 			model.addAttribute("smartUsers", getSmartUserService().getAllUsers());
 		}
 		return SMART_USER_URL;
@@ -68,8 +68,8 @@ public class ManageSmartUserAndAppController {
 	 * @return
 	 */
 	@RequestMapping(method = RequestMethod.GET, value = MANAGE_USER_APPS_FORM)
-	public String showManageUserHiddenAppsForm(ModelMap model, @RequestParam("systemId") String systemId) {
-		SmartUser smartUser = getSmartUserService().getUserByName(systemId);
+	public String showManageUserHiddenAppsForm(ModelMap model, @RequestParam("userName") String userName) {
+		SmartUser smartUser = getSmartUserService().getUserByName(userName);
 		Collection<App> hiddenApps = new ArrayList<App>();
 		if (smartUser != null)
 			hiddenApps = smartUser.getHiddenApps();
@@ -98,9 +98,9 @@ public class ManageSmartUserAndAppController {
 			
 		}
 		
-		String systemId = request.getParameter("systemId");
+		String userName = request.getParameter("userName");
 		try {
-			SmartUser smartUser = getSmartUserService().getUserByName(systemId);
+			SmartUser smartUser = getSmartUserService().getUserByName(userName);
 			if (smartUser != null) {
 				smartUser.setHiddenApps(hiddenApps);
 				Context.getService(SmartUserService.class).saveUser(smartUser);
