@@ -21,6 +21,7 @@ import org.openmrs.module.smartcontainer.SmartAppService;
 import org.openmrs.module.smartcontainer.SmartUser;
 import org.openmrs.module.smartcontainer.SmartUserService;
 import org.openmrs.module.smartcontainer.app.App;
+import org.openmrs.module.smartcontainer.util.SmartDataHandlerUtil;
 
 /**
  * Contains methods for processing DWR requests for the module
@@ -46,7 +47,7 @@ public class DWRSmartService {
 			if (Context.getAuthenticatedUser() == null)
 				return false;
 			
-			userName = Context.getAuthenticatedUser().getUsername();
+			userName = SmartDataHandlerUtil.getUserNameOrSystemId(Context.getAuthenticatedUser());
 		}
 		
 		SmartUser smartUser = userService.getUserByName(userName);

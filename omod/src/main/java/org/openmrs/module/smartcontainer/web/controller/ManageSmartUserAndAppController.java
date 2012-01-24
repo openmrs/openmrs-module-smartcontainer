@@ -26,6 +26,7 @@ import org.openmrs.module.smartcontainer.SmartAppService;
 import org.openmrs.module.smartcontainer.SmartUser;
 import org.openmrs.module.smartcontainer.SmartUserService;
 import org.openmrs.module.smartcontainer.app.App;
+import org.openmrs.module.smartcontainer.util.SmartDataHandlerUtil;
 import org.openmrs.web.WebConstants;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -53,7 +54,7 @@ public class ManageSmartUserAndAppController {
 		if (Context.getAuthenticatedUser() != null) {
 			Collection<SmartUser> smartUsers = getSmartUserService().getAllUsers();
 			//don't include this user
-			smartUsers.remove(getSmartUserService().getUserByName(Context.getAuthenticatedUser().getUsername()));
+			smartUsers.remove(getSmartUserService().getUserByName(SmartDataHandlerUtil.getUserNameOrSystemId(Context.getAuthenticatedUser())));
 			model.addAttribute("smartUsers", getSmartUserService().getAllUsers());
 		}
 		return SMART_USER_URL;

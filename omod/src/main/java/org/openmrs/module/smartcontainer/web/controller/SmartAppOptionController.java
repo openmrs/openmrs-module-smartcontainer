@@ -16,6 +16,7 @@ import org.openmrs.module.smartcontainer.SmartAppService;
 import org.openmrs.module.smartcontainer.SmartUser;
 import org.openmrs.module.smartcontainer.SmartUserService;
 import org.openmrs.module.smartcontainer.app.App;
+import org.openmrs.module.smartcontainer.util.SmartDataHandlerUtil;
 import org.openmrs.web.controller.OptionsFormController;
 import org.springframework.validation.BindException;
 import org.springframework.web.servlet.ModelAndView;
@@ -36,7 +37,7 @@ public class SmartAppOptionController extends OptionsFormController {
 	                                BindException errors) throws Exception {
 		Collection<App> allApps = service.getAllApps();
 		Collection<App> userHiddenApps = Context.getService(SmartUserService.class)
-		        .getUserByName(Context.getAuthenticatedUser().getUsername()).getHiddenApps();
+		        .getUserByName(SmartDataHandlerUtil.getUserNameOrSystemId(Context.getAuthenticatedUser())).getHiddenApps();
 		String add[] = request.getParameterValues("add");
 		String remove[] = request.getParameterValues("remove");
 		log.debug("saving users........... add " + add + "remove :" + remove);
@@ -61,10 +62,10 @@ public class SmartAppOptionController extends OptionsFormController {
 			}
 		}
 		SmartUser user = Context.getService(SmartUserService.class).getUserByName(
-		    Context.getAuthenticatedUser().getUsername());
+				SmartDataHandlerUtil.getUserNameOrSystemId(Context.getAuthenticatedUser()));
 		user.setHiddenApps((Set<App>) userHiddenApps);
 		Context.getService(SmartUserService.class).saveUser(user);
-		log.debug("saved user........... add " + user.getOpenMRSUser().getUsername());
+		log.debug("saved user........... add " + SmartDataHandlerUtil.getUserNameOrSystemId(user.getOpenMRSUser()));
 		
 		return super.onSubmit(request, response, obj, errors);
 		
@@ -77,7 +78,7 @@ public class SmartAppOptionController extends OptionsFormController {
 		Collection<App> allApps = service.getAllApps();
 		try {
 			smartUser = Context.getService(SmartUserService.class).getUserByName(
-			    Context.getAuthenticatedUser().getUsername());
+					SmartDataHandlerUtil.getUserNameOrSystemId(Context.getAuthenticatedUser()));
 		}
 		catch (IndexOutOfBoundsException ex) {
 			if (smartUser == null) {

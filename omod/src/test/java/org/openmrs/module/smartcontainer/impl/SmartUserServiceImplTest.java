@@ -10,6 +10,7 @@ import org.junit.Test;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.smartcontainer.SmartUser;
 import org.openmrs.module.smartcontainer.SmartUserService;
+import org.openmrs.module.smartcontainer.util.SmartDataHandlerUtil;
 import org.openmrs.test.BaseModuleContextSensitiveTest;
 
 import java.util.Collection;
@@ -48,10 +49,10 @@ public class SmartUserServiceImplTest extends BaseModuleContextSensitiveTest {
     @Test
     public void testGetUserByName() {
 
-        String name = "";
+        String name = "admin";
         String expResult = name;
         SmartUser result = userService.getUserByName(name);
-        assertEquals(expResult, result.getOpenMRSUser().getUsername());
+        assertEquals(expResult, SmartDataHandlerUtil.getUserNameOrSystemId(result.getOpenMRSUser()));
 
     }
 
