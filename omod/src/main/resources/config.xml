@@ -115,6 +115,32 @@
 			The concept id of the Smart Allergy Exception concept used in forms
 	 	</description>
 	</globalProperty>
+	<globalProperty>
+		<property>smartcontainer.local.snomedConceptSource</property>
+		<defaultValue></defaultValue>
+		<description>
+			The id for the local SNOMED concept source to be used by SMART apps that require concept mappings to it
+	 	</description>
+	</globalProperty>
+	<globalProperty>
+		<property>smartcontainer.local.loincConceptSource</property>
+		<defaultValue></defaultValue>
+		<description>
+			The id for the local LOINC concept source to be used by SMART apps that require concept mappings to it
+	 	</description>
+	</globalProperty><globalProperty>
+		<property>smartcontainer.local.rxNormConceptSource</property>
+		<defaultValue></defaultValue>
+		<description>
+			The id for the local RxNORM concept source to be used by SMART apps that require concept mappings to it
+	 	</description>
+	</globalProperty><globalProperty>
+		<property>smartcontainer.local.fdaConceptSource</property>
+		<defaultValue></defaultValue>
+		<description>
+			The id for the local FDA concept source to be used by SMART apps that require concept mappings to it
+	 	</description>
+	</globalProperty>
 
     <!-- Internationalization -->
     <!-- All message codes should start with @MODULE_ID@.* -->

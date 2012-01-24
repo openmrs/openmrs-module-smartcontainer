@@ -65,4 +65,28 @@ public class SmartConstants {
 	 */
 	public static final String GP_ALLERGY_EXCEPTION_CONCEPT = "smartcontainer.allergy.exceptionConcept";
 	
+	/**
+	 * The id for the local SNOMED concept source to be used by SMART apps that require concept
+	 * mappings to it
+	 */
+	public static final String GP_LOCAL_SNOMED_CONCEPT_SOURCE_ID = "smartcontainer.local.snomedConceptSource";
+	
+	/**
+	 * The id for the local LOINC concept source to be used by SMART apps that require concept
+	 * mappings to it
+	 */
+	public static final String GP_LOCAL_LOINC_CONCEPT_SOURCE_ID = "smartcontainer.local.loincConceptSource";
+	
+	/**
+	 * The id for the local RxNORM concept source to be used by SMART apps that require concept
+	 * mappings to it
+	 */
+	public static final String GP_LOCAL_RxNORM_CONCEPT_SOURCE_ID = "smartcontainer.local.rxNormConceptSource";
+	
+	/**
+	 * The id for the local FDA concept source to be used by SMART apps that require concept
+	 * mappings to it
+	 */
+	public static final String GP_LOCAL_FDA_CONCEPT_SOURCE_ID = "smartcontainer.local.fdaConceptSource";
+	
 }

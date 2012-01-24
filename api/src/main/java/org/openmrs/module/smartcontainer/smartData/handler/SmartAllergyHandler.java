@@ -23,7 +23,7 @@ import org.openmrs.activelist.Allergy;
 import org.openmrs.activelist.AllergySeverity;
 import org.openmrs.activelist.AllergyType;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.smartcontainer.SmartConceptMap;
+import org.openmrs.module.smartcontainer.SmartConceptMapCodeSource;
 import org.openmrs.module.smartcontainer.TransientSmartConceptMap;
 import org.openmrs.module.smartcontainer.smartData.CodedValue;
 import org.openmrs.module.smartcontainer.smartData.SmartAllergy;
@@ -36,33 +36,33 @@ public class SmartAllergyHandler implements SmartDataHandler<SmartAllergy> {
 	
 	private static final Log log = LogFactory.getLog(SmartAllergyHandler.class);
 	
-	private SmartConceptMap snomedMap;
+	private SmartConceptMapCodeSource snomedMap;
 	
-	private SmartConceptMap rxnormMap;
+	private SmartConceptMapCodeSource rxnormMap;
 	
-	private SmartConceptMap fdaMap;
+	private SmartConceptMapCodeSource fdaMap;
 	
-	public SmartConceptMap getSnomedMap() {
+	public SmartConceptMapCodeSource getSnomedMap() {
 		return snomedMap;
 	}
 	
-	public void setSnomedMap(SmartConceptMap snomedMap) {
+	public void setSnomedMap(SmartConceptMapCodeSource snomedMap) {
 		this.snomedMap = snomedMap;
 	}
 	
-	public SmartConceptMap getRxnormMap() {
+	public SmartConceptMapCodeSource getRxnormMap() {
 		return rxnormMap;
 	}
 	
-	public void setRxnormMap(SmartConceptMap rxnormMap) {
+	public void setRxnormMap(SmartConceptMapCodeSource rxnormMap) {
 		this.rxnormMap = rxnormMap;
 	}
 	
-	public SmartConceptMap getFdaMap() {
+	public SmartConceptMapCodeSource getFdaMap() {
 		return fdaMap;
 	}
 	
-	public void setFdaMap(SmartConceptMap fdaMap) {
+	public void setFdaMap(SmartConceptMapCodeSource fdaMap) {
 		this.fdaMap = fdaMap;
 	}
 	
@@ -84,13 +84,16 @@ public class SmartAllergyHandler implements SmartDataHandler<SmartAllergy> {
 				SmartAllergy smartAllergy = new SmartAllergy();
 				
 				smartAllergy.setNotes(allergy.getComments());
-				smartAllergy.setReaction(SmartDataHandlerUtil.codedValueHelper(allergy.getReaction(), snomedMap, false));
+				smartAllergy.setReaction(SmartDataHandlerUtil.codedValueHelper(allergy.getReaction(), snomedMap,
+				    SmartDataHandlerUtil.getLinkedSnomedConceptSource(), false));
 				smartAllergy.setSeverity(convertSeverity(allergy.getSeverity()));
 				
 				if (isFoodAllergy(allergy))
-					smartAllergy.setSubstance(SmartDataHandlerUtil.codedValueHelper(allergy.getAllergen(), fdaMap, false));
+					smartAllergy.setSubstance(SmartDataHandlerUtil.codedValueHelper(allergy.getAllergen(), fdaMap,
+					    SmartDataHandlerUtil.getLinkedFdaConceptSource(), false));
 				else if (isDrugAllergy(allergy))
-					smartAllergy.setSubstance(SmartDataHandlerUtil.codedValueHelper(allergy.getAllergen(), snomedMap, false));
+					smartAllergy.setSubstance(SmartDataHandlerUtil.codedValueHelper(allergy.getAllergen(), snomedMap,
+					    SmartDataHandlerUtil.getLinkedSnomedConceptSource(), false));
 				else {
 					// do nothing because unfortunately the patient dashboard does not ask for or set the
 					// allergy type.  therefore most impls won't have this set

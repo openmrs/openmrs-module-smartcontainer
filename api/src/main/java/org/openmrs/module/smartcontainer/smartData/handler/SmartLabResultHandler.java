@@ -8,7 +8,7 @@ import org.openmrs.ConceptNumeric;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.smartcontainer.SmartConceptMap;
+import org.openmrs.module.smartcontainer.SmartConceptMapCodeSource;
 import org.openmrs.module.smartcontainer.TransientSmartConceptMap;
 import org.openmrs.module.smartcontainer.smartData.Attribution;
 import org.openmrs.module.smartcontainer.smartData.QuantitativeResult;
@@ -18,13 +18,13 @@ import org.openmrs.module.smartcontainer.util.SmartDataHandlerUtil;
 
 public class SmartLabResultHandler implements SmartDataHandler<SmartLabResult> {
 	
-	private SmartConceptMap map;
+	private SmartConceptMapCodeSource map;
 	
-	public SmartConceptMap getMap() {
+	public SmartConceptMapCodeSource getMap() {
 		return map;
 	}
 	
-	public void setMap(SmartConceptMap map) {
+	public void setMap(SmartConceptMapCodeSource map) {
 		this.map = map;
 	}
 	
@@ -48,7 +48,8 @@ public class SmartLabResultHandler implements SmartDataHandler<SmartLabResult> {
 			
 			if (isLabTest(concept) && !o.isObsGrouping()) {
 				SmartLabResult result = new SmartLabResult();
-				result.setLabName(SmartDataHandlerUtil.codedValueHelper(concept, map, false));
+				result.setLabName(SmartDataHandlerUtil.codedValueHelper(concept, map,
+				    SmartDataHandlerUtil.getLinkedLoincConceptSource(), false));
 				
 				ConceptNumeric cn = getNumericConcept(concept);
 				if (cn != null) {

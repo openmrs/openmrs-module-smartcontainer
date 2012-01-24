@@ -13,7 +13,7 @@ import org.openmrs.DrugOrder;
 import org.openmrs.Order;
 import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.smartcontainer.SmartConceptMap;
+import org.openmrs.module.smartcontainer.SmartConceptMapCodeSource;
 import org.openmrs.module.smartcontainer.TransientSmartConceptMap;
 import org.openmrs.module.smartcontainer.smartData.SmartMedication;
 import org.openmrs.module.smartcontainer.util.SmartDataHandlerUtil;
@@ -22,7 +22,7 @@ public class SmartMedicationHandler implements SmartDataHandler<SmartMedication>
 	
 	private static final Log log = LogFactory.getLog(SmartMedicationHandler.class);
 	
-	private SmartConceptMap map;
+	private SmartConceptMapCodeSource map;
 	
 	private static final Map<String, String> openmrsToSmartFrequencyMap;
 	
@@ -49,11 +49,11 @@ public class SmartMedicationHandler implements SmartDataHandler<SmartMedication>
 		return getMedications(patient);
 	}
 	
-	public SmartConceptMap getMap() {
+	public SmartConceptMapCodeSource getMap() {
 		return map;
 	}
 	
-	public void setMap(SmartConceptMap map) {
+	public void setMap(SmartConceptMapCodeSource map) {
 		this.map = map;
 	}
 	
@@ -63,7 +63,6 @@ public class SmartMedicationHandler implements SmartDataHandler<SmartMedication>
 	 */
 	public SmartMedication getForPatient(Patient patient, String drugOrderUuid) {
 		Order order = Context.getOrderService().getOrderByUuid(drugOrderUuid);
-		
 		if (order != null) {
 			DrugOrder drugOrder = Context.getOrderService().getOrder(order.getOrderId(), DrugOrder.class);
 			
@@ -99,8 +98,10 @@ public class SmartMedicationHandler implements SmartDataHandler<SmartMedication>
 		
 		medication.setId(drugOrder.getUuid());
 		
-		medication.setDrugName(SmartDataHandlerUtil.codedValueHelper((drugOrder.getDrug() != null) ? drugOrder.getDrug()
-		        .getConcept() : drugOrder.getConcept(), getMap(), false));
+		medication
+		        .setDrugName(SmartDataHandlerUtil.codedValueHelper((drugOrder.getDrug() != null) ? drugOrder.getDrug()
+		                .getConcept() : drugOrder.getConcept(), getMap(), SmartDataHandlerUtil
+		                .getLinkedRxNormConceptSource(), false));
 		
 		if (drugOrder.getAutoExpireDate() != null)// may be not expired yet
 			medication.setEndDate(SmartDataHandlerUtil.date(drugOrder.getAutoExpireDate()));

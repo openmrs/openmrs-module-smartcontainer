@@ -17,7 +17,7 @@ import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.smartcontainer.ConceptMappingNotFoundException;
-import org.openmrs.module.smartcontainer.SmartConceptMap;
+import org.openmrs.module.smartcontainer.SmartConceptMapCodeSource;
 import org.openmrs.module.smartcontainer.TransientSmartConceptMap;
 import org.openmrs.module.smartcontainer.smartData.CodedValue;
 import org.openmrs.module.smartcontainer.smartData.SmartEncounter;
@@ -52,15 +52,15 @@ public class SmartVitalSignsHandler implements SmartDataHandler<SmartVitalSigns>
 	}
 	
 	// set by the moduleApplicationContext
-	private SmartConceptMap loincMap;
+	private SmartConceptMapCodeSource loincMap;
 	
-	private SmartConceptMap snomedMap;
+	private SmartConceptMapCodeSource snomedMap;
 	
-	public SmartConceptMap getLoincMap() {
+	public SmartConceptMapCodeSource getLoincMap() {
 		return loincMap;
 	}
 	
-	public void setLoincMap(SmartConceptMap loincMap) {
+	public void setLoincMap(SmartConceptMapCodeSource loincMap) {
 		this.loincMap = loincMap;
 	}
 	
@@ -72,11 +72,11 @@ public class SmartVitalSignsHandler implements SmartDataHandler<SmartVitalSigns>
 		return null;
 	}
 	
-	public SmartConceptMap getSnomedMap() {
+	public SmartConceptMapCodeSource getSnomedMap() {
 		return snomedMap;
 	}
 	
-	public void setSnomedMap(SmartConceptMap snomedMap) {
+	public void setSnomedMap(SmartConceptMapCodeSource snomedMap) {
 		this.snomedMap = snomedMap;
 	}
 	
@@ -101,7 +101,7 @@ public class SmartVitalSignsHandler implements SmartDataHandler<SmartVitalSigns>
 			encounter.setEncounterType(code);
 			setDates(encounter, e);
 			signs.setSmartEncounter(encounter);
-			signs.addAll(getAllVitalSign(e));
+			signs.addAll(getAllVitalSigns(e));
 			smartVitalSigns.add(signs);
 		}
 		return smartVitalSigns;
@@ -145,7 +145,7 @@ public class SmartVitalSignsHandler implements SmartDataHandler<SmartVitalSigns>
 		
 	}
 	
-	private List<VitalSign> getAllVitalSign(Encounter e) {
+	private List<VitalSign> getAllVitalSigns(Encounter e) {
 		List<VitalSign> signList = new ArrayList<VitalSign>();
 		for (Obs o : e.getAllObs()) {
 			
@@ -165,16 +165,19 @@ public class SmartVitalSignsHandler implements SmartDataHandler<SmartVitalSigns>
 								if (o.getValueNumeric() != 0)
 									value = (o.getValueNumeric() / 100.0);
 								
-								VitalSign vital = SmartDataHandlerUtil.vitalSignHelper(value, cn, loincMap);
+								VitalSign vital = SmartDataHandlerUtil.vitalSignHelper(value, cn, loincMap,
+								    SmartDataHandlerUtil.getLinkedLoincConceptSource());
 								vital.setUnit("m");
 								signList.add(vital);
 							} else {
 								
-								signList.add(SmartDataHandlerUtil.vitalSignHelper(o.getValueNumeric(), cn, loincMap));
+								signList.add(SmartDataHandlerUtil.vitalSignHelper(o.getValueNumeric(), cn, loincMap,
+								    SmartDataHandlerUtil.getLinkedLoincConceptSource()));
 							}
 							
 						} else {
-							signList.add(SmartDataHandlerUtil.vitalSignHelper(o.getValueNumeric(), cn, loincMap));
+							signList.add(SmartDataHandlerUtil.vitalSignHelper(o.getValueNumeric(), cn, loincMap,
+							    SmartDataHandlerUtil.getLinkedLoincConceptSource()));
 						}
 					}
 				}
@@ -203,9 +206,10 @@ public class SmartVitalSignsHandler implements SmartDataHandler<SmartVitalSigns>
 	 */
 	private String getVitalSignCode(Concept c) {
 		String conceptCode = null;
-		
 		try {
-			conceptCode = loincMap.lookUp(c);
+			conceptCode = loincMap.lookUp(c,
+			    (SmartDataHandlerUtil.getLinkedLoincConceptSource() != null) ? SmartDataHandlerUtil
+			            .getLinkedLoincConceptSource().getName() : null);
 			
 			if (LOINC_NAME_CODE_MAP.values().contains(conceptCode))
 				return conceptCode;
@@ -217,7 +221,9 @@ public class SmartVitalSignsHandler implements SmartDataHandler<SmartVitalSigns>
 		}
 		
 		try {
-			conceptCode = snomedMap.lookUp(c);
+			conceptCode = snomedMap.lookUp(c,
+			    (SmartDataHandlerUtil.getLinkedSnomedConceptSource() != null) ? SmartDataHandlerUtil
+			            .getLinkedSnomedConceptSource().getName() : null);
 			
 			if (SNOMED_NAME_CODE_MAP.values().contains(conceptCode))
 				return conceptCode;

@@ -23,7 +23,7 @@ import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.activelist.Problem;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.smartcontainer.SmartConceptMap;
+import org.openmrs.module.smartcontainer.SmartConceptMapCodeSource;
 import org.openmrs.module.smartcontainer.TransientSmartConceptMap;
 import org.openmrs.module.smartcontainer.smartData.SmartProblem;
 import org.openmrs.module.smartcontainer.util.SmartConstants;
@@ -34,13 +34,13 @@ public class SmartProblemHandler implements SmartDataHandler<SmartProblem> {
 	
 	private static final Log log = LogFactory.getLog(SmartProblemHandler.class);
 	
-	private SmartConceptMap map;
+	private SmartConceptMapCodeSource map;
 	
-	public SmartConceptMap getMap() {
+	public SmartConceptMapCodeSource getMap() {
 		return map;
 	}
 	
-	public void setMap(SmartConceptMap map) {
+	public void setMap(SmartConceptMapCodeSource map) {
 		this.map = map;
 	}
 	
@@ -61,12 +61,12 @@ public class SmartProblemHandler implements SmartDataHandler<SmartProblem> {
 	 */
 	public List<SmartProblem> getAllForPatient(Patient patient) {
 		List<SmartProblem> smartProblems = new ArrayList<SmartProblem>();
-		
 		if (SmartDataHandlerUtil.useProblemObject()) {
 			List<Problem> openmrsProblems = Context.getPatientService().getProblems(patient);
 			for (Problem p : openmrsProblems) {
 				SmartProblem problem = new SmartProblem();
-				problem.setProblemName(SmartDataHandlerUtil.codedValueHelper(p.getProblem(), map, false));// coded value
+				problem.setProblemName(SmartDataHandlerUtil.codedValueHelper(p.getProblem(), map,
+				    SmartDataHandlerUtil.getLinkedSnomedConceptSource(), false));// coded value
 				problem.setOnset(SmartDataHandlerUtil.date(p.getStartDate()));
 				if (p.getEndDate() != null) {
 					problem.setResolution(SmartDataHandlerUtil.date(p.getEndDate()));
@@ -115,7 +115,8 @@ public class SmartProblemHandler implements SmartDataHandler<SmartProblem> {
 					}
 					
 					SmartProblem problem = new SmartProblem();
-					problem.setProblemName(SmartDataHandlerUtil.codedValueHelper(addedObs.getValueCoded(), map, false));
+					problem.setProblemName(SmartDataHandlerUtil.codedValueHelper(addedObs.getValueCoded(), map,
+					    SmartDataHandlerUtil.getLinkedSnomedConceptSource(), false));
 					problem.setOnset(SmartDataHandlerUtil.date(addedObs.getObsDatetime()));
 					
 					if (foundMatchingResolvedObs) {

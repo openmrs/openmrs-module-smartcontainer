@@ -22,7 +22,7 @@ import org.openmrs.Concept;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.smartcontainer.SmartConceptMap;
+import org.openmrs.module.smartcontainer.SmartConceptMapCodeSource;
 import org.openmrs.module.smartcontainer.TransientSmartConceptMap;
 import org.openmrs.module.smartcontainer.smartData.SmartAllergyException;
 import org.openmrs.module.smartcontainer.util.SmartConstants;
@@ -35,19 +35,19 @@ public class SmartAllergyExceptionHandler implements SmartDataHandler<SmartAller
 	
 	private static final Log log = LogFactory.getLog(SmartAllergyExceptionHandler.class);
 	
-	private SmartConceptMap map;
+	private SmartConceptMapCodeSource map;
 	
 	/**
 	 * @return the map
 	 */
-	public SmartConceptMap getMap() {
+	public SmartConceptMapCodeSource getMap() {
 		return map;
 	}
 	
 	/**
 	 * @param map the map to set
 	 */
-	public void setMap(SmartConceptMap map) {
+	public void setMap(SmartConceptMapCodeSource map) {
 		this.map = map;
 	}
 	
@@ -79,7 +79,8 @@ public class SmartAllergyExceptionHandler implements SmartDataHandler<SmartAller
 				}
 				
 				SmartAllergyException allergyException = new SmartAllergyException();
-				allergyException.setException(SmartDataHandlerUtil.codedValueHelper(obs.getValueCoded(), map, false));
+				allergyException.setException(SmartDataHandlerUtil.codedValueHelper(obs.getValueCoded(), map,
+				    SmartDataHandlerUtil.getLinkedSnomedConceptSource(), false));
 				smartAllergyExceptions.add(allergyException);
 			}
 		}

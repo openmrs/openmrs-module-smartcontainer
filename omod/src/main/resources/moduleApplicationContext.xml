@@ -176,19 +176,19 @@
             </map>
         </property>
     </bean>
-    <bean id="rxNormConceptMapping" class="org.openmrs.module.smartcontainer.SmartConceptMap">
+    <bean id="rxNormConceptMapping" class="org.openmrs.module.smartcontainer.SmartConceptMapCodeSource">
         <property name="conceptSourceName" value="RxNORM"/>
         <property name="baseURL" value="http://rxnav.nlm.nih.gov/REST/rxcui/"></property>
     </bean>
-    <bean id="snomedCtMapping" class="org.openmrs.module.smartcontainer.SmartConceptMap">
+    <bean id="snomedCtMapping" class="org.openmrs.module.smartcontainer.SmartConceptMapCodeSource">
         <property name="conceptSourceName" value="SNOMED CT"/>
         <property name="baseURL" value="http://www.ihtsdo.org/snomed-ct/concepts/"></property>
     </bean>
-    <bean id="loincMapping" class="org.openmrs.module.smartcontainer.SmartConceptMap">
+    <bean id="loincMapping" class="org.openmrs.module.smartcontainer.SmartConceptMapCodeSource">
         <property name="conceptSourceName" value="LOINC"/>
         <property name="baseURL" value="http://loinc.org/codes/"></property>
     </bean>
-    <bean id="fdaMapping" class="org.openmrs.module.smartcontainer.SmartConceptMap">
+    <bean id="fdaMapping" class="org.openmrs.module.smartcontainer.SmartConceptMapCodeSource">
         <property name="conceptSourceName" value="FDA"/> <!-- TODO: is this right? -->
         <property name="baseURL" value="http://fda.gov/UNII/"></property>
     </bean>
@@ -244,4 +244,11 @@
         	<bean id="allergyExceptionRDF" class="org.openmrs.module.smartcontainer.rdfsource.AllergyExceptionRDFSource"/>
         </property>
     </bean>
+	<bean id="smartcontainer.EventListeners" parent="openmrsEventListeners">
+		<property name="globalPropertyListeners">
+			<list value-type="org.openmrs.api.GlobalPropertyListener">
+				<bean class="org.openmrs.module.smartcontainer.util.SmartDataHandlerUtil" />
+			</list>
+		</property>
+	</bean>
 </beans>
