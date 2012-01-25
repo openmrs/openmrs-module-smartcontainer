@@ -22,6 +22,7 @@ import org.openmrs.api.APIException;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.smartcontainer.SmartAppService;
 import org.openmrs.module.smartcontainer.SmartUser;
+import org.openmrs.module.smartcontainer.SmartUserService;
 import org.openmrs.module.smartcontainer.app.App;
 import org.openmrs.module.smartcontainer.db.AppDAO;
 
@@ -61,9 +62,15 @@ public class SmartAppServiceImpl implements SmartAppService {
 	 * @see org.openmrs.module.smartcontainer.SmartAppService#DeleteApp(org.openmrs.module.smartcontainer.app.App)
 	 */
 	public void deleteApp(App app) throws APIException {
-		app.setRetired(true);
-		saveApp(app);
+		SmartUserService userService = Context.getService(SmartUserService.class);
+		//delete all referencing rows in the user hidden app table
+		for (SmartUser user : userService.getAllUsers()) {
+			user.getHiddenApps().remove(app);
+			userService.saveUser(user);
+			
+		}
 		
+		dao.deleteApp(app);
 	}
 	
 	/**

@@ -92,7 +92,6 @@ public class SmartAppListController {
 		
 		ModelAndView modelAndView = new ModelAndView();
 		SmartAppService appService = Context.getService(SmartAppService.class);
-		SmartUserService userService = Context.getService(SmartUserService.class);
 		Boolean isUploadFromURL = ServletRequestUtils.getBooleanParameter(request, "updateFromURL", false);
 		HttpSession httpSession = request.getSession();
 		//
@@ -107,16 +106,6 @@ public class SmartAppListController {
 			}
 			
 			App app = appService.getAppById(appId);
-			Collection<App> userHiddenApps = null;
-			//delete all referencing rows in the user hidden app table
-			for (SmartUser user : userService.getAllUsers()) {
-				
-				userHiddenApps = user.getHiddenApps();
-				userHiddenApps.remove(app);
-				userService.saveUser(user);
-				
-			}
-			
 			appService.deleteApp(app);
 			if (appAccessTokenMap != null) {
 				//remove this app's access token

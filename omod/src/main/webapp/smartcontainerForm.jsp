@@ -8,6 +8,9 @@
 	file="/scripts/jquery/dataTables/js/jquery.dataTables.min.js" />
 <openmrs:htmlInclude
 	file="/scripts/jquery-ui/js/jquery-ui-1.7.2.custom.min.js" />
+	
+<openmrs:htmlInclude file="/dwr/interface/DWRSmartService.js" />
+
 <link
 	href="<openmrs:contextPath/>/scripts/jquery-ui/css/<spring:theme code='jqueryui.theme.name' />/jquery-ui.custom.css"
 	type="text/css" rel="stylesheet" />
@@ -30,6 +33,32 @@
 							$j('#addUpgradePopup').dialog('open');
 						});
 					});
+	
+	/**
+	 * Enable or disable an app
+	 */
+	function enableDisableApp(appId, name, enable) {
+		if(confirm('Do you really want to ' + (enable ? 'enable' : 'disable') +  ' the ' + name + ' app?')){
+
+			DWRSmartService.enableOrDisableSmartApp(appId, !enable, function(success) {
+				if(success){
+					location.reload();
+				}
+				else {
+					alert('failed to enable disable app');
+				}
+			});
+		}
+	}
+	
+	function confirmRemoveApp(){
+		if(confirm('Do you really want to remove the app?')){
+			return true;
+		}
+		
+		return false;
+	}
+	
 </script>
 
 <h2><spring:message code="smartcontainer.admin.manage" /></h2>
@@ -97,7 +126,7 @@
 
 				<tr class='${varStatus.index % 2 == 0 ? "oddRow" : "evenRow" }'
 					id="${app.appId}">
-					<form method="post"><input type="hidden" name="action"
+					<form method="post" onsubmit="return confirmRemoveApp()"><input type="hidden" name="action"
 						value="removeApp" /> <input type="hidden" name="appId"
 						value="${app.appId}" />
 					<td valign="top"><input type="image" src="${app.icon}" /></td>
@@ -106,6 +135,18 @@
 					<td valign="top">${app.author}</td>
 					<td valign="top">${fn:substring(fn:escapeXml(app.description),0,
 					200)}...</td>
+						
+					<c:choose>
+						<c:when test="${app.retired}">
+							<td valign="top"><input name="enableAction" type="button"
+							value="enable" onclick="enableDisableApp(${app.appId}, '${app.name}', ${app.retired})" /></td>
+						</c:when>
+						<c:otherwise>
+							<td valign="top"><input name="enableAction" type="button"
+							value="disable" onclick="enableDisableApp(${app.appId}, '${app.name}', ${app.retired})" /></td>
+						</c:otherwise>
+					</c:choose>
+					
 					<td valign="top"><input name="remove" type="submit"
 						value="remove" /></td>
 					</form>

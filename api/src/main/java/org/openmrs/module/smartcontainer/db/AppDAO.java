@@ -58,6 +58,13 @@ public interface AppDAO {
 	public void save(App newApp);
 	
 	/**
+	 * Deletes a given app.
+	 * 
+	 * @param app the app to delete.
+	 */
+	public void deleteApp(App app);
+	
+	/**
 	 * Gets all apps excluding apps with the specified appIds
 	 * 
 	 * @see SmartAppService#getUserVisibleApps(org.openmrs.module.smartcontainer.SmartUser)

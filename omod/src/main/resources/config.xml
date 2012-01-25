@@ -54,6 +54,7 @@
 			<create creator="new" javascript="DWRSmartService">
 				<param name="class" value="@MODULE_PACKAGE@.web.dwr.DWRSmartService"/>
 				<include method="showOrHideSmartApp"/>
+				<include method="enableOrDisableSmartApp"/>
 			</create>
 		</allow>
 
@@ -61,6 +62,7 @@
 			<![CDATA[
 				import @MODULE_PACKAGE@.web.dwr.DWRSmartService;
 				DWRSmartService.showOrHideSmartApp(Integer appId, boolean hide, String userName);
+				DWRSmartService.enableOrDisableSmartApp(Integer appId, boolean enable);
 			]]>
 		</signatures>	
 	</dwr>

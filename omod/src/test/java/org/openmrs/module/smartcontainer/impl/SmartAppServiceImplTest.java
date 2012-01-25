@@ -14,6 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.openmrs.api.context.Context;
@@ -76,7 +77,7 @@ public class SmartAppServiceImplTest extends BaseModuleContextSensitiveTest {
 		App app = appService.getAppByName("PediBPC");
 		appService.deleteApp(app);
 		app = appService.getAppByName("PediBPC");
-		assertTrue(app.getRetired());
+		Assert.assertNull(app);
 	}
 	
 	/**

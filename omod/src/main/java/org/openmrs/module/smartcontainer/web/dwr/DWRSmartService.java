@@ -68,4 +68,23 @@ public class DWRSmartService {
 		
 		return false;
 	}
+	
+	/**
+	 * Process requests to enable or disable a smart app.
+	 * 
+	 * @param appId the appId of the app to be enabled or disabled
+	 * @param enable specifies if an app is to be enabled or disabled
+	 * @return true if the app was successfully enabled or disabled otherwise false
+	 */
+	public boolean enableOrDisableSmartApp(Integer appId, boolean enable) {
+		SmartAppService service = Context.getService(SmartAppService.class);
+		App app = service.getAppById(appId);
+		if (app != null) {
+			app.setRetired(enable);
+			service.saveApp(app);
+			return true;
+		}
+		
+		return false;
+	}
 }

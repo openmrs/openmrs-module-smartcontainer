@@ -76,7 +76,7 @@ public class HibernateAppDAO implements AppDAO {
 	@SuppressWarnings("unchecked")
 	public List<App> getAllApps() throws DAOException {
 		
-		return sessionFactory.getCurrentSession().createQuery("from App u where u.retired=0 order by u.appId").list();
+		return sessionFactory.getCurrentSession().createQuery("from App u order by u.appId").list();
 	}
 	
 	/**
@@ -103,6 +103,13 @@ public class HibernateAppDAO implements AppDAO {
 	public void save(App newApp) {
 		sessionFactory.getCurrentSession().saveOrUpdate(newApp);
 		
+	}
+	
+	/**
+	 * @see org.openmrs.module.smartcontainer.db.AppDAO#delete(org.openmrs.module.smartcontainer.app.App)
+	 */
+	public void deleteApp(App app) {
+		sessionFactory.getCurrentSession().delete(app);
 	}
 	
 	/**
