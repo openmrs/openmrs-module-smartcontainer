@@ -1,6 +1,5 @@
 <%@ include file="/WEB-INF/template/include.jsp"%>
 
-<openmrs:htmlInclude file="/moduleResources/smartcontainer/jschannel.js" />
 <openmrs:htmlInclude file="/moduleResources/smartcontainer/smart-api-container.js" />
 <openmrs:htmlInclude file="/dwr/interface/DWRSmartService.js" />
 <openmrs:htmlInclude file="/moduleResources/smartcontainer/smart.css" />
