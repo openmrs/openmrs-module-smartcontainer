@@ -51,7 +51,7 @@ public class VitalSignRDFSource extends RdfSource {
                 * <dc:date>2010-05-12T04:00:00Z</dc:date>
                 *
                 */
-            URI date = factory.createURI(dc, "date");
+            URI date = factory.createURI(dcterms, "date");
             Literal dateVal = factory.createLiteral(s.getDate());
             graph.handleStatement(factory.createStatement(vitalSignNode, date, dateVal));
             /*Add child node

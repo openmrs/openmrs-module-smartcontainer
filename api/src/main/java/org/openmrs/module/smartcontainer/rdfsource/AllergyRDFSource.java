@@ -56,18 +56,18 @@ public class AllergyRDFSource extends RdfSource {
 			
 			// should be only one of "class" OR "substance"
 			if (smartallergy.getClassOfAllergen() != null)
-				addChildNode("class", allergyNode, graph, smartallergy.getClassOfAllergen());
+				addChildNode(sp, "class", allergyNode, graph, smartallergy.getClassOfAllergen());
 			if (smartallergy.getSubstance() != null)
-				addChildNode("substance", allergyNode, graph, smartallergy.getSubstance());
+				addChildNode(sp, "substance", allergyNode, graph, smartallergy.getSubstance());
 			
 			// these are all required
-			addChildNode("severity", allergyNode, graph, smartallergy.getSeverity());
-			addChildNode("reaction", allergyNode, graph, smartallergy.getReaction());
-			addChildNode("category", allergyNode, graph, smartallergy.getCategory());
+			addChildNode(sp, "severity", allergyNode, graph, smartallergy.getSeverity());
+			addChildNode(sp, "reaction", allergyNode, graph, smartallergy.getReaction());
+			addChildNode(sp, "category", allergyNode, graph, smartallergy.getCategory());
 			
 			// notes is optional
 			if (StringUtils.hasLength(smartallergy.getNotes()))
-				addChildNode("notes", allergyNode, graph, smartallergy.getNotes());
+				addChildNode(sp, "notes", allergyNode, graph, smartallergy.getNotes());
 		}
 		
 		graph.endRDF();

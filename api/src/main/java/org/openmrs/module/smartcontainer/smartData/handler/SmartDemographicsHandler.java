@@ -16,7 +16,10 @@ package org.openmrs.module.smartcontainer.smartData.handler;
 import java.util.List;
 
 import org.openmrs.Patient;
+import org.openmrs.PatientIdentifier;
 import org.openmrs.module.smartcontainer.TransientSmartConceptMap;
+import org.openmrs.module.smartcontainer.smartData.Address;
+import org.openmrs.module.smartcontainer.smartData.Name;
 import org.openmrs.module.smartcontainer.smartData.SmartDemographics;
 import org.openmrs.module.smartcontainer.util.SmartDataHandlerUtil;
 
@@ -31,8 +34,11 @@ public class SmartDemographicsHandler implements SmartDataHandler<SmartDemograph
 	 */
 	public SmartDemographics getForPatient(Patient patient, String id) {
 		SmartDemographics demographics = new SmartDemographics();
-		demographics.setFamilyName(patient.getFamilyName()); // Free text
-		demographics.setGivenName(patient.getGivenName()); // Free text
+		demographics.setName(new Name(patient.getPersonName()));
+		demographics.setAddress(new Address(patient.getPersonAddress()));
+		PatientIdentifier pId = patient.getPatientIdentifier();
+		demographics.setIdentifier(pId.getIdentifier());
+		demographics.setIdentifierType(pId.getIdentifierType().getName());
 		if (patient.getGender() != null) // avoid null
 			demographics.setGender(patient.getGender().equals("M") ? "male" : "female"); // 'male' or 'female'
 		if (patient.getBirthdate() != null) // avoid null

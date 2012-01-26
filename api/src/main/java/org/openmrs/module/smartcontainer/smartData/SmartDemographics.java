@@ -9,9 +9,11 @@ package org.openmrs.module.smartcontainer.smartData;
  */
 public class SmartDemographics extends BaseSmartData {
 	
-	private String givenName;
+	private Name name;
 	
-	private String familyName;
+	private String identifier;
+	
+	private String identifierType;
 	
 	private String gender;
 	
@@ -19,20 +21,62 @@ public class SmartDemographics extends BaseSmartData {
 	
 	private String birthDate;
 	
-	public String getGivenName() {
-		return givenName;
+	private Address address;
+	
+	/**
+	 * @return the name
+	 */
+	public Name getName() {
+		return name;
 	}
 	
-	public void setGivenName(String givenName) {
-		this.givenName = givenName;
+	/**
+	 * @param name the name to set
+	 */
+	public void setName(Name name) {
+		this.name = name;
 	}
 	
-	public String getFamilyName() {
-		return familyName;
+	/**
+	 * @return the identifier
+	 */
+	public String getIdentifier() {
+		return identifier;
 	}
 	
-	public void setFamilyName(String familyName) {
-		this.familyName = familyName;
+	/**
+	 * @param identifier the identifier to set
+	 */
+	public void setIdentifier(String identifier) {
+		this.identifier = identifier;
+	}
+	
+	/**
+	 * @return the identifierType
+	 */
+	public String getIdentifierType() {
+		return identifierType;
+	}
+	
+	/**
+	 * @param identifierType the identifierType to set
+	 */
+	public void setIdentifierType(String identifierType) {
+		this.identifierType = identifierType;
+	}
+	
+	/**
+	 * @return the address
+	 */
+	public Address getAddress() {
+		return address;
+	}
+	
+	/**
+	 * @param address the address to set
+	 */
+	public void setAddress(Address address) {
+		this.address = address;
 	}
 	
 	public String getGender() {
@@ -61,8 +105,8 @@ public class SmartDemographics extends BaseSmartData {
 	
 	@Override
 	public String toString() {
-		return "SmartDemographics [givenName=" + givenName + ", familyName=" + familyName + ", gender=" + gender
-		        + ", zipCode=" + zipCode + ", birthDate=" + birthDate + "]";
+		return "SmartDemographics [givenName=" + name.getGivenName() + ", familyName=" + name.getFamilyName() + ", gender="
+		        + gender + ", zipCode=" + zipCode + ", birthDate=" + birthDate + "]";
 	}
 	
 }

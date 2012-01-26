@@ -53,7 +53,7 @@ public class AllergyExceptionRDFSource extends RdfSource {
 			graph.handleStatement(factory.createStatement(allergyExceptionNode, RdfSource.type, allergyExceptionURI));
 			
 			//Add child node <sp:exception> ..coded value node </sp:exception>
-			addChildNode("exception", allergyExceptionNode, graph, allergyException.getException());
+			addChildNode(sp, "exception", allergyExceptionNode, graph, allergyException.getException());
 		}
 		
 		graph.endRDF();

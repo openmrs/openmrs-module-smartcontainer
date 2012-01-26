@@ -13,78 +13,136 @@
  */
 package org.openmrs.module.smartcontainer.rdfsource;
 
-import org.openmrs.module.smartcontainer.RdfSource;
-import org.openmrs.module.smartcontainer.smartData.SmartDemographics;
-import org.openrdf.model.BNode;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.rio.RDFHandlerException;
-import org.openrdf.rio.rdfxml.util.RDFXMLPrettyWriter;
-
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
+
+import org.apache.commons.lang.StringUtils;
+import org.openmrs.module.smartcontainer.RdfSource;
+import org.openmrs.module.smartcontainer.smartData.Address;
+import org.openmrs.module.smartcontainer.smartData.Name;
+import org.openmrs.module.smartcontainer.smartData.SmartDemographics;
+import org.openrdf.model.BNode;
+import org.openrdf.rio.RDFHandlerException;
+import org.openrdf.rio.rdfxml.util.RDFXMLPrettyWriter;
 
 /**
  * Render a RDF/XML for SMART Demographics
  */
 public class DemographicsRDFSource extends RdfSource {
-
-    /**
-     * @param d SMART Demographics
-     * @return RDF/XML as a String
-     * @throws IOException
-     */
-    public String getRDF(SmartDemographics d) throws IOException, RDFHandlerException {
-
-        Writer sWriter = new StringWriter();
-        RDFXMLPrettyWriter graph = new RDFXMLPrettyWriter(sWriter);
-
-        addHeader(graph);
-        graph.startRDF();
-        /*
-           * <sp:Demographics>
-           * ....child nodes
-           * </sp:Demographics>
-           */
-        BNode demographicsNode = factory.createBNode();
-        URI person = factory.createURI(foaf, "Person");
-
-        graph.handleStatement(factory.createStatement(demographicsNode, type, person));
-        /*Add child node
-           * <foaf:givenName>Bob</foaf:givenName>
-           */
-        URI givenName = factory.createURI(foaf, "givenName");
-        Value gNameVal = factory.createLiteral(d.getGivenName());
-        graph.handleStatement(factory.createStatement(demographicsNode, givenName, gNameVal));
-        /*Add child node
-           * <foaf:familyName>Odenkirk</foaf:familyName>
-           */
-        URI familyName = factory.createURI(foaf, "familyName");
-        Value fNameVal = factory.createLiteral(d.getFamilyName());
-        graph.handleStatement(factory.createStatement(demographicsNode, familyName, fNameVal));
-        /*Add child node
-           * <foaf:gender>male</foaf:gender>
-           */
-        URI gender = factory.createURI(foaf, "gender");
-        Value genderVal = factory.createLiteral(d.getGender());
-        graph.handleStatement(factory.createStatement(demographicsNode, gender, genderVal));
-        /*Add child node
-           *  <sp:zipcode>90001</sp:zipcode>
-           */
-        URI zipcode = factory.createURI(sp, "zipcode");
-        Value zipcodeVal = factory.createLiteral(d.getZipCode());
-        graph.handleStatement(factory.createStatement(demographicsNode, zipcode, zipcodeVal));
-        /*Add child node
-           *  <sp:birthday>1959-12-25</sp:birthday>
-           */
-        URI birthday = factory.createURI(sp, "birthday");
-        Value birthdayVal = factory.createLiteral(d.getBirthDate());
-        graph.handleStatement(factory.createStatement(demographicsNode, birthday, birthdayVal));
-
-        graph.endRDF();
-
-        return sWriter.toString();
-    }
-
+	
+	/**
+	 * @param d SMART Demographics
+	 * @return RDF/XML as a String
+	 * @throws IOException
+	 */
+	public String getRDF(SmartDemographics d) throws IOException, RDFHandlerException {
+		
+		Writer sWriter = new StringWriter();
+		RDFXMLPrettyWriter graph = new RDFXMLPrettyWriter(sWriter);
+		
+		addHeader(graph);
+		graph.startRDF();
+		/*
+		 * <sp:Demographics>
+		 * ....child nodes
+		 * </sp:Demographics>
+		 */
+		BNode demographicsNode = factory.createBNode();
+		addChildBNode(sp, "Demographics", demographicsNode, graph);
+		
+		/*
+		 * <v:n>
+		 * ....child nodes
+		 * </v:n>
+		 */
+		BNode nNode = factory.createBNode();
+		graph.handleStatement(factory.createStatement(demographicsNode, factory.createURI(v, "n"), nNode));
+		
+		/*
+		 * <v:Name>
+		 * ....child nodes
+		 * </v:Name>
+		 */
+		addChildBNode(v, "Name", nNode, graph);
+		Name name = d.getName();
+		
+		/*
+		 * Add child nodes
+		 * <v:given-name>Some given name</v:given-name>
+		 */
+		addChildNode(v, "given-name", nNode, graph, name.getGivenName());
+		addChildNode(v, "family-name", nNode, graph, name.getFamilyName());
+		if (StringUtils.isNotBlank(d.getName().getMiddleName()))
+			addChildNode(v, "additional-name", nNode, graph, name.getMiddleName());
+		if (StringUtils.isNotBlank(name.getNamePrefix()))
+			addChildNode(v, "honorific-prefix", nNode, graph, name.getNamePrefix());
+		if (StringUtils.isNotBlank(name.getNameSuffix()))
+			addChildNode(v, "honorific-suffix", nNode, graph, name.getNameSuffix());
+		
+		/*
+		 * <v:Adr>
+		 * ....child nodes
+		 * </v:Adr>
+		 */
+		BNode adrNode = factory.createBNode();
+		graph.handleStatement(factory.createStatement(demographicsNode, factory.createURI(v, "adr"), adrNode));
+		
+		/*
+		 * <v:Address>
+		 * ....child nodes
+		 * </v:Address>
+		 */
+		addChildBNode(v, "Address", adrNode, graph);
+		Address address = d.getAddress();
+		//Mark the address as preferred
+		if (address.isPreferred())
+			graph.handleStatement(factory.createStatement(adrNode, type, factory.createURI(v, "pref")));
+		
+		/*
+		 * Add child nodes
+		 * <v:street-address>Some given name</v:street-address>
+		 */
+		if (StringUtils.isNotBlank(address.getStreetAddress()))
+			addChildNode(v, "street-address", adrNode, graph, address.getStreetAddress());
+		if (StringUtils.isNotBlank(address.getLocality()))
+			addChildNode(v, "locality", adrNode, graph, address.getLocality());
+		if (StringUtils.isNotBlank(address.getRegion()))
+			addChildNode(v, "region", adrNode, graph, address.getRegion());
+		if (StringUtils.isNotBlank(address.getPostalCode()))
+			addChildNode(v, "postal-code", adrNode, graph, address.getPostalCode());
+		if (StringUtils.isNotBlank(address.getCountryName()))
+			addChildNode(v, "country", adrNode, graph, address.getCountryName());
+		
+		addChildNode(foaf, "gender", demographicsNode, graph, d.getGender());
+		addChildNode(v, "bday", demographicsNode, graph, d.getBirthDate());
+		
+		/*
+		 * <sp:medicalRecordNumber>
+		 * ....child nodes
+		 * </sp:medicalRecordNumber>
+		 */
+		BNode mrnNode = factory.createBNode();
+		graph.handleStatement(factory.createStatement(demographicsNode, factory.createURI(sp, "medicalRecordNumber"),
+		    mrnNode));
+		
+		/*
+		 * <v:Code>
+		 * ....child nodes
+		 * </v:Code>
+		 */
+		addChildBNode(sp, "Code", mrnNode, graph);
+		
+		/*
+		 * Add child nodes
+		 * <v:dcterms>Some given name</v:title>
+		 */
+		addChildNode(dcterms, "title", mrnNode, graph, d.getIdentifierType() + " " + d.getIdentifier());
+		addChildNode(dcterms, "identifier", mrnNode, graph, d.getIdentifier());
+		addChildNode(sp, "system", mrnNode, graph, d.getIdentifierType());
+		
+		graph.endRDF();
+		
+		return sWriter.toString();
+	}
 }

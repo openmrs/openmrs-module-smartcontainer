@@ -17,6 +17,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.smartcontainer.rdfsource.DemographicsRDFSource;
 import org.openmrs.module.smartcontainer.smartData.SmartDemographics;
 import org.openmrs.test.BaseModuleContextSensitiveTest;
 
@@ -39,9 +40,13 @@ public class SmartDemographicsHandlerTest extends BaseModuleContextSensitiveTest
 		SmartDemographics smartDemographics = smartDataHandler
 		        .getForPatient(Context.getPatientService().getPatient(2), null);
 		Assert.assertNotNull(smartDemographics);
-		Assert.assertNotNull(smartDemographics.getFamilyName());
+		Assert.assertNotNull(smartDemographics.getName());
+		Assert.assertNotNull(smartDemographics.getAddress());
 		Assert.assertNotNull(smartDemographics.getBirthDate());
 		Assert.assertNotNull(smartDemographics.getGender());
 		Assert.assertNotNull(smartDemographics.getZipCode());
+		Assert.assertNotNull(smartDemographics.getIdentifier());
+		Assert.assertNotNull(smartDemographics.getIdentifierType());
+		String rdf = new DemographicsRDFSource().getRDF(smartDemographics);
 	}
 }

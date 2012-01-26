@@ -60,7 +60,7 @@ public class SmartDataHandlerUtil implements GlobalPropertyListener {
 	 */
 	public static String date(Date date) {
 		
-		DateFormatter parser = new DateFormatter("yyyy-MM-dd");
+		DateFormatter parser = new DateFormatter("yyyy-MM-dd 00:00:00");
 		return parser.print(date, Context.getLocale());
 		
 	}

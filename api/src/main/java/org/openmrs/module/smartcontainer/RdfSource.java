@@ -43,11 +43,6 @@ public abstract class RdfSource {
 	public final static String dcterms = "http://purl.org/dc/terms/";
 	
 	/**
-	 * Name space declaration for Dublin core vocabulary
-	 */
-	public final static String dc = "http://purl.org/dc/elements/1.1/";
-	
-	/**
 	 * Name space declaration for Resource description framework
 	 */
 	public final static String rdf = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
@@ -100,24 +95,29 @@ public abstract class RdfSource {
 		graph.handleNamespace("rdf", rdf);
 		graph.handleNamespace("sp", sp);
 		graph.handleNamespace("foaf", foaf);
-		graph.handleNamespace("dc", dc);
 		graph.handleNamespace("dcterms", dcterms);
 		graph.handleNamespace("v", v);
 		
 	}
 	
-	protected URI addChildNode(String nodename, BNode parentNode, RDFXMLWriter graph, CodedValue codedValue)
+	protected URI addChildNode(String namespace, String nodename, BNode parentNode, RDFXMLWriter graph, CodedValue codedValue)
 	    throws RDFHandlerException, IOException {
-		URI childnode = factory.createURI(sp, nodename);
+		URI childnode = factory.createURI(namespace, nodename);
 		graph.handleStatement(factory.createStatement(parentNode, childnode, RdfUtil.codedValue(factory, graph, codedValue)));
 		return childnode;
 	}
 	
-	protected URI addChildNode(String nodename, BNode parentNode, RDFXMLWriter graph, String textContent)
+	protected URI addChildNode(String namespace, String nodename, BNode parentNode, RDFXMLWriter graph, String textContent)
 	    throws RDFHandlerException, IOException {
-		URI childnode = factory.createURI(sp, nodename);
+		URI childnode = factory.createURI(namespace, nodename);
 		Value value = factory.createLiteral(textContent);
 		graph.handleStatement(factory.createStatement(parentNode, childnode, value));
 		return childnode;
+	}
+	
+	protected void addChildBNode(String namespace, String nodename, BNode parentNode, RDFXMLWriter graph)
+	    throws RDFHandlerException, IOException {
+		URI name = factory.createURI(namespace, nodename);
+		graph.handleStatement(factory.createStatement(parentNode, type, name));
 	}
 }
