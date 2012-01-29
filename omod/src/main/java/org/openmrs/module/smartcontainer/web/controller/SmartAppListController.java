@@ -30,8 +30,6 @@ import org.apache.commons.logging.LogFactory;
 import org.json.simple.parser.ParseException;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.smartcontainer.SmartAppService;
-import org.openmrs.module.smartcontainer.SmartUser;
-import org.openmrs.module.smartcontainer.SmartUserService;
 import org.openmrs.module.smartcontainer.app.App;
 import org.openmrs.module.smartcontainer.app.AppFactory;
 import org.openmrs.web.WebConstants;
@@ -194,7 +192,6 @@ public class SmartAppListController {
 	protected Collection<App> formBackingObject(HttpServletRequest request) throws Exception {
 		
 		Collection<App> apps = Context.getService(SmartAppService.class).getAllApps();
-		// Context.getService(UserService.class).saveUser(new SMARTAppUser());
 		
 		return apps;
 	}

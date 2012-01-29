@@ -169,13 +169,13 @@
 		});
 	});
 
-	function showOrHideSmartApp(appId, hide){
+	function showOrHideSmartApp(appId, hide, userUuid){
 		var appNameHolderId = (hide)?"#appNameHolder-hide":"#appNameHolder-show";
 		$j(appNameHolderId).html("");
 		var id = (hide)?"#errorMsg-hide":"#errorMsg-show";
 		$j(id).hide();
 		
-		DWRSmartService.showOrHideSmartApp(appId, hide, null, function(success) {
+		DWRSmartService.showOrHideSmartApp(appId, hide, userUuid, function(success) {
 			if(success && hide){
 				location.reload();
 			}else if(success && !hide){
@@ -229,7 +229,7 @@
 				</td>
 				<td>
 					<input class="faded" type="image" src="images/trash.gif" title="<spring:message code="smartcontainer.hide"/>" 
-							onclick="showOrHideSmartApp('${app.appId}', true)" />
+							onclick="showOrHideSmartApp('${app.appId}', true, '${model.currentUser.uuid}')" />
 				</td>
 			</tr>
 			<script type="text/javascript">
@@ -256,7 +256,7 @@
 					<td width="100%" <c:if test="${varStatus.index % 2 == 0}">class='evenRow'</c:if> valign="top">${hiddenApp.name}</td>
 					<td <c:if test="${varStatus.index % 2 == 0}">class='evenRow'</c:if> valign="top">
 						<input class="smallButton" type="button" value="<spring:message code="smartcontainer.show"/>" 
-							onclick="showOrHideSmartApp('${hiddenApp.appId}', false)" />
+							onclick="showOrHideSmartApp('${hiddenApp.appId}', false, '${model.currentUser.uuid}')" />
 					</td>
 				</tr>
 				<script type="text/javascript">

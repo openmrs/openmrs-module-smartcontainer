@@ -9,7 +9,7 @@
 	<c:choose>
 	<c:when test="${fn:length(apps) > 0}">
 	<form method="post">
-		<input type="hidden" name="userName" value='<request:parameter name="userName"/>' />
+		<input type="hidden" name="uuid" value='<request:parameter name="uuid"/>' />
 		<table class="defaultSmartTable" cellpadding="3" cellspacing="0" width="100%">
 			<tr>
 				<th class="userAppRowHeader"><spring:message code="smartcontainer.appName"/></th>

@@ -16,7 +16,10 @@ package org.openmrs.module.smartcontainer;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.openmrs.User;
+import org.openmrs.api.UserService;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.smartcontainer.app.UserHiddenAppMap;
 import org.openmrs.test.BaseModuleContextSensitiveTest;
 import org.openmrs.test.Verifies;
 
@@ -25,33 +28,45 @@ import org.openmrs.test.Verifies;
  */
 public class SmartAppServiceTest extends BaseModuleContextSensitiveTest {
 	
-	private SmartUserService userService;
+	private UserService userService;
 	
 	private SmartAppService appService;
 	
 	@Before
 	public void before() throws Exception {
 		executeDataSet("smartdataset.xml");
-		userService = Context.getService(SmartUserService.class);
+		userService = Context.getUserService();
 		appService = Context.getService(SmartAppService.class);
 	}
 	
 	/**
-	 * @see {@link SmartAppService#getUserVisibleApps(SmartUser)}
+	 * @see {@link SmartAppService#getUserVisibleApps(User)}
 	 */
 	@Test
-	@Verifies(value = "should get all the un retired none hidden apps for the specified smart user", method = "getUserVisibleApps(SmartUser)")
-	public void getUserVisibleApps_shouldGetAllTheUnRetiredNoneHiddenAppsForTheSpecifiedSmartUser() throws Exception {
+	@Verifies(value = "should get all the un retired none hidden apps for the specified user", method = "getUserVisibleApps(User)")
+	public void getUserVisibleApps_shouldGetAllTheUnRetiredNoneHiddenAppsForTheSpecifiedUser() throws Exception {
 		executeDataSet("SmartAppServiceTest-otherApps.xml");
-		Assert.assertEquals(1, appService.getUserVisibleApps(userService.getUserByName("admin")).size());
+		Assert.assertEquals(1, appService.getUserVisibleApps(userService.getUserByUsername("admin")).size());
 	}
 	
 	/**
-	 * @see {@link SmartAppService#getUserVisibleApps(SmartUser)}
+	 * @see {@link SmartAppService#getUserVisibleApps(User)}
 	 */
 	@Test
 	@Verifies(value = "should return all un retired apps if the user has no hidden apps", method = "getUserVisibleApps(SmartUser)")
 	public void getUserVisibleApps_shouldReturnAllUnRetiredAppsIfTheUserHasNoHiddenApps() throws Exception {
-		Assert.assertEquals(5, appService.getUserVisibleApps(userService.getUserByName("daemon")).size());
+		Assert.assertEquals(5, appService.getUserVisibleApps(userService.getUserByUsername("daemon")).size());
+	}
+	
+	/**
+	 * @see {@link SmartAppService#getUserHiddenApps(User)}
+	 */
+	@Test
+	@Verifies(value = "should get all the hidden un retired apps for the specified user", method = "getUserHiddenApps(User)")
+	public void getUserHiddenApps_shouldGetAllTheHiddenUnRetiredAppsForTheSpecifiedUser() throws Exception {
+		executeDataSet("SmartAppServiceTest-otherApps.xml");
+		UserHiddenAppMap u = new UserHiddenAppMap();
+		u.setUserHiddenAppMapId(1);
+		Assert.assertEquals(5, appService.getUserHiddenApps(userService.getUserByUsername("admin")).size());
 	}
 }

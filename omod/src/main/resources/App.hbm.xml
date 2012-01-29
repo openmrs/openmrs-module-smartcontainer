@@ -10,7 +10,6 @@
         <property name="name" type="string" column="name"/>
         <property name="description" type="string" column="description"/>
         <property name="author" type="string" column="author"/>
-        <property name="mode" type="string" column="mode"/>
         <property name="version" type="string" column="version"/>
         <property name="baseURL" type="string" column="base_url"/>
         <property name="icon" type="string" column="icon"/>

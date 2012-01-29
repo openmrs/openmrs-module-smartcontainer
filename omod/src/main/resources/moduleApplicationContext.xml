@@ -31,7 +31,6 @@
         <property name="mappings">
             <props>
                 <prop key="**/smartAppForm.portlet">smartAppPortletController</prop>
-                <!-- 				<prop key="**/options.form">smartAppOptionController</prop> -->
             </props>
         </property>
     </bean>
@@ -52,37 +51,6 @@
                             <property name="dao">
                                 <bean
                                         class="org.openmrs.module.smartcontainer.db.hibernate.HibernateAppDAO">
-                                    <property name="sessionFactory">
-                                        <ref bean="sessionFactory"/>
-                                    </property>
-                                </bean>
-                            </property>
-                        </bean>
-                    </property>
-                    <property name="preInterceptors">
-                        <ref bean="serviceInterceptors"/>
-                    </property>
-                    <property name="transactionAttributeSource">
-                        <bean class="org.springframework.transaction.annotation.AnnotationTransactionAttributeSource"/>
-                    </property>
-                </bean>
-            </list>
-        </property>
-    </bean>
-    <bean parent="serviceContext">
-        <property name="moduleService">
-            <list>
-                <value>org.openmrs.module.smartcontainer.SmartUserService</value>
-                <bean
-                        class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
-                    <property name="transactionManager">
-                        <ref bean="transactionManager"/>
-                    </property>
-                    <property name="target">
-                        <bean class="org.openmrs.module.smartcontainer.impl.SmartUserServiceImpl">
-                            <property name="userDAO">
-                                <bean
-                                        class="org.openmrs.module.smartcontainer.db.hibernate.HibernateUserDAO">
                                     <property name="sessionFactory">
                                         <ref bean="sessionFactory"/>
                                     </property>

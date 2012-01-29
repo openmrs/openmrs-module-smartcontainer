@@ -13,12 +13,13 @@
  */
 package org.openmrs.module.smartcontainer.db;
 
-import java.util.Collection;
 import java.util.List;
 
+import org.openmrs.User;
 import org.openmrs.api.db.DAOException;
 import org.openmrs.module.smartcontainer.SmartAppService;
 import org.openmrs.module.smartcontainer.app.App;
+import org.openmrs.module.smartcontainer.app.UserHiddenAppMap;
 
 /**
  * DAO for App Service
@@ -47,7 +48,6 @@ public interface AppDAO {
 	 * 
 	 * @param id
 	 */
-	
 	public App getAppById(Integer id);
 	
 	/**
@@ -65,10 +65,23 @@ public interface AppDAO {
 	public void deleteApp(App app);
 	
 	/**
-	 * Gets all apps excluding apps with the specified appIds
-	 * 
-	 * @see SmartAppService#getUserVisibleApps(org.openmrs.module.smartcontainer.SmartUser)
-	 * @return a list of {@link App}s
+	 * @see SmartAppService#saveUserHiddenAppMap(UserHiddenAppMap)
 	 */
-	public List<App> getApps(Collection<Integer> exclude);
+	public UserHiddenAppMap saveUserHiddenAppMap(UserHiddenAppMap userHiddenAppMap);
+	
+	/**
+	 * @see SmartAppService#deleteUserHiddenAppMap(User, App)
+	 */
+	public void deleteUserHiddenAppMap(User user, App app);
+	
+	/**
+	 * @see SmartAppService#getUserVisibleApps(User)
+	 */
+	public List<App> getUserVisibleApps(User user);
+	
+	/**
+	 * @see SmartAppService#getUserHiddenApps(User)
+	 * @return
+	 */
+	public List<App> getUserHiddenApps(User user);
 }

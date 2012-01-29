@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+        
+<hibernate-mapping package="org.openmrs.module.smartcontainer.app">
+    <class name="UserHiddenAppMap" table="smartcontainer_user_hidden_app">
+        <id name="userHiddenAppMapId" type="java.lang.Integer" column="user_hidden_app_map_Id">
+           <generator class="native">
+				<param name="sequence">smartcontainer_user_hidden_app_user_hidden_app_map_Id_seq</param>
+			</generator>
+        </id>
+        
+        <!-- Each user_id and app_id combination should be unique -->
+        <properties name="unique_user_hidden_app_map" unique="true" update="false">
+	        <many-to-one name="user" class="org.openmrs.User" column="user_id" not-null="true"/>
+        	<many-to-one name="app" class="App" column="app_id" not-null="true"/>
+		</properties>
+    </class>
+</hibernate-mapping>

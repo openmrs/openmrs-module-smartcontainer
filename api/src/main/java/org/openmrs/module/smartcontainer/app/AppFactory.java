@@ -36,8 +36,6 @@ public class AppFactory {
 	
 	public static final String AUTHOR = "author";
 	
-	public static final String MODE = "mode";
-	
 	public static final String VERSION = "version";
 	
 	public static final String BASEURL = "base_url";
@@ -103,7 +101,6 @@ public class AppFactory {
 		temp = (String) pa.get(ICON);
 		temp = removeBaseURL(temp, app.getBaseURL());
 		app.setIcon(temp);
-		app.setMode((String) pa.get(MODE));
 		app.setsMARTAppId((String) pa.get(SMARTAPPID));
 		app.setVersion((String) pa.get(VERSION));
 		app.setManifest(manifestJsonText);

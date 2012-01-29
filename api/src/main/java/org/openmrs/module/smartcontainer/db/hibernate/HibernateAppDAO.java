@@ -13,7 +13,6 @@
  */
 package org.openmrs.module.smartcontainer.db.hibernate;
 
-import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -21,13 +20,20 @@ import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
+import org.openmrs.User;
 import org.openmrs.api.db.DAOException;
 import org.openmrs.module.smartcontainer.app.App;
+import org.openmrs.module.smartcontainer.app.UserHiddenAppMap;
 import org.openmrs.module.smartcontainer.db.AppDAO;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Implimentation for App DAO
+ * Implementation for App DAO
  */
 public class HibernateAppDAO implements AppDAO {
 	
@@ -56,6 +62,7 @@ public class HibernateAppDAO implements AppDAO {
 	/**
 	 * @see org.openmrs.module.smartcontainer.db.AppDAO#getAppByName(java.lang.String)
 	 */
+	@Transactional(readOnly = true)
 	public App getAppByName(String name) throws DAOException {
 		Query query = sessionFactory.getCurrentSession().createQuery("from App a where  a.name = ?");
 		query.setString(0, name);
@@ -74,6 +81,7 @@ public class HibernateAppDAO implements AppDAO {
 	 * @see org.openmrs.module.smartcontainer.db.AppDAO#getAllApps()
 	 */
 	@SuppressWarnings("unchecked")
+	@Transactional(readOnly = true)
 	public List<App> getAllApps() throws DAOException {
 		
 		return sessionFactory.getCurrentSession().createQuery("from App u order by u.appId").list();
@@ -82,6 +90,8 @@ public class HibernateAppDAO implements AppDAO {
 	/**
 	 * @see org.openmrs.module.smartcontainer.db.AppDAO#getAppById(java.lang.Integer)
 	 */
+	@SuppressWarnings("rawtypes")
+    @Transactional(readOnly = true)
 	public App getAppById(Integer id) {
 		Query query = sessionFactory.getCurrentSession().createQuery("from App a where  a.appId = ?");
 		query.setInteger(0, id);
@@ -100,6 +110,7 @@ public class HibernateAppDAO implements AppDAO {
 	/**
 	 * @see org.openmrs.module.smartcontainer.db.AppDAO#save(org.openmrs.module.smartcontainer.app.App)
 	 */
+	@Transactional
 	public void save(App newApp) {
 		sessionFactory.getCurrentSession().saveOrUpdate(newApp);
 		
@@ -108,19 +119,83 @@ public class HibernateAppDAO implements AppDAO {
 	/**
 	 * @see org.openmrs.module.smartcontainer.db.AppDAO#delete(org.openmrs.module.smartcontainer.app.App)
 	 */
+	@Transactional
 	public void deleteApp(App app) {
+		deleteAssociatedUserHiddenAppMaps(app);
 		sessionFactory.getCurrentSession().delete(app);
 	}
 	
 	/**
-	 * @see org.openmrs.module.smartcontainer.db.AppDAO#getApps(Collection)
+	 * @see org.openmrs.module.smartcontainer.db.AppDAO#getUserVisibleApps(User)
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<App> getApps(Collection<Integer> exclude) {
-		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(App.class);
-		criteria.add(Restrictions.not(Restrictions.in("appId", exclude)));
-		criteria.add(Restrictions.eq("retired", false));
-		return criteria.list();
+	@Transactional(readOnly = true)
+	public List<App> getUserVisibleApps(User user) {
+		return createAppCriteria(user, true).list();
+	}
+	
+	/**
+	 * @see org.openmrs.module.smartcontainer.db.AppDAO#getUserHiddenApps(org.openmrs.User)
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	@Transactional(readOnly = true)
+	public List<App> getUserHiddenApps(User user) {
+		return createAppCriteria(user, false).list();
+	}
+	
+	/**
+	 * Creates a criteria for fetching either visible or hidden Apps for the specified user
+	 * 
+	 * @param user the user to match against
+	 * @param getVisible specifies the apps to fetch i.e visible Vs hidden
+	 * @return the {@link Criteria} object
+	 */
+	private Criteria createAppCriteria(User user, boolean getVisible) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(App.class, "app");
+		criteria.add(Restrictions.eq("app.retired", false));
+		
+		DetachedCriteria dc = DetachedCriteria.forClass(UserHiddenAppMap.class, "map")
+		        .add(Restrictions.eq("map.user", user)).setProjection(Projections.distinct(Projections.property("map.app")));
+		
+		Criterion criterion = (getVisible) ? Property.forName("app.appId").notIn(dc) : Property.forName("app.appId").in(dc);
+		criteria.add(criterion);
+		
+		return criteria;
+		
+	}
+	
+	/**
+	 * @see org.openmrs.module.smartcontainer.db.AppDAO#saveUserHiddenAppMap(org.openmrs.module.smartcontainer.app.UserHiddenAppMap)
+	 */
+	@Override
+	@Transactional
+	public UserHiddenAppMap saveUserHiddenAppMap(UserHiddenAppMap userHiddenAppMap) {
+		sessionFactory.getCurrentSession().save(userHiddenAppMap);
+		return userHiddenAppMap;
+	}
+	
+	/**
+	 * @see org.openmrs.module.smartcontainer.db.AppDAO#deleteUserHiddenAppMap(org.openmrs.User,
+	 *      org.openmrs.module.smartcontainer.app.App)
+	 */
+	@Override
+	@Transactional
+	public void deleteUserHiddenAppMap(User user, App app) {
+		sessionFactory.getCurrentSession().createQuery("DELETE FROM UserHiddenAppMap WHERE app = :app AND user = :user")
+		        .setParameter("app", app).setParameter("user", user).executeUpdate();
+	}
+	
+	/**
+	 * Utility method that deletes all {@link UserHiddenAppMap}s referencing the specified
+	 * {@link App}.
+	 * 
+	 * @param app the app to match against when deleting maps
+	 */
+	@Transactional
+	private void deleteAssociatedUserHiddenAppMaps(App app) {
+		sessionFactory.getCurrentSession().createQuery("DELETE FROM UserHiddenAppMap WHERE app = :app")
+		        .setParameter("app", app).executeUpdate();
 	}
 }

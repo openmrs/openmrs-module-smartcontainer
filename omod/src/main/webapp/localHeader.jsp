@@ -13,8 +13,8 @@
 				<spring:message code="smartcontainer.admin.manage"/>
 			</a>
 		</li>
-		<li <c:if test='<%= request.getRequestURI().contains("smartUsers") %>'>class="active"</c:if>>
-			<a href="${pageContext.request.contextPath}/module/smartcontainer/smartUsers.list">
+		<li <c:if test='<%= request.getRequestURI().contains("users") %>'>class="active"</c:if>>
+			<a href="${pageContext.request.contextPath}/module/smartcontainer/users.list">
 				<spring:message code="smartcontainer.admin.manage.user"/>
 			</a>
 		</li>

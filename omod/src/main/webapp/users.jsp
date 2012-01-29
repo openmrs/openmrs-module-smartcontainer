@@ -1,6 +1,6 @@
 <%@ include file="localHeader.jsp" %>
 
-<openmrs:require privilege="Manage SMART Apps" otherwise="/login.htm" redirect="/module/smartcontainer/smartUsers.list" />
+<openmrs:require privilege="View Users" otherwise="/login.htm" redirect="/module/smartcontainer/users.list" />
 
 <openmrs:htmlInclude file="/scripts/jquery/dataTables/css/dataTables_jui.css"/>
 <openmrs:htmlInclude file="/scripts/jquery/dataTables/js/jquery.dataTables.min.js"/>
@@ -26,16 +26,16 @@
 		</tr>
 	  </thead>
 	  <tbody>
-		<c:forEach var="smartUser" items="${smartUsers}" varStatus="varStatus">
+		<c:forEach var="user" items="${users}" varStatus="varStatus">
 		<tr>
 			<td>
-				${smartUser.openMRSUser.personName}
+				${user.personName}
 			</td>
 			<td>
-				${smartUser.openMRSUser.username}
+				${user.username}
 			</td>
 			<td>
-				<a href="<openmrs:contextPath />/module/smartcontainer/manageUserHiddenApps.form?userName=${smartUser.openMRSUser.username}">
+				<a href="<openmrs:contextPath />/module/smartcontainer/manageUserHiddenApps.form?uuid=${user.uuid}">
 					<spring:message code="smartcontainer.manageHiddenApps"/>
 				</a>
 			</td>

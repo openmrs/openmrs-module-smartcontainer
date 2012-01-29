@@ -14,10 +14,15 @@
 package org.openmrs.module.smartcontainer;
 
 import java.util.Collection;
+import java.util.List;
 
+import org.openmrs.User;
+import org.openmrs.annotation.Authorized;
 import org.openmrs.api.APIException;
 import org.openmrs.module.smartcontainer.app.App;
+import org.openmrs.module.smartcontainer.app.UserHiddenAppMap;
 import org.openmrs.module.smartcontainer.db.AppDAO;
+import org.openmrs.module.smartcontainer.util.SmartConstants;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -52,11 +57,12 @@ public interface SmartAppService {
 	public Collection<App> getAllApps() throws APIException;
 	
 	/**
-	 * Delete app by id
+	 * Deletes the app with the specified id from the database
 	 * 
 	 * @param id
 	 * @throws APIException
 	 */
+	@Authorized(SmartConstants.PRIV_MANAGE_SMART_APPS)
 	public void deleteApp(App app) throws APIException;
 	
 	/**
@@ -72,15 +78,43 @@ public interface SmartAppService {
 	 * 
 	 * @param newApp
 	 */
+	@Authorized(SmartConstants.PRIV_MANAGE_SMART_APPS)
 	public void saveApp(App newApp);
 	
 	/**
-	 * Gets all the none hidden apps for the specified smart user
+	 * Stores the specified {@link UserHiddenAppMap} to the database
 	 * 
-	 * @param smartUser the {@link SmartUser} whose visible apps to fetch
-	 * @return a collection of visible {@link App}s
-	 * @should get all the un retired none hidden apps for the specified smart user
+	 * @param userHiddenAppMap the {@link UserHiddenAppMap} to save
+	 * @return the created {@link UserHiddenAppMap}
+	 */
+	@Authorized(SmartConstants.PRIV_MANAGE_SMART_APPS)
+	public UserHiddenAppMap saveUserHiddenAppMap(UserHiddenAppMap userHiddenAppMap);
+	
+	/**
+	 * Deletes the {@link UserHiddenAppMap} matching the specified user and app
+	 * 
+	 * @param user the user to match against
+	 * @param app the app to match against
+	 */
+	@Authorized(SmartConstants.PRIV_MANAGE_SMART_APPS)
+	public void deleteUserHiddenAppMap(User user, App app);
+	
+	/**
+	 * Gets all the none hidden apps for the specified user
+	 * 
+	 * @param user the {@link User} whose visible apps to fetch
+	 * @return a list of visible {@link App}s
+	 * @should get all the un retired none hidden apps for the specified user
 	 * @should return all un retired apps if the user has no hidden apps
 	 */
-	public Collection<App> getUserVisibleApps(SmartUser smartUser);
+	public List<App> getUserVisibleApps(User user);
+	
+	/**
+	 * Gets all the none hidden apps for the specified user
+	 * 
+	 * @param user the {@link User} whose hidden apps to fetch
+	 * @return a list of {@link App}s
+	 * @should get all the hidden un retired apps for the specified user
+	 */
+	public List<App> getUserHiddenApps(User user);
 }

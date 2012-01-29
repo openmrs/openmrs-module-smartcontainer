@@ -61,7 +61,7 @@
 		<signatures>
 			<![CDATA[
 				import @MODULE_PACKAGE@.web.dwr.DWRSmartService;
-				DWRSmartService.showOrHideSmartApp(Integer appId, boolean hide, String userName);
+				DWRSmartService.showOrHideSmartApp(Integer appId, boolean hide, String uuid);
 				DWRSmartService.enableOrDisableSmartApp(Integer appId, boolean enable);
 			]]>
 		</signatures>	
@@ -164,6 +164,6 @@
         App.hbm.xml
         Activity.hbm.xml
         WebHook.hbm.xml
-        SmartUser.hbm.xml
+        UserHiddenAppMap.hbm.xml
     </mappingFiles>
 </module>

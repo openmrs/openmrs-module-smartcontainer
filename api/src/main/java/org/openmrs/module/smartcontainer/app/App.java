@@ -26,8 +26,6 @@ public final class App {
 	
 	private String author;
 	
-	private String mode;
-	
 	private String version;
 	
 	private String baseURL;
@@ -46,41 +44,6 @@ public final class App {
 	
 	public void setRetired(Boolean retired) {
 		this.retired = retired;
-	}
-	
-	/**
-     *
-     */
-	
-	public App() {
-		
-	}
-	
-	/**
-	 * @param name
-	 * @param appId
-	 * @param description
-	 * @param author
-	 * @param mode
-	 * @param version
-	 * @param baseURL
-	 * @param icon
-	 * @param sMARTAppId
-	 * @param defaultApp
-	 */
-	public App(String name, String description, String author, String mode, String version, String baseURL, String icon,
-	    String sMARTAppId) {
-		super();
-		this.name = name;
-		
-		this.description = description;
-		this.author = author;
-		this.mode = mode;
-		this.version = version;
-		this.baseURL = baseURL;
-		this.icon = icon;
-		this.sMARTAppId = sMARTAppId;
-		
 	}
 	
 	/**
@@ -133,13 +96,6 @@ public final class App {
 	}
 	
 	/**
-	 * @return the mode
-	 */
-	public String getMode() {
-		return mode;
-	}
-	
-	/**
 	 * @return the version
 	 */
 	public String getVersion() {
@@ -172,13 +128,6 @@ public final class App {
 	 */
 	public void setAuthor(String author) {
 		this.author = author;
-	}
-	
-	/**
-	 * @param mode the mode to set
-	 */
-	public void setMode(String mode) {
-		this.mode = mode;
 	}
 	
 	/**

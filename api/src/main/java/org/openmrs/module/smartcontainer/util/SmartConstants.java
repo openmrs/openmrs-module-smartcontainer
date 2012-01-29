@@ -89,4 +89,6 @@ public class SmartConstants {
 	 */
 	public static final String GP_LOCAL_FDA_CONCEPT_SOURCE_ID = "smartcontainer.local.fdaConceptSource";
 	
+	public static final String PRIV_MANAGE_SMART_APPS = "Manage SMART Apps";
+	
 }

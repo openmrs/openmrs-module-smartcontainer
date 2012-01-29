@@ -13,17 +13,13 @@
  */
 package org.openmrs.module.smartcontainer.impl;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
+import org.openmrs.User;
 import org.openmrs.api.APIException;
-import org.openmrs.api.context.Context;
 import org.openmrs.module.smartcontainer.SmartAppService;
-import org.openmrs.module.smartcontainer.SmartUser;
-import org.openmrs.module.smartcontainer.SmartUserService;
 import org.openmrs.module.smartcontainer.app.App;
+import org.openmrs.module.smartcontainer.app.UserHiddenAppMap;
 import org.openmrs.module.smartcontainer.db.AppDAO;
 
 /**
@@ -59,17 +55,9 @@ public class SmartAppServiceImpl implements SmartAppService {
 	
 	/**
 	 * @should delete selected app
-	 * @see org.openmrs.module.smartcontainer.SmartAppService#DeleteApp(org.openmrs.module.smartcontainer.app.App)
+	 * @see org.openmrs.module.smartcontainer.SmartAppService#deleteApp(App)
 	 */
 	public void deleteApp(App app) throws APIException {
-		SmartUserService userService = Context.getService(SmartUserService.class);
-		//delete all referencing rows in the user hidden app table
-		for (SmartUser user : userService.getAllUsers()) {
-			user.getHiddenApps().remove(app);
-			userService.saveUser(user);
-			
-		}
-		
 		dao.deleteApp(app);
 	}
 	
@@ -91,22 +79,35 @@ public class SmartAppServiceImpl implements SmartAppService {
 	}
 	
 	/**
-	 * @see org.openmrs.module.smartcontainer.SmartAppService#getUserVisibleApps(org.openmrs.User)
+	 * @see org.openmrs.module.smartcontainer.SmartAppService#getUserVisibleApps(User)
 	 */
 	@Override
-	public Collection<App> getUserVisibleApps(SmartUser smartUser) {
-		if (smartUser != null) {
-			Collection<App> hiddenApps = smartUser.getHiddenApps();
-			if (hiddenApps.size() == 0)
-				return Context.getService(SmartAppService.class).getAllApps();
-			
-			List<Integer> appIdsToExclude = new ArrayList<Integer>(hiddenApps.size());
-			for (App app : smartUser.getHiddenApps()) {
-				appIdsToExclude.add(app.getAppId());
-			}
-			return dao.getApps(appIdsToExclude);
-		}
-		
-		return Collections.emptyList();
+	public List<App> getUserVisibleApps(User user) {
+		return dao.getUserVisibleApps(user);
+	}
+	
+	/**
+	 * @see org.openmrs.module.smartcontainer.SmartAppService#getUserHiddenApps(org.openmrs.User)
+	 */
+	@Override
+	public List<App> getUserHiddenApps(User user) {
+		return dao.getUserHiddenApps(user);
+	}
+	
+	/**
+	 * @see org.openmrs.module.smartcontainer.SmartAppService#saveUserHiddenAppMap(org.openmrs.module.smartcontainer.app.UserHiddenAppMap)
+	 */
+	@Override
+	public UserHiddenAppMap saveUserHiddenAppMap(UserHiddenAppMap userHiddenAppMap) {
+		return dao.saveUserHiddenAppMap(userHiddenAppMap);
+	}
+	
+	/**
+	 * @see org.openmrs.module.smartcontainer.SmartAppService#deleteUserHiddenAppMap(org.openmrs.User,
+	 *      org.openmrs.module.smartcontainer.app.App)
+	 */
+	@Override
+	public void deleteUserHiddenAppMap(User user, App app) {
+		dao.deleteUserHiddenAppMap(user, app);
 	}
 }

@@ -25,7 +25,6 @@ import org.openmrs.Concept;
 import org.openmrs.ConceptNumeric;
 import org.openmrs.ConceptSource;
 import org.openmrs.GlobalProperty;
-import org.openmrs.User;
 import org.openmrs.api.APIException;
 import org.openmrs.api.ConceptService;
 import org.openmrs.api.GlobalPropertyListener;
@@ -283,16 +282,6 @@ public class SmartDataHandlerUtil implements GlobalPropertyListener {
 		}
 		
 		return conceptMappings;
-	}
-	
-	/**
-	 * Gets the user name if not empty, else the systemId, for a given user.
-	 * 
-	 * @param user the user.
-	 * @return the user name or systemId.
-	 */
-	public static String getUserNameOrSystemId(User user) {
-		return StringUtils.isBlank(user.getUsername()) ? user.getSystemId() : user.getUsername();
 	}
 	
 	/**
