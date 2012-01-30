@@ -162,8 +162,6 @@
 
     <mappingFiles>
         App.hbm.xml
-        Activity.hbm.xml
-        WebHook.hbm.xml
         UserHiddenAppMap.hbm.xml
     </mappingFiles>
 </module>
