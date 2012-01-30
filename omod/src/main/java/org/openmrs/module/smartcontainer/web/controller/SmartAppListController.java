@@ -221,9 +221,10 @@ public class SmartAppListController {
 	private static void generateTokensForInstalledApps() {
 		appAccessTokenMap = new HashMap<Integer, String>();
 		Collection<App> allApps = Context.getService(SmartAppService.class).getAllApps();
-		//Grant access to all uploaded apps
+		//Grant access to all unretired apps
 		for (App app : allApps) {
-			appAccessTokenMap.put(app.getAppId(), generateRandomAccessToken());
+			if (!app.getRetired())
+				appAccessTokenMap.put(app.getAppId(), generateRandomAccessToken());
 		}
 	}
 }

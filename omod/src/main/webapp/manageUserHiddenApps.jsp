@@ -1,8 +1,12 @@
-<%@ include file="localHeader.jsp" %>
+<%@ include file="/WEB-INF/template/include.jsp"%>
+<%@ include file="/WEB-INF/template/header.jsp"%>
 
 <openmrs:require privilege="Manage SMART Apps" otherwise="/login.htm" redirect="/module/smartcontainer/manageUserHiddenApps.form" />
+<openmrs:htmlInclude file="/moduleResources/smartcontainer/smart.css" />
 
-<b class="boxHeader"><spring:message code="smartcontainer.manageUserHiddenApps"/></b>
+<h2><spring:message code="smartcontainer.manageUserHiddenApps"/></h2>
+
+<b class="boxHeader"><spring:message code="smartcontainer.smartAppList"/></b>
 
 <div class="box" id="moduleListing">
 	<br />

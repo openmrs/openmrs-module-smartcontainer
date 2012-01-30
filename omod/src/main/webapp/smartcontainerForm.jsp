@@ -38,23 +38,19 @@
 	 * Enable or disable an app
 	 */
 	function enableDisableApp(appId, name, enable) {
-		if(confirm('Do you really want to ' + (enable ? 'enable' : 'disable') +  ' the ' + name + ' app?')){
-
-			DWRSmartService.enableOrDisableSmartApp(appId, !enable, function(success) {
-				if(success){
-					location.reload();
-				}
-				else {
-					alert('failed to enable disable app');
-				}
-			});
-		}
+		DWRSmartService.enableOrDisableSmartApp(appId, !enable, function(success) {
+			if(success){
+				location.reload();
+			}
+			else {
+				alert('failed to enable disable app');
+			}
+		});
 	}
 	
 	function confirmRemoveApp(){
-		if(confirm('Do you really want to remove the app?')){
+		if(confirm('<spring:message code="smartcontainer.removeApp.confirmation" />'))
 			return true;
-		}
 		
 		return false;
 	}
