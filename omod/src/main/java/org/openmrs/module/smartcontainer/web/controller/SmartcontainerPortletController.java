@@ -13,6 +13,7 @@
  */
 package org.openmrs.module.smartcontainer.web.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,6 +23,7 @@ import org.apache.commons.logging.LogFactory;
 import org.openmrs.User;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.smartcontainer.SmartAppService;
+import org.openmrs.module.smartcontainer.app.App;
 import org.openmrs.web.controller.PortletController;
 
 /**
@@ -42,10 +44,31 @@ public class SmartcontainerPortletController extends PortletController {
 		if (user != null) {
 			model.put("currentUser", user);
 			SmartAppService service = Context.getService(SmartAppService.class);
-			model.put("visibleApps", service.getUserVisibleApps(user));
-			model.put("hiddenApps", service.getUserHiddenApps(user));
+			List<App> visibleApps = service.getUserVisibleApps(user);
+			model.put("visibleApps", visibleApps);
+			List<App> hiddenApps = service.getUserHiddenApps(user);
+			model.put("hiddenApps", hiddenApps);
+			int activeAppCount = service.getApps(false).size();
+			int allAppCount = service.getApps(true).size();
+			String noVisibleAppsMsgCode = null;
+			Object[] args = null;
+			if (visibleApps.size() == 0) {
+				//default
+				noVisibleAppsMsgCode = "smartcontainer.noAppsInstalled";
+				if (hiddenApps.size() > 0) {
+					noVisibleAppsMsgCode = "smartcontainer.noAppsInstalledCanUnhide";
+					args = new Object[] { Context.getMessageSourceService().getMessage("smartcontainer.manageHiddenApps") };
+				} else if (user.isSuperUser()) {
+					if (allAppCount == 0)
+						noVisibleAppsMsgCode = "smartcontainer.noAppsInstalledCanInstall";
+					else if (activeAppCount == 0)
+						noVisibleAppsMsgCode = "smartcontainer.noAppsInstalledCanEnable";
+					
+				}
+				model.put("noVisibleAppsMsg", Context.getMessageSourceService().getMessage(noVisibleAppsMsgCode, args, null));
+				
+			}
 		}
 		model.put("appTokenMap", SmartAppListController.getAppAccessTokenMap());
 	}
-	
 }

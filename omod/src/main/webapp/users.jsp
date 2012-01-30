@@ -1,6 +1,6 @@
 <%@ include file="localHeader.jsp" %>
 
-<openmrs:require privilege="View Users" otherwise="/login.htm" redirect="/module/smartcontainer/users.list" />
+<openmrs:require privilege="Manage SMART Apps" otherwise="/login.htm" redirect="/module/smartcontainer/users.list" />
 
 <openmrs:htmlInclude file="/scripts/jquery/dataTables/css/dataTables_jui.css"/>
 <openmrs:htmlInclude file="/scripts/jquery/dataTables/js/jquery.dataTables.min.js"/>

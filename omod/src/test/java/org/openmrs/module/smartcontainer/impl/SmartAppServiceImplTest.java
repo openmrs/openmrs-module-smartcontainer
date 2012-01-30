@@ -14,7 +14,6 @@
 package org.openmrs.module.smartcontainer.impl;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 
 import java.util.Collection;
@@ -72,8 +71,8 @@ public class SmartAppServiceImplTest extends BaseModuleContextSensitiveTest {
 	@Test
 	public void testGetAllApps() {
 		
-		Collection<App> result = appService.getAllApps();
-		assertFalse(result.isEmpty());
+		Collection<App> result = appService.getApps(true);
+		assertEquals(5, result.size());
 	}
 	
 	/**

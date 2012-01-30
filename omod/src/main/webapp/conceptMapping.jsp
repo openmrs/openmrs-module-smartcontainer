@@ -1,6 +1,6 @@
 <%@ include file="localHeader.jsp" %>
 
-<openmrs:require privilege="Manage Concept Mapping" otherwise="/login.htm" redirect="/module/smartcontainer/conceptMapping.form" />
+<openmrs:require privilege="Manage Concepts" otherwise="/login.htm" redirect="/module/smartcontainer/conceptMapping.form" />
 
 <style>
 tr.firstRow td, th{

@@ -15,28 +15,28 @@ package org.openmrs.module.smartcontainer;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.openmrs.module.Activator;
+import org.openmrs.module.BaseModuleActivator;
 
 /**
- * This class contains the logic that is run every time this module is either started or shutdown
+ * @see BaseModuleActivator
  */
-@SuppressWarnings("deprecation")
-public class SmartContainerActivator implements Activator {
-
-    private Log log = LogFactory.getLog(this.getClass());
-
-    /**
-     * @see org.openmrs.module.Activator#startup()
-     */
-    public void startup() {
-        log.info("Starting SMART Container");
-    }
-
-    /**
-     * @see org.openmrs.module.Activator#shutdown()
-     */
-    public void shutdown() {
-        log.info("Shutting down SMART Container");
-    }
-
+public class SmartContainerActivator extends BaseModuleActivator {
+	
+	private static Log log = LogFactory.getLog(SmartContainerActivator.class);
+	
+	/**
+	 * @see org.openmrs.module.BaseModuleActivator#willStart()
+	 */
+	@Override
+	public void willStart() {
+		log.info("Starting SMART Container");
+	}
+	
+	/**
+	 * @see org.openmrs.module.BaseModuleActivator#willStop()
+	 */
+	@Override
+	public void willStop() {
+		log.info("Shutting down SMART Container");
+	}
 }

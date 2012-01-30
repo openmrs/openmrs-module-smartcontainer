@@ -22,11 +22,17 @@ public class UserHiddenAppMap {
 	
 	private Integer userHiddenAppMapId;
 	
-	//the user hiding the app
+	//the user the app is getting hidden from
 	private User user;
 	
 	//the hidden app
 	private App app;
+	
+	/**
+	 * the user hiding the app, this will be used in preventing users from un hiding apps hidden by
+	 * the admin from them
+	 */
+	private User hiddenBy;
 	
 	/**
 	 * Default constraint
@@ -37,9 +43,10 @@ public class UserHiddenAppMap {
 	/**
 	 * Convenience constructor that takes in the user and the app to hide
 	 */
-	public UserHiddenAppMap(User user, App app) {
+	public UserHiddenAppMap(User user, App app, User hiddenBy) {
 		this.user = user;
 		this.app = app;
+		this.hiddenBy = hiddenBy;
 	}
 	
 	/**
@@ -82,6 +89,20 @@ public class UserHiddenAppMap {
 	 */
 	public void setApp(App app) {
 		this.app = app;
+	}
+	
+	/**
+	 * @return the hiddenBy
+	 */
+	public User getHiddenBy() {
+		return hiddenBy;
+	}
+	
+	/**
+	 * @param hiddenBy the hiddenBy to set
+	 */
+	public void setHiddenBy(User hiddenBy) {
+		this.hiddenBy = hiddenBy;
 	}
 	
 	/**

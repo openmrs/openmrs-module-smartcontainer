@@ -19,7 +19,6 @@ import org.junit.Test;
 import org.openmrs.User;
 import org.openmrs.api.UserService;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.smartcontainer.app.UserHiddenAppMap;
 import org.openmrs.test.BaseModuleContextSensitiveTest;
 import org.openmrs.test.Verifies;
 
@@ -46,7 +45,8 @@ public class SmartAppServiceTest extends BaseModuleContextSensitiveTest {
 	@Verifies(value = "should get all the un retired none hidden apps for the specified user", method = "getUserVisibleApps(User)")
 	public void getUserVisibleApps_shouldGetAllTheUnRetiredNoneHiddenAppsForTheSpecifiedUser() throws Exception {
 		executeDataSet("SmartAppServiceTest-otherApps.xml");
-		Assert.assertEquals(1, appService.getUserVisibleApps(userService.getUserByUsername("admin")).size());
+		Assert.assertEquals(1,
+		    appService.getUserVisibleApps(userService.getUserByUuid("ae6bcaf6-bb77-11e0-9815-001d723850fa")).size());
 	}
 	
 	/**
@@ -55,7 +55,8 @@ public class SmartAppServiceTest extends BaseModuleContextSensitiveTest {
 	@Test
 	@Verifies(value = "should return all un retired apps if the user has no hidden apps", method = "getUserVisibleApps(SmartUser)")
 	public void getUserVisibleApps_shouldReturnAllUnRetiredAppsIfTheUserHasNoHiddenApps() throws Exception {
-		Assert.assertEquals(5, appService.getUserVisibleApps(userService.getUserByUsername("daemon")).size());
+		Assert.assertEquals(3,
+		    appService.getUserVisibleApps(userService.getUserByUuid("A4F30A1B-5EB9-11DF-A648-37A07F9C90FB")).size());
 	}
 	
 	/**
@@ -65,8 +66,7 @@ public class SmartAppServiceTest extends BaseModuleContextSensitiveTest {
 	@Verifies(value = "should get all the hidden un retired apps for the specified user", method = "getUserHiddenApps(User)")
 	public void getUserHiddenApps_shouldGetAllTheHiddenUnRetiredAppsForTheSpecifiedUser() throws Exception {
 		executeDataSet("SmartAppServiceTest-otherApps.xml");
-		UserHiddenAppMap u = new UserHiddenAppMap();
-		u.setUserHiddenAppMapId(1);
-		Assert.assertEquals(5, appService.getUserHiddenApps(userService.getUserByUsername("admin")).size());
+		Assert.assertEquals(5,
+		    appService.getUserHiddenApps(userService.getUserByUuid("ae6bcaf6-bb77-11e0-9815-001d723850fa")).size());
 	}
 }

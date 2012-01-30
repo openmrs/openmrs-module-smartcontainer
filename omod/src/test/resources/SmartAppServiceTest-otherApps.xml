@@ -4,5 +4,5 @@
 	<smartcontainer_app smartcontainer_app_id="70" name="test app2" author="test author2" smart_id="test2@sample-apps.org" manifest="{}" retired="1" />
 	
 	<!-- Add a hidden app that is also retired -->
-    <smartcontainer_user_hidden_app user_hidden_app_map_Id="50" user_id="1" app_id="70" />
+    <smartcontainer_user_hidden_app user_hidden_app_map_Id="50" user_id="1" app_id="70" hidden_by="1" />
 </dataset>

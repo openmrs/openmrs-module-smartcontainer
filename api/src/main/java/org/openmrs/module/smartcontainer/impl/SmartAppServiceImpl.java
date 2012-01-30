@@ -17,6 +17,7 @@ import java.util.List;
 
 import org.openmrs.User;
 import org.openmrs.api.APIException;
+import org.openmrs.api.context.Context;
 import org.openmrs.module.smartcontainer.SmartAppService;
 import org.openmrs.module.smartcontainer.app.App;
 import org.openmrs.module.smartcontainer.app.UserHiddenAppMap;
@@ -49,8 +50,8 @@ public class SmartAppServiceImpl implements SmartAppService {
 	 * @should get all apps
 	 * @see org.openmrs.module.smartcontainer.SmartAppService#getAllSMARTAppUsers()
 	 */
-	public List<App> getAllApps() throws APIException {
-		return dao.getAllApps();
+	public List<App> getApps(boolean includeRetired) throws APIException {
+		return dao.getApps(includeRetired);
 	}
 	
 	/**
@@ -91,7 +92,8 @@ public class SmartAppServiceImpl implements SmartAppService {
 	 */
 	@Override
 	public List<App> getUserHiddenApps(User user) {
-		return dao.getUserHiddenApps(user);
+		return dao.getUserHiddenApps(user, Context.getAuthenticatedUser() != null
+		        && Context.getAuthenticatedUser().isSuperUser());
 	}
 	
 	/**

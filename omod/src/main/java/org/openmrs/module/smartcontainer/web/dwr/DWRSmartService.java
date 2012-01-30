@@ -36,9 +36,10 @@ public class DWRSmartService {
 	 * @param userName the user name
 	 * @param appId the appId of the app to be added or removed
 	 * @param hide specifies if an app is to be removed or added
+	 * @param hiddenByUuid the uuid of the user hiding the app
 	 * @return true if the app was successfully added or removed otherwise false
 	 */
-	public boolean showOrHideSmartApp(Integer appId, boolean hide, String uuid) {
+	public boolean showOrHideSmartApp(Integer appId, boolean hide, String uuid, String hiddenByUuid) {
 		if (log.isDebugEnabled())
 			log.debug("In DWRSmartService........");
 		if (StringUtils.isNotBlank(uuid)) {
@@ -47,9 +48,12 @@ public class DWRSmartService {
 			User user = userService.getUserByUuid(uuid);
 			App app = appService.getAppById(appId);
 			if (app != null && user != null) {
-				if (hide)
-					appService.saveUserHiddenAppMap(new UserHiddenAppMap(user, app));
-				else
+				if (hide) {
+					User hider = null;
+					if (StringUtils.isNotBlank(hiddenByUuid))
+						hider = userService.getUserByUuid(hiddenByUuid);
+					appService.saveUserHiddenAppMap(new UserHiddenAppMap(user, app, (hider != null) ? hider : user));
+				} else
 					appService.deleteUserHiddenAppMap(user, app);
 				
 				if (log.isDebugEnabled())

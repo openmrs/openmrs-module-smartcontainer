@@ -51,10 +51,11 @@ public interface SmartAppService {
 	/**
 	 * Get all SMART Apps
 	 * 
+	 * @param includeRetired specifies whether retired apps should be returned or not
 	 * @return
 	 * @throws APIException
 	 */
-	public Collection<App> getAllApps() throws APIException;
+	public Collection<App> getApps(boolean includeRetired) throws APIException;
 	
 	/**
 	 * Deletes the app with the specified id from the database

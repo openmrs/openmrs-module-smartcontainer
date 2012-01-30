@@ -61,7 +61,7 @@
 		<signatures>
 			<![CDATA[
 				import @MODULE_PACKAGE@.web.dwr.DWRSmartService;
-				DWRSmartService.showOrHideSmartApp(Integer appId, boolean hide, String uuid);
+				DWRSmartService.showOrHideSmartApp(Integer appId, boolean hide, String uuid, String hiddenByUuid);
 				DWRSmartService.enableOrDisableSmartApp(Integer appId, boolean enable);
 			]]>
 		</signatures>	

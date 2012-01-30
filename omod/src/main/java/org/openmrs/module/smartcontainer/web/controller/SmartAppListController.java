@@ -18,7 +18,6 @@ import java.net.MalformedURLException;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -86,13 +85,13 @@ public class SmartAppListController {
 	 * @return
 	 */
 	@RequestMapping(method = RequestMethod.POST)
-	public ModelAndView deleteApp(@RequestParam("action") String action, HttpServletRequest request) {
+	public ModelAndView handleSubmission(@RequestParam("action") String action, HttpServletRequest request) {
 		
 		ModelAndView modelAndView = new ModelAndView();
 		SmartAppService appService = Context.getService(SmartAppService.class);
 		Boolean isUploadFromURL = ServletRequestUtils.getBooleanParameter(request, "updateFromURL", false);
 		HttpSession httpSession = request.getSession();
-		//
+		Collection<App> apps = Context.getService(SmartAppService.class).getApps(true);
 		if ("removeApp".equals(action)) {
 			Integer appId = null;
 			try {
@@ -119,7 +118,6 @@ public class SmartAppListController {
 				try {
 					newApp = AppFactory.getAppFromUrl(url);
 					log.info("APP  :" + newApp);
-					List<App> apps = (List<App>) appService.getAllApps();
 					if (!apps.contains(newApp)) {
 						newApp.setRetired(false);
 						appService.saveApp(newApp);
@@ -151,7 +149,6 @@ public class SmartAppListController {
 				
 				try {
 					newApp = AppFactory.getAppFromLocalFile(multipartFile.getInputStream());
-					List<App> apps = (List<App>) appService.getAllApps();
 					if (!apps.contains(newApp)) {
 						newApp.setRetired(false);
 						appService.saveApp(newApp);
@@ -176,8 +173,8 @@ public class SmartAppListController {
 				
 			}
 		}
-		//
-		Collection<App> apps = Context.getService(SmartAppService.class).getAllApps();
+		
+		apps = Context.getService(SmartAppService.class).getApps(true);
 		modelAndView.setViewName(SUCCESS_FORM_VIEW);
 		modelAndView.addObject("appList", apps);
 		return modelAndView;
@@ -191,7 +188,7 @@ public class SmartAppListController {
 	@ModelAttribute("appList")
 	protected Collection<App> formBackingObject(HttpServletRequest request) throws Exception {
 		
-		Collection<App> apps = Context.getService(SmartAppService.class).getAllApps();
+		Collection<App> apps = Context.getService(SmartAppService.class).getApps(true);
 		
 		return apps;
 	}
@@ -220,11 +217,10 @@ public class SmartAppListController {
 	
 	private static void generateTokensForInstalledApps() {
 		appAccessTokenMap = new HashMap<Integer, String>();
-		Collection<App> allApps = Context.getService(SmartAppService.class).getAllApps();
-		//Grant access to all unretired apps
+		Collection<App> allApps = Context.getService(SmartAppService.class).getApps(true);
+		//Grant access to all apps
 		for (App app : allApps) {
-			if (!app.getRetired())
-				appAccessTokenMap.put(app.getAppId(), generateRandomAccessToken());
+			appAccessTokenMap.put(app.getAppId(), generateRandomAccessToken());
 		}
 	}
 }

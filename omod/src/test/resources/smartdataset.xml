@@ -46,11 +46,13 @@
                         smart_id="problem-list@apps.smartplatforms.org" manifest="{}" retired="0"/>
     
     <!-- Table smartcontainer_user_hidden_app -->
-    <smartcontainer_user_hidden_app user_hidden_app_map_Id="1" user_id="1" app_id="1"/>
-    <smartcontainer_user_hidden_app user_hidden_app_map_Id="2" user_id="1" app_id="2"/>
-    <smartcontainer_user_hidden_app user_hidden_app_map_Id="3" user_id="1" app_id="3"/>
-    <smartcontainer_user_hidden_app user_hidden_app_map_Id="4" user_id="1" app_id="4"/>
-    <smartcontainer_user_hidden_app user_hidden_app_map_Id="5" user_id="1" app_id="5"/>
+    <smartcontainer_user_hidden_app user_hidden_app_map_Id="1" user_id="1" app_id="1" hidden_by="1"/>
+    <smartcontainer_user_hidden_app user_hidden_app_map_Id="2" user_id="1" app_id="2" hidden_by="1"/>
+    <smartcontainer_user_hidden_app user_hidden_app_map_Id="3" user_id="1" app_id="3" hidden_by="1"/>
+    <smartcontainer_user_hidden_app user_hidden_app_map_Id="4" user_id="1" app_id="4" hidden_by="1"/>
+    <smartcontainer_user_hidden_app user_hidden_app_map_Id="5" user_id="1" app_id="5" hidden_by="1"/>
+    <smartcontainer_user_hidden_app user_hidden_app_map_Id="6" user_id="2" app_id="1" hidden_by="2"/>
+    <smartcontainer_user_hidden_app user_hidden_app_map_Id="7" user_id="2" app_id="2" hidden_by="1"/>
             
     <!-- Table users -->
     <users user_id="1" system_id="admin" username=""

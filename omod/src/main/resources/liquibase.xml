@@ -55,6 +55,9 @@
             <column name="app_id" type="int">
                 <constraints nullable="false"/>
             </column>
+            <column name="hidden_by" type="int">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
         <addUniqueConstraint constraintName="unique_user_hidden_app_map" 
         	tableName="smartcontainer_user_hidden_app" columnNames="user_id,app_id"/>
@@ -64,6 +67,10 @@
           	referencedTableName="smartcontainer_app"/>
         <addForeignKeyConstraint baseColumnNames="user_id"
            	baseTableName="smartcontainer_user_hidden_app" constraintName="smartcontainer_mapped_user"
+            referencedColumnNames="user_id"
+          	referencedTableName="users"/>
+        <addForeignKeyConstraint baseColumnNames="hidden_by"
+           	baseTableName="smartcontainer_user_hidden_app" constraintName="smartcontainer_mapped_user_hidden_by"
             referencedColumnNames="user_id"
           	referencedTableName="users"/>
     </changeSet>

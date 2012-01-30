@@ -36,6 +36,10 @@
     </bean>
     <bean id="smartAppPortletController"
           class="@MODULE_PACKAGE@.web.controller.SmartcontainerPortletController"></bean>
+          
+    <bean id="appDAO" class="org.openmrs.module.smartcontainer.db.hibernate.HibernateAppDAO">
+		<property name="sessionFactory"><ref bean="sessionFactory"/></property>	
+	</bean>
 
     <bean parent="serviceContext">
         <property name="moduleService">
@@ -48,14 +52,7 @@
                     </property>
                     <property name="target">
                         <bean class="org.openmrs.module.smartcontainer.impl.SmartAppServiceImpl">
-                            <property name="dao">
-                                <bean
-                                        class="org.openmrs.module.smartcontainer.db.hibernate.HibernateAppDAO">
-                                    <property name="sessionFactory">
-                                        <ref bean="sessionFactory"/>
-                                    </property>
-                                </bean>
-                            </property>
+                            <property name="dao" ref="appDAO" />
                         </bean>
                     </property>
                     <property name="preInterceptors">

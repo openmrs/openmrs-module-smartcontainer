@@ -16,5 +16,7 @@
 	        <many-to-one name="user" class="org.openmrs.User" column="user_id" not-null="true"/>
         	<many-to-one name="app" class="App" column="app_id" not-null="true"/>
 		</properties>
+		
+		<many-to-one name="hiddenBy" class="org.openmrs.User" column="hidden_by" not-null="true"/>
     </class>
 </hibernate-mapping>

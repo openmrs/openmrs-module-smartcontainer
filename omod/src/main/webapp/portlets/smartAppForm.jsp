@@ -175,7 +175,7 @@
 		var id = (hide)?"#errorMsg-hide":"#errorMsg-show";
 		$j(id).hide();
 		
-		DWRSmartService.showOrHideSmartApp(appId, hide, userUuid, function(success) {
+		DWRSmartService.showOrHideSmartApp(appId, hide, userUuid, userUuid, function(success) {
 			if(success && hide){
 				location.reload();
 			}else if(success && !hide){
@@ -202,7 +202,7 @@
 	});
 </script>
 <c:if test="${fn:length(model.visibleApps) == 0}">
-	<spring:message code="smartcontainer.noappsinstalledOrshowHidden"/>
+	${model.noVisibleAppsMsg}
 </c:if>
 <div id="appError" class="error errorMsg leftAligned">
 	<spring:message code="smartcontainer.error.whileExecutingApp"/>&nbsp; <span id="appNameHolder"></span>

@@ -36,12 +36,9 @@ public interface AppDAO {
 	public App getAppByName(String name) throws DAOException;
 	
 	/**
-	 * to get all Apps
-	 * 
-	 * @return
-	 * @throws DAOException
+	 * @see SmartAppService#getApps(boolean)
 	 */
-	public List<App> getAllApps() throws DAOException;
+	public List<App> getApps(boolean includeRetired) throws DAOException;
 	
 	/**
 	 * Delete App by id
@@ -80,8 +77,15 @@ public interface AppDAO {
 	public List<App> getUserVisibleApps(User user);
 	
 	/**
+	 * Gets all the none hidden apps for the specified user, excludes apps not hidden by the
+	 * specified user if includeHiddenByOtherUsers is false
+	 * 
+	 * @param includeHiddenByOtherUsers specifies if apps hidden by other users other than the
+	 *            passed in user should be included
 	 * @see SmartAppService#getUserHiddenApps(User)
 	 * @return
+	 * @should exclude apps hidden by other users if includeHiddenByOtherUsers is false
+	 * @should return all apps hidden from the user if includeHiddenByOtherUsers is true
 	 */
-	public List<App> getUserHiddenApps(User user);
+	public List<App> getUserHiddenApps(User user, boolean includeHiddenByOtherUsers);
 }

@@ -78,20 +78,22 @@ public class HibernateAppDAO implements AppDAO {
 	}
 	
 	/**
-	 * @see org.openmrs.module.smartcontainer.db.AppDAO#getAllApps()
+	 * @see org.openmrs.module.smartcontainer.db.AppDAO#getApps(boolean)
 	 */
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true)
-	public List<App> getAllApps() throws DAOException {
-		
-		return sessionFactory.getCurrentSession().createQuery("from App u order by u.appId").list();
+	public List<App> getApps(boolean includeRetired) throws DAOException {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(App.class);
+		if (!includeRetired)
+			criteria.add(Restrictions.eq("retired", false));
+		return criteria.list();
 	}
 	
 	/**
 	 * @see org.openmrs.module.smartcontainer.db.AppDAO#getAppById(java.lang.Integer)
 	 */
 	@SuppressWarnings("rawtypes")
-    @Transactional(readOnly = true)
+	@Transactional(readOnly = true)
 	public App getAppById(Integer id) {
 		Query query = sessionFactory.getCurrentSession().createQuery("from App a where  a.appId = ?");
 		query.setInteger(0, id);
@@ -132,32 +134,35 @@ public class HibernateAppDAO implements AppDAO {
 	@Override
 	@Transactional(readOnly = true)
 	public List<App> getUserVisibleApps(User user) {
-		return createAppCriteria(user, true).list();
+		return createAppCriteria(user, true, null).list();
 	}
 	
 	/**
-	 * @see org.openmrs.module.smartcontainer.db.AppDAO#getUserHiddenApps(org.openmrs.User)
+	 * @see org.openmrs.module.smartcontainer.db.AppDAO#getUserHiddenApps(org.openmrs.User, boolean)
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	@Transactional(readOnly = true)
-	public List<App> getUserHiddenApps(User user) {
-		return createAppCriteria(user, false).list();
+	public List<App> getUserHiddenApps(User user, boolean includeRetiredByOtherUsers) {
+		return createAppCriteria(user, false, includeRetiredByOtherUsers).list();
 	}
 	
 	/**
 	 * Creates a criteria for fetching either visible or hidden Apps for the specified user
 	 * 
 	 * @param user the user to match against
+	 * @param includeHiddenByOtherUsers
 	 * @param getVisible specifies the apps to fetch i.e visible Vs hidden
 	 * @return the {@link Criteria} object
 	 */
-	private Criteria createAppCriteria(User user, boolean getVisible) {
+	private Criteria createAppCriteria(User user, boolean getVisible, Boolean includeHiddenByOtherUsers) {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(App.class, "app");
 		criteria.add(Restrictions.eq("app.retired", false));
 		
 		DetachedCriteria dc = DetachedCriteria.forClass(UserHiddenAppMap.class, "map")
 		        .add(Restrictions.eq("map.user", user)).setProjection(Projections.distinct(Projections.property("map.app")));
+		if (!getVisible && !includeHiddenByOtherUsers)
+			dc.add(Restrictions.eq("map.hiddenBy", user));
 		
 		Criterion criterion = (getVisible) ? Property.forName("app.appId").notIn(dc) : Property.forName("app.appId").in(dc);
 		criteria.add(criterion);

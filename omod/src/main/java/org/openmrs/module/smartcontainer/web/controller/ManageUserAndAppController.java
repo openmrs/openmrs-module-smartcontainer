@@ -118,7 +118,7 @@ public class ManageUserAndAppController {
 								continue;
 							App app = service.getAppById(Integer.valueOf(appId));
 							if (app != null)
-								service.saveUserHiddenAppMap(new UserHiddenAppMap(user, app));
+								service.saveUserHiddenAppMap(new UserHiddenAppMap(user, app, Context.getAuthenticatedUser()));
 						}
 					}
 					
@@ -141,7 +141,7 @@ public class ManageUserAndAppController {
 	
 	@ModelAttribute("apps")
 	protected Collection<App> getAllApps() {
-		return getSmartAppService().getAllApps();
+		return getSmartAppService().getApps(true);
 	}
 	
 	private SmartAppService getSmartAppService() {

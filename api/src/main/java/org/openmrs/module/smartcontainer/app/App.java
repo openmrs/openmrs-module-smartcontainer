@@ -34,7 +34,7 @@ public final class App {
 	
 	private String sMARTAppId;
 	
-	private Boolean retired;
+	private Boolean retired = false;
 	
 	private String manifest;
 	
