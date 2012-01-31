@@ -13,6 +13,8 @@
  */
 package org.openmrs.module.smartcontainer.app;
 
+import org.openmrs.util.OpenmrsUtil;
+
 /**
  * This is a basic class for representing the SMART Apps in the module
  */
@@ -177,10 +179,9 @@ public final class App {
 	 */
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		return result;
+		if (getAppId() == null)
+			return super.hashCode();
+		return getAppId().hashCode();
 	}
 	
 	/**
@@ -192,15 +193,11 @@ public final class App {
 			return true;
 		if (obj == null)
 			return false;
-		if (getClass() != obj.getClass())
+		if (!(obj instanceof App))
 			return false;
+		
 		App other = (App) obj;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
-			return false;
-		return true;
+		return OpenmrsUtil.nullSafeEquals(this.getAppId(), other.getAppId());
 	}
 	
 }

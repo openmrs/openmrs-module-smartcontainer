@@ -60,21 +60,13 @@ public class HibernateAppDAO implements AppDAO {
 	}
 	
 	/**
-	 * @see org.openmrs.module.smartcontainer.db.AppDAO#getAppByName(java.lang.String)
+	 * @see org.openmrs.module.smartcontainer.db.AppDAO#getAppBySmartId(java.lang.String)
 	 */
 	@Transactional(readOnly = true)
-	public App getAppByName(String name) throws DAOException {
-		Query query = sessionFactory.getCurrentSession().createQuery("from App a where  a.name = ?");
-		query.setString(0, name);
-		@SuppressWarnings("unchecked")
-		List<App> users = (List<App>) query.list();
-		
-		if (users == null || ((List<App>) users).size() == 0) {
-			log.warn("request for username '" + name + "' not found");
-			return null;
-		}
-		
-		return (App) users.get(0);
+	public App getAppBySmartId(String smartId) throws DAOException {
+		Query query = sessionFactory.getCurrentSession().createQuery("from App a where a.sMARTAppId = ?");
+		query.setString(0, smartId);
+		return (App) query.uniqueResult();
 	}
 	
 	/**

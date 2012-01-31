@@ -27,13 +27,9 @@ import org.openmrs.module.smartcontainer.app.UserHiddenAppMap;
 public interface AppDAO {
 	
 	/**
-	 * to get App by name
-	 * 
-	 * @param name
-	 * @return
-	 * @throws DAOException
+	 * @see SmartAppService#getAppBySmartId(String)
 	 */
-	public App getAppByName(String name) throws DAOException;
+	public App getAppBySmartId(String smartId) throws DAOException;
 	
 	/**
 	 * @see SmartAppService#getApps(boolean)

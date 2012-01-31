@@ -45,7 +45,7 @@ public class AdminList extends AdministrationSectionExt {
 
         Map<String, String> map = new LinkedHashMap<String, String>();
 
-        map.put("module/smartcontainer/smartcontainerLink.form", "smartcontainer.admin.manage");
+        map.put("module/smartcontainer/manageSmartApps.form", "smartcontainer.admin.manage");
         map.put("module/smartcontainer/users.list", "smartcontainer.admin.manage.user");
         map.put("module/smartcontainer/problemsetup.form", "smartcontainer.admin.problemsetup");
         map.put("module/smartcontainer/conceptMapping.form", "smartcontainer.admin.conceptMapping");

@@ -47,7 +47,7 @@ import org.springframework.web.servlet.ModelAndView;
  *
  */
 @Controller
-@RequestMapping(value = "module/smartcontainer/smartcontainerLink.form")
+@RequestMapping(value = "module/smartcontainer/manageSmartApps.form")
 public class SmartAppListController {
 	
 	/**
@@ -64,7 +64,7 @@ public class SmartAppListController {
 	/**
 	 * Success form view name
 	 */
-	private final String SUCCESS_FORM_VIEW = "/module/smartcontainer/smartcontainerForm";
+	private final String SUCCESS_FORM_VIEW = "/module/smartcontainer/manageSmartApps";
 	
 	/**
 	 * Initially called after the formBackingObject method to get the landing form name
@@ -118,8 +118,7 @@ public class SmartAppListController {
 				try {
 					newApp = AppFactory.getAppFromUrl(url);
 					log.info("APP  :" + newApp);
-					if (!apps.contains(newApp)) {
-						newApp.setRetired(false);
+					if (appService.getAppBySmartId(newApp.getsMARTAppId()) == null) {
 						appService.saveApp(newApp);
 						
 						if (appAccessTokenMap == null)
@@ -128,6 +127,8 @@ public class SmartAppListController {
 							//generate an access token for this app only
 							appAccessTokenMap.put(newApp.getAppId(), generateRandomAccessToken());
 						}
+					}else{
+						httpSession.setAttribute(WebConstants.OPENMRS_ERROR_ATTR, "smartcontainer.error.duplicateApp");
 					}
 				}
 				catch (MalformedURLException e) {
@@ -149,8 +150,7 @@ public class SmartAppListController {
 				
 				try {
 					newApp = AppFactory.getAppFromLocalFile(multipartFile.getInputStream());
-					if (!apps.contains(newApp)) {
-						newApp.setRetired(false);
+					if (appService.getAppBySmartId(newApp.getsMARTAppId()) == null) {
 						appService.saveApp(newApp);
 						
 						if (appAccessTokenMap == null)
@@ -159,7 +159,7 @@ public class SmartAppListController {
 							appAccessTokenMap.put(newApp.getAppId(), generateRandomAccessToken());
 						
 					} else {
-
+						httpSession.setAttribute(WebConstants.OPENMRS_ERROR_ATTR, "smartcontainer.error.duplicateApp");
 					}
 				}
 				catch (ParseException e) {

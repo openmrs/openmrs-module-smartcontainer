@@ -8,8 +8,8 @@
 		<a href="${pageContext.request.contextPath}/admin"><spring:message code="admin.title.short"/></a>
 	</li>
 	<openmrs:hasPrivilege privilege="Manage SMART Apps">
-		<li <c:if test='<%= request.getRequestURI().contains("smartcontainerForm") %>'>class="active"</c:if>>
-			<a href="${pageContext.request.contextPath}/module/smartcontainer/smartcontainerLink.form">
+		<li <c:if test='<%= request.getRequestURI().contains("manageSmartApps") %>'>class="active"</c:if>>
+			<a href="${pageContext.request.contextPath}/module/smartcontainer/manageSmartApps.form">
 				<spring:message code="smartcontainer.admin.manage"/>
 			</a>
 		</li>

@@ -40,10 +40,10 @@ public class SmartAppServiceImpl implements SmartAppService {
 	
 	/**
 	 * @should get App by name
-	 * @see org.openmrs.module.smartcontainer.SmartAppService#getSMARTAppUserByName(java.lang.String)
+	 * @see org.openmrs.module.smartcontainer.SmartAppService#getAppBySmartId(String)
 	 */
-	public App getAppByName(String name) throws APIException {
-		return dao.getAppByName(name);
+	public App getAppBySmartId(String smartId) throws APIException {
+		return dao.getAppBySmartId(smartId);
 	}
 	
 	/**

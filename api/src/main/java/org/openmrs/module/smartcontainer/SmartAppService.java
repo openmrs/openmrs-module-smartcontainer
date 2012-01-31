@@ -40,13 +40,13 @@ public interface SmartAppService {
 	public void setDao(AppDAO dao) throws APIException;
 	
 	/**
-	 * get SMART App by name
+	 * Get SMART App by its unique SMART id
 	 * 
-	 * @param name
+	 * @param smartId
 	 * @return
 	 * @throws APIException
 	 */
-	public App getAppByName(String name) throws APIException;
+	public App getAppBySmartId(String smartId) throws APIException;
 	
 	/**
 	 * Get all SMART Apps
