@@ -60,7 +60,7 @@ public class SmartAppServiceImplTest extends BaseModuleContextSensitiveTest {
 	@Test
 	public void testGetAppByName() {
 		
-		App expResult = appService.getAppBySmartId("PediBPC");
+		App expResult = appService.getAppBySmartId("pedi_bpc@apps.smartplatforms.org");
 		assertEquals(expResult.getName(), "PediBPC");
 		
 	}
@@ -81,9 +81,9 @@ public class SmartAppServiceImplTest extends BaseModuleContextSensitiveTest {
 	@Test
 	public void testDeleteApp() {
 		
-		App app = appService.getAppBySmartId("PediBPC");
+		App app = appService.getAppBySmartId("pedi_bpc@apps.smartplatforms.org");
 		appService.deleteApp(app);
-		app = appService.getAppBySmartId("PediBPC");
+		app = appService.getAppBySmartId("pedi_bpc@apps.smartplatforms.org");
 		Assert.assertNull(app);
 	}
 	
@@ -101,10 +101,11 @@ public class SmartAppServiceImplTest extends BaseModuleContextSensitiveTest {
 	 */
 	@Test
 	public void testSaveApp() {
-		
+		String smartApId = "bp_graph@apps.smartplatforms.org";
 		App newApp = new App();
 		newApp.setName("BpGraph");
+		newApp.setsMARTAppId(smartApId);
 		appService.saveApp(newApp);
-		assertNotNull(appService.getAppBySmartId("BpGraph"));
+		assertNotNull(appService.getAppBySmartId(smartApId));
 	}
 }
