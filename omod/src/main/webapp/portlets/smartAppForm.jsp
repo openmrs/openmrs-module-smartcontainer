@@ -140,6 +140,9 @@
 	var appSelected = function(app_id, containerAppId) {
 		$j('#appNameHolder').html("");
 		$j('#appError').hide();
+		if(selectedAppId)
+			$j('#arrow_image_'+selectedAppId).hide();
+		$j('#arrow_image_'+containerAppId).show();
 		selectedAppId = containerAppId;
 		if (already_running[app_id] == null) {
 			SMART_HOST.launch_app(smartIdManifestMap[selectedAppId], simple_context);
@@ -221,15 +224,20 @@
 	<tbody>
 		<c:forEach items="${model.visibleApps}" var="app" varStatus="status">
 			<tr>
-				<td onclick="appSelected('${app.sMARTAppId}', '${app.appId}')">
+				<td valign="top" onclick="appSelected('${app.sMARTAppId}', '${app.appId}')">
 					<input type="image" src="${app.icon}" />
 				</td>
-				<td onclick="appSelected('${app.sMARTAppId}', '${app.appId}')">
+				<td valign="top" onclick="appSelected('${app.sMARTAppId}', '${app.appId}')">
 					<a>${app.name}</a>
 				</td>
-				<td>
+				<td valign="top">
 					<input class="faded" type="image" src="images/trash.gif" title="<spring:message code="smartcontainer.hide"/>" 
-							onclick="showOrHideSmartApp('${app.appId}', true, '${model.currentUser.uuid}')" />
+							onclick="showOrHideSmartApp('${app.appId}', true, '${model.currentUser.uuid}')" 
+							style="border: none;"/>
+				</td>
+				<td valign="top">
+					<input id="arrow_image_${app.appId}" type="image" src="moduleResources/smartcontainer/left_arrow.gif" 
+							style="display: none; border: none;"/>
 				</td>
 			</tr>
 			<script type="text/javascript">
