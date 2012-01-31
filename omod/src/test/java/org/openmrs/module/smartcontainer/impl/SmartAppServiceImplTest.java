@@ -104,6 +104,7 @@ public class SmartAppServiceImplTest extends BaseModuleContextSensitiveTest {
 		String smartApId = "bp_graph@apps.smartplatforms.org";
 		App newApp = new App();
 		newApp.setName("BpGraph");
+		newApp.setManifest("{}");
 		newApp.setsMARTAppId(smartApId);
 		appService.saveApp(newApp);
 		assertNotNull(appService.getAppBySmartId(smartApId));
