@@ -125,7 +125,7 @@
 					<form method="post" onsubmit="return confirmRemoveApp()"><input type="hidden" name="action"
 						value="removeApp" /> <input type="hidden" name="appId"
 						value="${app.appId}" />
-					<td valign="top"><input type="image" src="${app.icon}" /></td>
+					<td valign="top"><img src="${app.icon}" /></td>
 					<td valign="top">${app.name}</td>
 					<td valign="top">${app.version}</td>
 					<td valign="top">${app.author}</td>

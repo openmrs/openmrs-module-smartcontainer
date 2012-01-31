@@ -199,7 +199,7 @@
 	$j(window).resize(function() {
 		var h = $j('#iframe_holder');
 		var o = $j("#app_selector").offset();
-		var available_h = window.innerHeight - o.top - 20;
+		var available_h = $j(window).height() - o.top - 20;
 		h.height(available_h);
 		$j('.display_iframe').height(available_h);
 	});
