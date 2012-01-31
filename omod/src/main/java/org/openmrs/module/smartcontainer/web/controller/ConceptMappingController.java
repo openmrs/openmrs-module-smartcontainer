@@ -13,10 +13,12 @@ import org.openmrs.Concept;
 import org.openmrs.ConceptMap;
 import org.openmrs.ConceptSource;
 import org.openmrs.api.ConceptService;
+import org.openmrs.api.context.Context;
 import org.openmrs.module.smartcontainer.SmartDataService;
 import org.openmrs.module.smartcontainer.TransientSmartConceptMap;
 import org.openmrs.module.smartcontainer.smartData.SmartData;
 import org.openmrs.module.smartcontainer.smartData.handler.SmartDataHandler;
+import org.openmrs.web.WebConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -82,14 +84,23 @@ public class ConceptMappingController {
 	public String saveMappings(@RequestParam(value = "sourceNames", required = false) String[] sourceNames,
 	                           @RequestParam(value = "sourceCodes", required = false) String[] sourceCodes,
 	                           WebRequest webRequest) {
-		
-		//The concept field tag doesn't support multiple values for the same request 
-		//parameter so we can't get them as an array using the @RequestParam annotation
-		for (int i = 0; i < sourceCodes.length; i++) {
-			String conceptId = webRequest.getParameter("conceptIds[" + i + "]");
-			//if the user didn't specify the concept to map to skip the mapping
-			if (StringUtils.isNotBlank(conceptId))
-				saveMapping(conceptId, sourceNames[i], sourceCodes[i]);
+		try {
+			//The concept field tag doesn't support multiple values for the same request 
+			//parameter so we can't get them as an array using the @RequestParam annotation
+			for (int i = 0; i < sourceCodes.length; i++) {
+				String conceptId = webRequest.getParameter("conceptIds[" + i + "]");
+				//if the user didn't specify the concept to map to skip the mapping
+				if (StringUtils.isNotBlank(conceptId))
+					saveMapping(conceptId, sourceNames[i], sourceCodes[i]);
+				
+			}
+			
+			webRequest.setAttribute(WebConstants.OPENMRS_MSG_ATTR,
+			    Context.getMessageSourceService().getMessage("smartcontainer.changes.saved"), WebRequest.SCOPE_SESSION);
+		}
+		catch (Exception e) {
+			webRequest.setAttribute(WebConstants.OPENMRS_ERROR_ATTR,
+			    Context.getMessageSourceService().getMessage("smartcontainer.changes.save.fail"), WebRequest.SCOPE_SESSION);
 		}
 		
 		return "redirect:conceptMapping.form";

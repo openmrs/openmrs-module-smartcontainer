@@ -236,7 +236,7 @@
 							style="border: none;"/>
 				</td>
 				<td valign="top">
-					<input id="arrow_image_${app.appId}" type="image" src="moduleResources/smartcontainer/left_arrow.gif" 
+					<input id="arrow_image_${app.appId}" type="image" src="moduleResources/smartcontainer/left_arrow.png" 
 							style="display: none; border: none;"/>
 				</td>
 			</tr>
