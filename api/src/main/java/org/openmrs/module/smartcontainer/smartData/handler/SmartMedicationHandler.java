@@ -152,10 +152,16 @@ public class SmartMedicationHandler implements SmartDataHandler<SmartMedication>
 			}
 		}
 		
-		// TODO:if the instruction is not present generate one
-		if (drugOrder.getInstructions() != null)
+		if (StringUtils.isNotBlank(drugOrder.getInstructions())) {
 			medication.setInstructions(drugOrder.getInstructions());
-		//
+		} else if (drugOrder.getDose() != null && StringUtils.isNotBlank(drugOrder.getUnits())
+		        && StringUtils.isNotBlank(drugOrder.getFrequency())) {
+			//use the prescription details
+			medication.setInstructions(drugOrder.getDose() + " " + drugOrder.getUnits() + " " + drugOrder.getFrequency());
+		} else {
+			medication.setInstructions(" ");
+		}
+		
 		return medication;
 	}
 	
