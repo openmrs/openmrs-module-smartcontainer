@@ -4,7 +4,7 @@
     <!-- Base Module Properties -->
     <id>smartcontainer</id>
     <name>SMART Container</name>
-    <version>0.1</version>
+    <version>1.0</version>
     <package>org.openmrs.module.@MODULE_ID@</package>
     <author>Balachandiran Ajanthan</author>
     <description>Adds features necessary to make an OpenMRS instance become a SMART App container</description>
@@ -14,7 +14,7 @@
     <updateURL>http://modules.openmrs.org/modules/download/@MODULE_ID@/update.rdf</updateURL>
     <!-- /Base Module Properties -->
 
-    <require_version>1.7.0</require_version>
+    <require_version>${openMRSVersion}</require_version>
 
     <!-- Extensions -->
     <extension>
