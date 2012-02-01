@@ -31,7 +31,6 @@
             <column name="manifest" type="mediumtext">
             	<constraints nullable="false"/>
             </column>
-            <column name="base_url" type="varchar(255)"/>
             <column name="icon" type="varchar(255)"/>
             <column name="retired" type="smallint" defaultValueBoolean="false"/>
             <column name="version" type="varchar(255)"/>

@@ -217,25 +217,25 @@
 <div id="app_selector" style="float: left">
 
 <c:if test="${fn:length(model.hiddenApps) > 0}">
-<input class="smallButton" type="button" value='<spring:message code="smartcontainer.manageHiddenApps" />' 
-	onclick="javascript:$j('#hiddenApps').dialog('open')" /><br /><br />
+<span style="cursor: pointer;" onclick="javascript:$j('#hiddenApps').dialog('open')"><img src="moduleResources/smartcontainer/settings.gif" style="border: none;"> 
+<input class="smallButton" type="button" value='<spring:message code="smartcontainer.manageHiddenApps" />'/></span><br /><br />
 </c:if>
 <table>
 	<tbody>
 		<c:forEach items="${model.visibleApps}" var="app" varStatus="status">
 			<tr>
-				<td valign="top" onclick="appSelected('${app.sMARTAppId}', '${app.appId}')">
+				<td valign="middle" onclick="appSelected('${app.sMARTAppId}', '${app.appId}')">
 					<input type="image" src="${app.icon}" />
 				</td>
-				<td valign="top" onclick="appSelected('${app.sMARTAppId}', '${app.appId}')">
+				<td valign="middle" onclick="appSelected('${app.sMARTAppId}', '${app.appId}')">
 					<a>${app.name}</a>
 				</td>
-				<td valign="top">
+				<td valign="middle">
 					<input class="faded" type="image" src="images/trash.gif" title="<spring:message code="smartcontainer.hide"/>" 
 							onclick="showOrHideSmartApp('${app.appId}', true, '${model.currentUser.uuid}')" 
 							style="border: none;"/>
 				</td>
-				<td valign="top">
+				<td valign="middle">
 					<input id="arrow_image_${app.appId}" type="image" src="moduleResources/smartcontainer/left_arrow.png" 
 							style="display: none; border: none;"/>
 				</td>

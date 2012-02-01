@@ -96,10 +96,9 @@ public class AppFactory {
 		app.setName((String) pa.get(NAME));
 		
 		app.setAuthor((String) pa.get(AUTHOR));
-		app.setBaseURL((String) pa.get(BASEURL));
 		app.setDescription((String) pa.get(DESCRIPTION));
 		temp = (String) pa.get(ICON);
-		temp = removeBaseURL(temp, app.getBaseURL());
+		temp = removeBaseURL(temp, (String) pa.get(BASEURL));
 		app.setIcon(temp);
 		app.setsMARTAppId((String) pa.get(SMARTAPPID));
 		app.setVersion((String) pa.get(VERSION));

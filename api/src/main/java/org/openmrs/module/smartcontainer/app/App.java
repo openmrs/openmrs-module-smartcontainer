@@ -30,8 +30,6 @@ public final class App {
 	
 	private String version;
 	
-	private String baseURL;
-	
 	private String icon;
 	
 	private String sMARTAppId;
@@ -105,13 +103,6 @@ public final class App {
 	}
 	
 	/**
-	 * @return the baseURL
-	 */
-	public String getBaseURL() {
-		return baseURL;
-	}
-	
-	/**
 	 * @return the icon
 	 */
 	public String getIcon() {
@@ -137,13 +128,6 @@ public final class App {
 	 */
 	public void setVersion(String version) {
 		this.version = version;
-	}
-	
-	/**
-	 * @param baseURL the baseURL to set
-	 */
-	public void setBaseURL(String baseURL) {
-		this.baseURL = baseURL;
 	}
 	
 	/**
