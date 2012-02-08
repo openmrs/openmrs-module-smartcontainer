@@ -36,43 +36,39 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @RequestMapping(method = RequestMethod.GET, value = "/smartcontainer/api/")
 public class AllergyController {
-
+	
 	Log log = LogFactory.getLog(getClass());
-
+	
 	private AllergyRDFSource resource;
-
+	
 	public AllergyRDFSource getResource() {
 		return resource;
 	}
-
+	
 	public void setResource(AllergyRDFSource resource) {
 		this.resource = resource;
 	}
-
+	
 	@RequestMapping(method = RequestMethod.GET, value = "records/{pid}/allergies/")
-	public ModelAndView handle(@PathVariable("pid") Patient patient,
-			HttpServletResponse resp) {
+	public ModelAndView handle(@PathVariable("pid") Patient patient, HttpServletResponse resp) {
 		log.info("In Allergy Controller");
 		resp.setContentType("text/xml");
 		Writer writer;
 		try {
 			writer = resp.getWriter();
-			List<SmartAllergy> props = Context.getService(
-					SmartDataService.class).getAllForPatient(patient,
-					SmartAllergy.class);
+			List<SmartAllergy> props = Context.getService(SmartDataService.class).getAllForPatient(patient,
+			    SmartAllergy.class);
 			writer.write(resource.getRDF(props));
-
+			
 			writer.close();
-		} catch (IOException e) {
-			log.error(
-					"Unable to write out Allergy for pid: " + patient.getId(),
-					e);
-		} catch (RDFHandlerException e) {
-			log.error(
-					"Unable to write out Allergy for pid: " + patient.getId(),
-					e);
+		}
+		catch (IOException e) {
+			log.error("Unable to write out Allergy for pid: " + patient.getId(), e);
+		}
+		catch (RDFHandlerException e) {
+			log.error("Unable to write out Allergy for pid: " + patient.getId(), e);
 		}
 		return null; // indicates this controller did all necessary processing
-
+		
 	}
 }
