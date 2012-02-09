@@ -26,6 +26,7 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.smartcontainer.SmartDataService;
 import org.openmrs.module.smartcontainer.rdfsource.AllergyRDFSource;
 import org.openmrs.module.smartcontainer.smartData.SmartAllergy;
+import org.openmrs.module.smartcontainer.util.SmartConstants;
 import org.openrdf.rio.RDFHandlerException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,31 +35,22 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@RequestMapping(method = RequestMethod.GET, value = "/smartcontainer/api/")
-public class AllergyController {
+@RequestMapping(method = RequestMethod.GET, value = SmartConstants.REST_PATH)
+public class AllergyController extends BaseSmartController<AllergyRDFSource> {
 	
-	Log log = LogFactory.getLog(getClass());
+	private static final Log log = LogFactory.getLog(AllergyController.class);
 	
-	private AllergyRDFSource resource;
-	
-	public AllergyRDFSource getResource() {
-		return resource;
-	}
-	
-	public void setResource(AllergyRDFSource resource) {
-		this.resource = resource;
-	}
-	
-	@RequestMapping(method = RequestMethod.GET, value = "records/{pid}/allergies/")
+	@RequestMapping("records/{pid}/allergies")
 	public ModelAndView handle(@PathVariable("pid") Patient patient, HttpServletResponse resp) {
-		log.info("In Allergy Controller");
+		if (log.isDebugEnabled())
+			log.debug("In Allergy Controller");
 		resp.setContentType("text/xml");
 		Writer writer;
 		try {
 			writer = resp.getWriter();
 			List<SmartAllergy> props = Context.getService(SmartDataService.class).getAllForPatient(patient,
 			    SmartAllergy.class);
-			writer.write(resource.getRDF(props));
+			writer.write(getResource().getRDF(props));
 			
 			writer.close();
 		}

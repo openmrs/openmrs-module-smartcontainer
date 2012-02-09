@@ -26,6 +26,7 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.smartcontainer.SmartDataService;
 import org.openmrs.module.smartcontainer.rdfsource.AllergyExceptionRDFSource;
 import org.openmrs.module.smartcontainer.smartData.SmartAllergyException;
+import org.openmrs.module.smartcontainer.util.SmartConstants;
 import org.openrdf.rio.RDFHandlerException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,25 +35,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@RequestMapping(method = RequestMethod.GET, value = "/smartcontainer/api/")
-public class AllergyExceptionController {
+@RequestMapping(method = RequestMethod.GET, value = SmartConstants.REST_PATH)
+public class AllergyExceptionController extends BaseSmartController<AllergyExceptionRDFSource> {
 	
 	private static final Log log = LogFactory.getLog(AllergyExceptionController.class);
 	
-	private AllergyExceptionRDFSource resource;
-	
-	public AllergyExceptionRDFSource getResource() {
-		return resource;
-	}
-	
-	public void setResource(AllergyExceptionRDFSource resource) {
-		this.resource = resource;
-	}
-	
-	@RequestMapping(method = RequestMethod.GET, value = "records/{pid}/allergyExceptions/")
+	@RequestMapping("records/{pid}/allergyExceptions")
 	public ModelAndView handle(@PathVariable("pid") Patient patient, HttpServletResponse resp) {
 		if (log.isDebugEnabled())
-			log.info("In AllergyException Controller");
+			log.debug("In AllergyException Controller");
 		
 		resp.setContentType("text/xml");
 		Writer writer = null;
@@ -60,7 +51,7 @@ public class AllergyExceptionController {
 			writer = resp.getWriter();
 			List<SmartAllergyException> props = Context.getService(SmartDataService.class).getAllForPatient(patient,
 			    SmartAllergyException.class);
-			writer.write(resource.getRDF(props));
+			writer.write(getResource().getRDF(props));
 			writer.close();
 		}
 		catch (IOException e) {

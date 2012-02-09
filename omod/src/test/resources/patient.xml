@@ -397,7 +397,7 @@
               uuid="a2e1925c-26fe-102b-80cb-0017a47871b2" retired="false"/>
     <location location_id="32" name="Ruhengeri" description="Ruhengeri Hospital" address1="KIGOMBE"
               city_village="KIGOMBE" state_province="NORTH" creator="15887" date_created="2007-06-17 12:13:16.0"
-              county_district="KIGOMBE" address3="KIGOMBE" uuid="a2e1946e-26fe-102b-80cb-0017a47871b2" retired="false"/>
+              county_district="KIGOMBE" region="KIGOMBE" uuid="a2e1946e-26fe-102b-80cb-0017a47871b2" retired="false"/>
     <location location_id="33" name="Rwaza" description="Rwaza is one of Ruhengeri ART sites." address1=""
               city_village="" state_province="NORTH" creator="15887" date_created="2007-06-17 12:27:11.0"
               county_district="RWAZA" uuid="a2e1968a-26fe-102b-80cb-0017a47871b2" retired="false"/>

@@ -33,7 +33,7 @@ import org.openmrs.util.OpenmrsUtil;
 import org.springframework.web.bind.ServletRequestUtils;
 
 /**
- * Filter intended for all /ws/smartcontainer calls that allows the smart app deployed to OpenMRS to
+ * Filter intended for all '/module/smartcontainer/rest/' calls that allows the smart app deployed to OpenMRS to
  * make http requests to the smart rest API
  */
 public class AuthorizationFilter implements Filter {

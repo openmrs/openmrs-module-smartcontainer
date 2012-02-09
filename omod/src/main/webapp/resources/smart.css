@@ -16,3 +16,6 @@ TD.smartOddRow{
 .leftAligned{
 	text-align: left;
 }
+.bolded{
+	font-weight: bold;
+}

@@ -71,13 +71,13 @@ public class SmartConceptMapCodeSource {
 		for (ConceptMap cm : concept.getConceptMappings()) {
 			//use the name of the linked local conceptSource defined by the related GP just 
 			//in case it differs from what was defined in the module application context
-			if (cm.getSource().getName().equals(sourceName) || cm.getSource().getName().equals(getConceptSourceName())) {
+			if (cm.getSource().getName().equals(sourceName)
+			        || cm.getSource().getName().equalsIgnoreCase(getConceptSourceName())) {
 				map = cm;
 				break;
 			}
 		}
 		
-		// if the mapping is found, cache it. otherwise throw an exception
 		if (map == null) {
 			// TODO there should be better way of indicating the failure of
 			// finding mapped concept code.

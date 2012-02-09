@@ -39,7 +39,7 @@
 	
 	<filter-mapping>
 		<filter-name>SMART REST AuthorizationFilter</filter-name>
-		<url-pattern>/ws/smartcontainer/*</url-pattern>
+		<url-pattern>/module/smartcontainer/rest/*</url-pattern>
 	</filter-mapping>
 
     <!-- Required Privileges -->

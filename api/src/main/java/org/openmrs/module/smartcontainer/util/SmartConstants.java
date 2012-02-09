@@ -91,4 +91,9 @@ public class SmartConstants {
 	
 	public static final String PRIV_MANAGE_SMART_APPS = "Manage SMART Apps";
 	
+	/**
+	 * Prefix for rest urls
+	 */
+	public static final String REST_PATH = "/module/" + MODULE_ID + "/rest/api/";
+	
 }

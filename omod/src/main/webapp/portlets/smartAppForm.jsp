@@ -120,11 +120,21 @@
 			//send the name of the param as the authorization header value
 			api_call.params['appId'] = selectedAppId;
 			api_call.params['accessToken'] = appIdAccessTokenMap[selectedAppId];
+			var resourcePath = "${pageContext.request.contextPath}/module/smartcontainer/rest/api";
+			//To support OpenMRS 1.7 we need to convert request as follow:
+			// records/{record_id}/problems/' -> 'records/{record_id}/problems.form'
+			// records/{record_id}/problems/{problem_uuid}' -> 'records/{record_id}/problems/{problem_uuid}.form'
+			//so that we can map them to spring controllers
+			if(api_call.func && $j.trim(api_call.func) != ''){
+				if(api_call.func.endsWith('/'))
+					resourcePath = resourcePath + api_call.func.substring(0, api_call.func.length-2)+"s.form";
+				else
+					resourcePath = resourcePath + api_call.func + ".form";
+			}
 			
 			$j.ajax({
 				dataType : "text",
-				url : "${pageContext.request.contextPath}"
-						+ "/ws/smartcontainer/api" +api_call.func,
+				url : resourcePath,
 				contentType : api_call.contentType,
 				data : api_call.params,
 				type : api_call.method,
@@ -140,9 +150,12 @@
 	var appSelected = function(app_id, containerAppId) {
 		$j('#appNameHolder').html("");
 		$j('#appError').hide();
-		if(selectedAppId)
+		if(selectedAppId){
 			$j('#arrow_image_'+selectedAppId).hide();
+			$j('.selectedAppCol_'+selectedAppId).removeClass('bolded');
+		}
 		$j('#arrow_image_'+containerAppId).show();
+		$j('.selectedAppCol_'+containerAppId).addClass('bolded');
 		selectedAppId = containerAppId;
 		if (already_running[app_id] == null) {
 			SMART_HOST.launch_app(smartIdManifestMap[selectedAppId], simple_context);
@@ -203,6 +216,10 @@
 		h.height(available_h);
 		$j('.display_iframe').height(available_h);
 	});
+	
+	String.prototype.endsWith = function(str){
+		return (this.match(str+"$") == str);
+	}
 </script>
 <c:if test="${fn:length(model.visibleApps) == 0}">
 	${model.noVisibleAppsMsg}
@@ -217,18 +234,18 @@
 <div id="app_selector" style="float: left">
 
 <c:if test="${fn:length(model.hiddenApps) > 0}">
-<span style="cursor: pointer;" onclick="javascript:$j('#hiddenApps').dialog('open')"><img src="moduleResources/smartcontainer/settings.gif" style="border: none;"> 
+<span style="cursor: pointer;" onclick="javascript:$j('#hiddenApps').dialog('open')"> 
 <input class="smallButton" type="button" value='<spring:message code="smartcontainer.manageHiddenApps" />'/></span><br /><br />
 </c:if>
 <table>
 	<tbody>
 		<c:forEach items="${model.visibleApps}" var="app" varStatus="status">
 			<tr>
-				<td valign="middle" onclick="appSelected('${app.sMARTAppId}', '${app.appId}')">
+				<td class="selectedAppCol_${app.appId}" valign="middle" onclick="appSelected('${app.sMARTAppId}', '${app.appId}')">
 					<input type="image" src="${app.icon}" />
 				</td>
-				<td valign="middle" onclick="appSelected('${app.sMARTAppId}', '${app.appId}')">
-					<a>${app.name}</a>
+				<td class="selectedAppCol_${app.appId}" valign="middle" onclick="appSelected('${app.sMARTAppId}', '${app.appId}')" style="cursor: pointer;">
+					<a style="text-decoration: none;">${app.name}</a>
 				</td>
 				<td valign="middle">
 					<input class="faded" type="image" src="images/trash.gif" title="<spring:message code="smartcontainer.hide"/>" 
@@ -273,7 +290,7 @@
 			</c:forEach>
 			<tr>
 				<td colspan="2" style="padding-top: 20px" align="center">
-					<input type="button" align="right" value="<spring:message code="general.done" javaScriptEscape="true"/>"
+					<input type="button" align="right" value="<spring:message code="smartcontainer.done" javaScriptEscape="true"/>"
 						onclick="javascript:$j('#hiddenApps').dialog('close')" />
 				</td>
 			</tr>
