@@ -13,12 +13,16 @@
  */
 package org.openmrs.module.smartcontainer.app;
 
+import java.io.Serializable;
+
 import org.openmrs.User;
 
 /**
  * Represents a mapping between a user and an App that is hidden
  */
-public class UserHiddenAppMap {
+public class UserHiddenAppMap implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
 	
 	private Integer userHiddenAppMapId;
 	
