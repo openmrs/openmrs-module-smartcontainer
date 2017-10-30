@@ -11,11 +11,11 @@
 
     <url>http://wiki.openmrs.org/display/projects/Enabling+SMART+Apps+in+OpenMRS</url>
 
-    <scm>
-        <connection>scm:svn:http://svn.openmrs.org/openmrs-modules/smartcontainer/trunk/</connection>
-        <developerConnection>scm:svn:http://svn.openmrs.org/openmrs-modules/smartcontainer/trunk/</developerConnection>
-        <url>http://svn.openmrs.org/openmrs-modules/smartcontainer/trunk/</url>
-    </scm>
+	<scm>
+		<connection>scm:git:https://github.com/openmrs/openmrs-module-smartcontainer/</connection>
+		<developerConnection>scm:git:https://github.com/openmrs/openmrs-module-smartcontainer/</developerConnection>
+		<url>https://github.com/openmrs/openmrs-module-smartcontainer/</url>
+	</scm>
 
     <modules>
         <module>api</module>
